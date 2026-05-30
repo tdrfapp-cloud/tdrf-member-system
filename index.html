@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 
 <head>
@@ -2044,9 +2044,9 @@
   <script>
 
 // ==========================================================
-// ðŸš€ BRIDGE COMPATIBILITY PROXY: à¹à¸›à¸¥à¸‡à¸à¸²à¸£à¸—à¸³à¸‡à¸²à¸™ google.script.run à¹„à¸›à¹€à¸›à¹‡à¸™ fetch API à¸­à¸±à¸•à¹‚à¸™à¸¡à¸±à¸•à¸´
+// ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbz1S69nIOxC_NW5EpIk4LfviAhawBTXS2wSQ2dXjjoDoD1rYIgOjTSxwenljdAAB9fs/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
 
 const google = {
   script: {
@@ -2072,7 +2072,7 @@ const google = {
                       successCallback(data);
                     } else {
                       if (failureCallback) {
-                        failureCallback(new Error(data.message || 'à¹€à¸à¸´à¸”à¸‚à¹‰à¸­à¸œà¸´à¸”à¸žà¸¥à¸²à¸”à¹ƒà¸™à¸à¸²à¸£à¸”à¸¶à¸‡à¸‚à¹‰à¸­à¸¡à¸¹à¸¥'));
+                        failureCallback(new Error(data.message || 'Error occurred while processing request'));
                       } else {
                         console.error(data.message);
                       }
@@ -2205,8 +2205,7 @@ const google = {
 
             // โหลดข้อมูลอัตโนมัติเมื่อเข้าหน้านั้นๆ
             if (viewId === 'adminDashboard') {
-                loadMembers();
-                loadActivities();
+                loadDashboardDataBatch();
             }
             if (viewId === 'presidentApproval') {
                 loadPresidentApprovals();
@@ -6562,6 +6561,165 @@ const google = {
             }
         });
     };
+
+    function loadDashboardDataBatch() {
+        showLoader('กำลังโหลดข้อมูลแดชบอร์ด...');
+        google.script.run
+            .withSuccessHandler(function (response) {
+                hideLoader();
+                if (response && response.success) {
+                    // 1. Process Members
+                    if (response.members && Array.isArray(response.members)) {
+                        allMembers = response.members;
+                        var expiringHtml = '';
+                        var expiredHtml = '';
+                        var expiringCount = 0;
+                        var expiredCount = 0;
+
+                        for (var i = 0; i < response.members.length; i++) {
+                            var m = response.members[i];
+                            var fullName = (m['ขั้น'] || m['คำนำหน้า(ขั้น)'] || '') + (m['ชื่อ-สกุล (ไทย)'] || m['ชื่อ'] || m['ชื่อ (ไทย)'] || '') + (m['นามสกุล'] || m['นามสกุล (ไทย)'] || m['Surname'] ? ' ' + (m['นามสกุล'] || m['นามสกุล (ไทย)'] || m['Surname']) : '');
+
+                            // รวบรวมข้อมูลสำหรับแจ้งเตือน Dashboard
+                            if (m['สถานภาพสมาชิก'] === 'เตือนต่ออายุ') {
+                                expiringCount++;
+                                expiringHtml += '<div class="flex items-center justify-between bg-amber-50 p-3 rounded-lg border border-amber-200 shadow-sm">';
+                                expiringHtml += '  <div><div class="text-sm font-bold text-gray-800">' + fullName + '</div><div class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-id-badge mr-1"></i> ' + m['รหัสสมาชิก'] + ' | <i class="fa-solid fa-phone mr-1"></i> ' + (m['เบอร์โทร'] || '-') + ' | <i class="fa-regular fa-clock mr-1"></i> หมดอายุ: <span class="text-amber-600 font-semibold">' + (m['วันสิ้นสุด'] || '-') + '</span></div></div>';
+                                expiringHtml += '  <button onclick="window.editMember(\'' + m['รหัสสมาชิก'] + '\')" class="text-amber-700 hover:text-white border border-amber-600 hover:bg-amber-600 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center transition-all"><i class="fa-solid fa-pen mr-1"></i> ต่ออายุ</button>';
+                                expiringHtml += '</div>';
+                            } else if (m['สถานภาพสมาชิก'] === 'หมดอายุ') {
+                                expiredCount++;
+                                expiredHtml += '<div class="flex items-center justify-between bg-red-50 p-3 rounded-lg border border-red-200 shadow-sm">';
+                                expiredHtml += '  <div><div class="text-sm font-bold text-gray-800">' + fullName + '</div><div class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-calendar-xmark mr-1"></i> หมดอายุเมื่อ: <span class="text-red-600 font-semibold">' + (m['วันสิ้นสุด'] || '-') + '</span></div></div>';
+                                expiredHtml += '  <button onclick="window.editMember(\'' + m['รหัสสมาชิก'] + '\')" class="text-red-700 hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center transition-all"><i class="fa-solid fa-pen mr-1"></i> ต่ออายุ</button>';
+                                expiredHtml += '</div>';
+                            }
+                        }
+
+                        var totalMembersEl = document.getElementById('totalMembers');
+                        if (totalMembersEl) totalMembersEl.innerText = response.members.length;
+
+                        // คำนวณและแสดง Top 10
+                        var sortedMembers = response.members.slice().sort(function (a, b) {
+                            return (b['TotalScore'] || 0) - (a['TotalScore'] || 0);
+                        });
+                        var top10 = sortedMembers.slice(0, 10);
+                        var top10Html = '';
+                        for (var t = 0; t < top10.length; t++) {
+                            var tm = top10[t];
+                            if ((tm['TotalScore'] || 0) > 0) {
+                                var pSrc = tm['รูปถ่าย'] ? getDriveImageUrl(tm['รูปถ่าย']) : '';
+                                var ringClassTop10 = 'border-gray-200';
+                                if (tm['ขั้น'] === 'ผกก.ท.') ringClassTop10 = 'border-2 border-army-600 ring-1 ring-army-400';
+                                else if (tm['ขั้น'] === 'ผกก.อ.') ringClassTop10 = 'border-2 border-yellow-500 ring-1 ring-yellow-400';
+                                var pHtml = pSrc ? '<img src="' + pSrc + '" class="w-8 h-8 rounded-full object-cover mr-3 shadow-sm ' + ringClassTop10 + '">' : '<div class="w-8 h-8 rounded-full bg-gray-200 mr-3 flex items-center justify-center shadow-sm ' + ringClassTop10 + '"><i class="fa-solid fa-user text-gray-400 text-xs"></i></div>';
+                                var tmFullName = (tm['ขั้น'] || tm['คำนำหน้า(ขั้น)'] || '') + (tm['ชื่อ-สกุล (ไทย)'] || tm['ชื่อ'] || tm['ชื่อ (ไทย)'] || '') + (tm['นามสกุล'] || tm['นามสกุล (ไทย)'] || tm['Surname'] ? ' ' + (tm['นามสกุล'] || tm['นามสกุล (ไทย)'] || tm['Surname']) : '');
+                                top10Html += '<div class="flex items-center justify-between bg-white/60 p-2.5 rounded-lg border border-white/40 shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="openSpecialPointsModal(\'' + tm['รหัสสมาชิก'] + '\', \'' + tmFullName.replace(/'/g, "\\'") + '\')">';
+                                top10Html += '  <div class="flex items-center">' + pHtml + '<div><div class="text-sm font-bold text-gray-800 line-clamp-1">' + tmFullName + '</div><div class="text-xs font-medium text-army-600"><i class="fa-solid fa-id-badge mr-1"></i>' + tm['รหัสสมาชิก'] + '</div></div></div>';
+                                top10Html += '  <div class="bg-amber-100 text-amber-800 font-extrabold px-3 py-1.5 rounded-lg text-sm shadow-sm flex items-center"><i class="fa-solid fa-star text-amber-500 mr-1 text-xs"></i> ' + (tm['TotalScore'] || 0) + '</div>';
+                                top10Html += '</div>';
+                            }
+                        }
+                        var top10List = document.getElementById('top10MembersList');
+                        if (top10List) {
+                            top10List.innerHTML = top10Html !== '' ? top10Html : '<div class="text-sm text-gray-500 italic p-3 text-center">ยังไม่มีสมาชิกที่มีคะแนนสะสม</div>';
+                        }
+
+                        // อัปเดต Dashboard Alerts
+                        var expiringList = document.getElementById('expiringMembersList');
+                        if (expiringList) {
+                            expiringList.innerHTML = expiringCount > 0 ? expiringHtml : '<div class="bg-green-50 text-green-700 p-4 rounded-lg flex items-center border border-green-200"><i class="fa-solid fa-check-circle text-xl mr-3"></i><span class="font-medium">ไม่มีสมาชิกที่ใกล้หมดอายุในขณะนี้</span></div>';
+                        }
+                        var expiredList = document.getElementById('expiredMembersList');
+                        if (expiredList) {
+                            expiredList.innerHTML = expiredCount > 0 ? expiredHtml : '<div class="bg-green-50 text-green-700 p-4 rounded-lg flex items-center border border-green-200"><i class="fa-solid fa-check-circle text-xl mr-3"></i><span class="font-medium">ไม่มีสมาชิกที่หมดอายุในขณะนี้</span></div>';
+                        }
+
+                        filterMembers();
+                    }
+
+                    // 2. Process Pending Members
+                    if (response.pendingMembers && Array.isArray(response.pendingMembers)) {
+                        allPendingMembers = response.pendingMembers;
+                        var countEl = document.getElementById('countPendingMembersList');
+                        if (countEl) countEl.innerText = response.pendingMembers.length;
+                        var countDbEl = document.getElementById('totalPendingMembersCount');
+                        if (countDbEl) countDbEl.innerText = response.pendingMembers.length;
+                        renderPendingMembersList(response.pendingMembers);
+                    }
+
+                    // 3. Process Activities
+                    if (response.activities && Array.isArray(response.activities)) {
+                        response.activities.sort((a, b) => {
+                            var dateA = parseThDate(a['Date']);
+                            var dateB = parseThDate(b['Date']);
+                            return dateB - dateA;
+                        });
+
+                        allActivities = response.activities;
+                        if (document.getElementById('totalActivities')) document.getElementById('totalActivities').innerText = response.activities.length;
+                        renderActivitiesList(response.activities);
+                    }
+                } else {
+                    Swal.fire('เกิดข้อผิดพลาด', response.message || 'ดึงข้อมูลล้มเหลว', 'error');
+                }
+            })
+            .withFailureHandler(function (err) {
+                hideLoader();
+                Swal.fire('เกิดข้อผิดพลาด', err.message, 'error');
+            })
+            .getAdminDashboardData();
+    }
+
+    function renderActivitiesList(activities) {
+        var tbody = document.getElementById('activityTableBody');
+        if (tbody) tbody.innerHTML = '';
+
+        if (activities && Array.isArray(activities)) {
+            for (var i = 0; i < activities.length; i++) {
+                var a = activities[i];
+                if (tbody) {
+                    var tr = document.createElement('tr');
+                    tr.className = 'border-b border-army-400/20 hover:bg-white transition-colors';
+
+                    var status = a['Status'] || 'เปิดรับสมัคร';
+                    var statusBadge = '';
+                    if (status === 'เปิดรับสมัคร') {
+                        statusBadge = '<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200 ml-2"><i class="fa-solid fa-circle-play mr-1"></i>เปิดรับสมัคร</span>';
+                    } else if (status === 'รออนุมัติ') {
+                        statusBadge = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 ml-2"><i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติ</span>';
+                    } else if (status === 'อนุมัติแล้ว') {
+                        statusBadge = '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200 ml-2"><i class="fa-solid fa-circle-check mr-1"></i>อนุมัติแล้ว</span>';
+                    }
+
+                    var html = '<td class="py-3 px-4">';
+                    html += '<div class="font-bold text-army-800 flex items-center flex-wrap gap-1">' + a['Name'] + statusBadge + '</div>';
+                    if (a['ResponsiblePerson']) html += '<div class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-user-tie mr-1"></i>' + a['ResponsiblePerson'] + '</div>';
+                    html += '</td>';
+                    html += '<td class="py-3 px-4 text-center text-army-600 text-sm"><i class="fa-regular fa-calendar mr-2"></i>' + a['Date'] + '</td>';
+                    html += '<td class="py-3 px-4 text-center"><span class="bg-armylight-200 text-army-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm">' + a['Score'] + ' คะแนน</span></td>';
+
+                    var editBtn = '';
+                    var deleteBtn = '';
+                    if (status === 'เปิดรับสมัคร') {
+                        editBtn = '<button onclick="editActivity(\'' + a['ActivityID'] + '\')" class="bg-amber-500 hover:bg-amber-600 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>';
+                        deleteBtn = '<button onclick="deleteActivityAction(\'' + a['ActivityID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="ลบ"><i class="fa-solid fa-trash"></i></button>';
+                    } else {
+                        editBtn = '<button class="bg-gray-300 text-gray-500 cursor-not-allowed w-8 h-8 rounded-full text-xs shadow-sm" title="แก้ไขไม่ได้หลังจากปิดกิจกรรม" disabled><i class="fa-solid fa-pen"></i></button>';
+                        deleteBtn = '<button class="bg-gray-300 text-gray-500 cursor-not-allowed w-8 h-8 rounded-full text-xs shadow-sm" title="ลบไม่ได้หลังจากปิดกิจกรรม" disabled><i class="fa-solid fa-trash"></i></button>';
+                    }
+
+                    html += '<td class="py-3 px-4 text-center"><div class="flex justify-center gap-2">';
+                    html += '<button onclick="openActivityRecord(\'' + a['ActivityID'] + '\', \'' + (a['Name'] || '').replace(/'/g, "\\'") + '\')" class="bg-army-600 hover:bg-army-700 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="จัดการผู้เข้าร่วม"><i class="fa-solid fa-users"></i></button>';
+                    html += editBtn;
+                    html += deleteBtn;
+                    html += '</div></td>';
+                    tr.innerHTML = html;
+                    tbody.appendChild(tr);
+                }
+            }
+        }
+    }
 
 </script>
 </body>
