@@ -570,13 +570,16 @@
 
       <!-- ================= President Approval View ================= -->
       <div id="presidentApprovalView" class="view-section hidden">
-    <div class="mb-6">
-        <h1 class="text-2xl md:text-3xl font-black text-[#8A6D1C] drop-shadow-sm flex items-center gap-3">
-            <i class="fa-solid fa-stamp text-[#B8901C] text-3xl drop-shadow-sm animate-pulse"></i> ศูนย์กลางการอนุมัติ
-            (นายกสมาคม)
-        </h1>
-        <p class="text-amber-800/80 font-medium mt-1">พื้นที่พิจารณาและอนุมัติใบคำขอระบบสมาชิก กิจกรรมสะสมคะแนน
-            และการปรับยศตำแหน่งประจำตำแหน่ง</p>
+    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-black text-[#8A6D1C] drop-shadow-sm flex items-center gap-3">
+                <i class="fa-solid fa-stamp text-[#B8901C] text-3xl drop-shadow-sm animate-pulse"></i> ศูนย์กลางการอนุมัติ (นายกสมาคม)
+            </h1>
+            <p class="text-amber-800/80 font-medium mt-1">พื้นที่พิจารณาและอนุมัติใบคำขอระบบสมาชิก กิจกรรมสะสมคะแนน และการปรับยศตำแหน่งประจำตำแหน่ง</p>
+        </div>
+        <button onclick="loadPresidentApprovals()" class="bg-gradient-to-r from-[#D4AF37] to-[#B8901C] hover:from-[#B8901C] hover:to-[#8A6D1C] text-white font-bold py-2.5 px-5 rounded-full text-xs shadow-md transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-rotate"></i> โหลดข้อมูลใหม่
+        </button>
     </div>
 
     <!-- Main Container -->
@@ -1543,7 +1546,11 @@
             </button>
             <button type="button" onclick="switchMemberListTab('pending')" id="tabPendingMembersList"
                 class="px-5 py-2.5 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap">
-                <i class="fa-solid fa-user-clock"></i> สมาชิกรออนุมัติ (<span id="countPendingMembersList">0</span>)
+                <i class="fa-solid fa-user-clock"></i> สมาชิกรออนุมัติเข้าทะเบียน (<span id="countPendingMembersList">0</span>)
+            </button>
+            <button type="button" onclick="switchMemberListTab('promotion')" id="tabPromotionMembersList"
+                class="px-5 py-2.5 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap">
+                <i class="fa-solid fa-angles-up"></i> สมาชิกรออนุมัติเลื่อนขั้น (<span id="countPendingPromotionsList">0</span>)
             </button>
         </div>
 
@@ -1646,6 +1653,30 @@
                     <tbody id="pendingMembersListTableBody" class="text-sm text-gray-700 divide-y divide-army-400/20">
                         <tr>
                             <td colspan="7" class="text-center py-8 text-gray-500">ไม่มีสมาชิกที่รอการอนุมัติ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 3. Promotion Pending Members Panel -->
+        <div id="panelPromotionMembersList" class="hidden">
+            <div class="overflow-x-auto">
+                <table class="responsive-table w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-armylight-200 text-army-800 text-sm tracking-wider">
+                            <th class="py-3 px-4 font-semibold w-12 text-center">#</th>
+                            <th class="py-3 px-4 font-semibold w-36">รหัสสมาชิก</th>
+                            <th class="py-3 px-4 font-semibold min-w-[220px]">ชื่อสมาชิก</th>
+                            <th class="py-3 px-4 font-semibold w-48">ยศ / ตำแหน่งใหม่</th>
+                            <th class="py-3 px-4 font-semibold text-center w-48">วัน เวลา ผู้บันทึก</th>
+                            <th class="py-3 px-4 font-semibold text-center w-28">สถานะ</th>
+                            <th id="thPromotionManage" class="py-3 px-4 font-semibold text-center w-36">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingPromotionsListTableBody" class="text-sm text-gray-700 divide-y divide-army-400/20">
+                        <tr>
+                            <td colspan="7" class="text-center py-8 text-gray-500">ไม่มีรายการอนุมัติเลื่อนยศตำแหน่งค้างอยู่</td>
                         </tr>
                     </tbody>
                 </table>
@@ -2087,7 +2118,7 @@
 // ==========================================================
 // ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxlsEL5VNDBJK2jhBYQ1q5bcuByLSrXnVY4CcIcD6rxNsqpaeBmk7wvxvZZsirEXQnv/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
 
 const google = {
   script: {
@@ -2724,6 +2755,20 @@ const google = {
                         }
                     })
                     .getPendingMembers();
+
+                // Load Pending Promotions Count for the badge count
+                google.script.run
+                    .withSuccessHandler(function (promoRes) {
+                        if (promoRes && promoRes.success && promoRes.list && Array.isArray(promoRes.list)) {
+                            var countPromoEl = document.getElementById('countPendingPromotionsList');
+                            if (countPromoEl) {
+                                countPromoEl.innerText = promoRes.list.filter(function (p) {
+                                    return (p['Status'] || 'รออนุมัติ') === 'รออนุมัติ';
+                                }).length;
+                            }
+                        }
+                    })
+                    .getPendingPromotions();
             })
             .withFailureHandler(function (err) {
                 hideLoader();
@@ -2735,31 +2780,41 @@ const google = {
     window.switchMemberListTab = function (tabName) {
         var activeTab = document.getElementById('tabActiveMembersList');
         var pendingTab = document.getElementById('tabPendingMembersList');
+        var promotionTab = document.getElementById('tabPromotionMembersList');
         var activePanel = document.getElementById('panelActiveMembersList');
         var pendingPanel = document.getElementById('panelPendingMembersList');
+        var promotionPanel = document.getElementById('panelPromotionMembersList');
+
+        // Reset all tabs
+        [activeTab, pendingTab, promotionTab].forEach(function (tab) {
+            if (tab) {
+                tab.classList.remove('border-army-600', 'text-army-600');
+                tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700');
+            }
+        });
+        [activePanel, pendingPanel, promotionPanel].forEach(function (panel) {
+            if (panel) panel.classList.add('hidden');
+        });
 
         if (tabName === 'active') {
             if (activeTab) {
                 activeTab.classList.add('border-army-600', 'text-army-600');
                 activeTab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700');
             }
-            if (pendingTab) {
-                pendingTab.classList.remove('border-army-600', 'text-army-600');
-                pendingTab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700');
-            }
             if (activePanel) activePanel.classList.remove('hidden');
-            if (pendingPanel) pendingPanel.classList.add('hidden');
-        } else {
+        } else if (tabName === 'pending') {
             if (pendingTab) {
                 pendingTab.classList.add('border-army-600', 'text-army-600');
                 pendingTab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700');
             }
-            if (activeTab) {
-                activeTab.classList.remove('border-army-600', 'text-army-600');
-                activeTab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700');
-            }
-            if (activePanel) activePanel.classList.add('hidden');
             if (pendingPanel) pendingPanel.classList.remove('hidden');
+        } else if (tabName === 'promotion') {
+            if (promotionTab) {
+                promotionTab.classList.add('border-army-600', 'text-army-600');
+                promotionTab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700');
+            }
+            if (promotionPanel) promotionPanel.classList.remove('hidden');
+            loadPendingPromotionsList();
         }
     };
 
@@ -6397,6 +6452,7 @@ const google = {
                         Swal.fire('สำเร็จ', res.message, 'success');
                         loadPresidentApprovals();
                         loadMembers(); // reload stats
+                        loadPendingPromotionsList(); // reload promotion panel list if visible
                     } else {
                         Swal.fire('ข้อผิดพลาด', res.message, 'error');
                     }
@@ -6594,6 +6650,8 @@ const google = {
                             if (res.success) {
                                 Swal.fire('บันทึกแล้ว', res.message, 'success');
                                 loadPresidentApprovals();
+                                loadMembers(); // reload stats
+                                loadPendingPromotionsList(); // reload promotion panel list if visible
                             } else {
                                 Swal.fire('ข้อผิดพลาด', res.message, 'error');
                             }
@@ -6956,6 +7014,20 @@ const google = {
                         renderPendingMembersList(response.pendingMembers);
                     }
 
+                    // Load Pending Promotions Count for dashboard
+                    google.script.run
+                        .withSuccessHandler(function (promoRes) {
+                            if (promoRes && promoRes.success && promoRes.list && Array.isArray(promoRes.list)) {
+                                var countPromoEl = document.getElementById('countPendingPromotionsList');
+                                if (countPromoEl) {
+                                    countPromoEl.innerText = promoRes.list.filter(function (p) {
+                                        return (p['Status'] || 'รออนุมัติ') === 'รออนุมัติ';
+                                    }).length;
+                                }
+                            }
+                        })
+                        .getPendingPromotions();
+
                     // 3. Process Activities
                     if (response.activities && Array.isArray(response.activities)) {
                         response.activities.sort((a, b) => {
@@ -7028,6 +7100,174 @@ const google = {
             }
         }
     }
+
+    // === โหลดรายการสมาชิกรออนุมัติเลื่อนขั้น (หน้าทะเบียนสมาชิก) ===
+    window.loadPendingPromotionsList = function () {
+        var tbody = document.getElementById('pendingPromotionsListTableBody');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-army-600 font-medium"><i class="fa-solid fa-spinner fa-spin mr-2"></i>กำลังโหลดข้อมูลรายการเลื่อนขั้น...</td></tr>';
+        }
+        google.script.run
+            .withSuccessHandler(function (res) {
+                if (res && res.success && res.list && Array.isArray(res.list)) {
+                    // Update tab badge as well
+                    var countPromoEl = document.getElementById('countPendingPromotionsList');
+                    if (countPromoEl) {
+                        countPromoEl.innerText = res.list.filter(function (p) {
+                            return (p['Status'] || 'รออนุมัติ') === 'รออนุมัติ';
+                        }).length;
+                    }
+                    renderPendingPromotionsListTable(res.list);
+                } else {
+                    if (tbody) {
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-red-500 font-medium">เกิดข้อผิดพลาด: ' + (res.message || 'ไม่สามารถดึงข้อมูลได้') + '</td></tr>';
+                    }
+                }
+            })
+            .withFailureHandler(function (err) {
+                if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-red-500 font-medium">เกิดข้อผิดพลาด: ' + err.message + '</td></tr>';
+                }
+            })
+            .getPendingPromotions();
+    };
+
+    // === เรนเดอร์ตารางสมาชิกรออนุมัติเลื่อนขั้น (หน้าทะเบียนสมาชิก) ===
+    window.renderPendingPromotionsListTable = function (list) {
+        var tbody = document.getElementById('pendingPromotionsListTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        if (!list || list.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-500">ไม่มีรายการอนุมัติเลื่อนยศตำแหน่งค้างอยู่</td></tr>';
+            return;
+        }
+
+        var isPresident = false;
+        if (currentUser) {
+            var posClean = (currentUser.position || '').toString().trim();
+            var roleClean = (currentUser.role || '').toString().trim();
+            if (posClean === 'นายกสมาคม' || roleClean === 'นายกสมาคม') {
+                isPresident = true;
+            }
+        }
+
+        // Dynamically show/hide "Manage" (จัดการ) header cell based on role
+        var thPromotionManage = document.getElementById('thPromotionManage');
+        if (thPromotionManage) {
+            if (isPresident) {
+                thPromotionManage.classList.remove('hidden');
+            } else {
+                thPromotionManage.classList.add('hidden');
+            }
+        }
+
+        list.forEach(function (p, idx) {
+            var statusVal = p['Status'] || 'รออนุมัติ';
+            var disapproveReason = p['DisapproveReason'] || '';
+
+            var tr = document.createElement('tr');
+            tr.className = 'border-b hover:bg-gray-50';
+
+            // Status pill
+            var statusHtml = '';
+            if (statusVal === 'ไม่อนุมัติ') {
+                statusHtml = '<span class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full border border-red-200 shadow-sm whitespace-nowrap inline-flex items-center justify-center"><i class="fa-solid fa-circle-xmark mr-1"></i>ไม่อนุมัติ</span>';
+            } else if (statusVal === 'อนุมัติแล้ว') {
+                statusHtml = '<span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full border border-green-200 shadow-sm whitespace-nowrap inline-flex items-center justify-center"><i class="fa-solid fa-circle-check mr-1"></i>อนุมัติแล้ว</span>';
+            } else {
+                statusHtml = '<span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-200 shadow-sm whitespace-nowrap inline-flex items-center justify-center"><i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติ</span>';
+            }
+
+            // Action buttons (role-aware)
+            var actionBtnHtml = '';
+            if (isPresident) {
+                if (statusVal === 'รออนุมัติ') {
+                    actionBtnHtml = '<div class="flex flex-col sm:flex-row justify-center gap-1.5">' +
+                        '<button onclick="approveRankPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-full text-xs shadow-sm transition-all"><i class="fa-solid fa-check mr-1"></i>อนุมัติ</button>' +
+                        '<button onclick="disapproveRankPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1.5 px-3 rounded-full text-xs shadow-sm transition-all"><i class="fa-solid fa-xmark mr-1"></i>ไม่อนุมัติ</button>' +
+                        '</div>';
+                } else if (statusVal === 'ไม่อนุมัติ') {
+                    actionBtnHtml = '<div class="flex justify-center gap-1.5">';
+                    if (disapproveReason) {
+                        actionBtnHtml += '<button onclick="viewDisapproveReason(\'' + disapproveReason.replace(/\x27/g, '\\x27') + '\')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm"><i class="fa-solid fa-circle-info mr-1"></i>เหตุผล</button>';
+                    }
+                    actionBtnHtml += '<button onclick="deletePendingPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-red-100 hover:bg-red-200 text-red-700 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm"><i class="fa-solid fa-trash mr-1"></i>ลบ</button>';
+                    actionBtnHtml += '</div>';
+                } else {
+                    actionBtnHtml = '<span class="text-gray-400 font-medium text-xs">ดำเนินการเสร็จสิ้น</span>';
+                }
+            } else {
+                if (statusVal === 'ไม่อนุมัติ') {
+                    actionBtnHtml = '<div class="flex justify-center gap-1.5">';
+                    if (disapproveReason) {
+                        actionBtnHtml += '<button onclick="viewDisapproveReason(\'' + disapproveReason.replace(/\x27/g, '\\x27') + '\')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm"><i class="fa-solid fa-circle-info mr-1"></i>เหตุผล</button>';
+                    }
+                    actionBtnHtml += '<button onclick="deletePendingPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-red-100 hover:bg-red-200 text-red-700 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm"><i class="fa-solid fa-trash mr-1"></i>ลบ</button>';
+                    actionBtnHtml += '</div>';
+                } else {
+                    actionBtnHtml = '<button onclick="deletePendingPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-red-100 hover:bg-red-200 text-red-700 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm"><i class="fa-solid fa-trash mr-1"></i>ลบ</button>';
+                }
+            }
+
+            var html = '<td class="py-3 px-4 text-center text-gray-500 font-bold">' + (idx + 1) + '</td>' +
+                '<td class="py-3 px-4 font-mono font-bold text-army-700">' + p['MemberID'] + '</td>' +
+                '<td class="py-3 px-4 font-semibold text-gray-800">' + p['MemberName'] + '</td>' +
+                '<td class="py-3 px-4 text-xs text-gray-600"><div>ชั้น: <span class="font-bold text-army-800">' + p['Rank'] + '</span></div><div>ตำแหน่ง: ' + p['Position'] + ' (' + p['Rate'] + ')</div></td>' +
+                '<td class="py-3 px-4 text-xs text-gray-500"><div>โดย: ' + p['Recorder'] + '</div><div>เวลา: ' + p['Timestamp'] + '</div></td>' +
+                '<td class="py-3 px-4 text-center">' + statusHtml + '</td>';
+
+            if (isPresident) {
+                html += '<td class="py-3 px-4 text-center">' + actionBtnHtml + '</td>';
+            } else {
+                html += '<td class="py-3 px-4 text-center th-promo-manage-col">' + actionBtnHtml + '</td>';
+            }
+
+            tr.innerHTML = html;
+            tbody.appendChild(tr);
+        });
+
+        // Hide columns of td elements if not President
+        if (!isPresident) {
+            var cells = tbody.getElementsByClassName('th-promo-manage-col');
+            for (var i = 0; i < cells.length; i++) {
+                cells[i].classList.add('hidden');
+            }
+        }
+    };
+
+    // === ผู้ใช้งาน: ลบคำร้องเลื่อนชั้นที่รออนุมัติ ===
+    window.deletePendingPromotionAction = function (promotionId) {
+        Swal.fire({
+            title: 'ยืนยันการลบ?',
+            text: 'คุณต้องการลบคำร้องขอเลื่อนชั้นตำแหน่งที่รออนุมัตินี้ออกจากระบบใช่หรือไม่?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'ใช่, ลบเลย',
+            cancelButtonText: 'ยกเลิก'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                showLoader('กำลังลบข้อมูล...');
+                google.script.run
+                    .withSuccessHandler(function (res) {
+                        hideLoader();
+                        if (res.success) {
+                            Swal.fire('สำเร็จ', res.message, 'success');
+                            loadMembers(); // reload main table / tab count
+                            loadPendingPromotionsList(); // reload promotion panel table
+                        } else {
+                            Swal.fire('ข้อผิดพลาด', res.message, 'error');
+                        }
+                    })
+                    .withFailureHandler(function (err) {
+                        hideLoader();
+                        Swal.fire('ข้อผิดพลาด', err.message, 'error');
+                    })
+                    .deletePendingPromotion(promotionId);
+            }
+        });
+    };
 
 </script>
 </body>
