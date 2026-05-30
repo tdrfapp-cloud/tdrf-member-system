@@ -2886,7 +2886,7 @@ const google = {
             var actionBtn = '';
             if (isPresident) {
                 if (statusVal !== 'ไม่อนุมัติ') {
-                    actionBtn = '<div class="flex flex-col gap-1">';
+                    actionBtn = '<div class="flex flex-row justify-end md:justify-center items-center gap-1.5 flex-wrap">';
                     actionBtn += '<button onclick="approveNewMemberAction(\'' + m['รหัสสมาชิก'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-full text-xs shadow-sm transition-all"><i class="fa-solid fa-check mr-1"></i>อนุมัติ</button>';
                     actionBtn += '<button onclick="disapproveNewMemberAction(\'' + m['รหัสสมาชิก'] + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1.5 px-3 rounded-full text-xs shadow-sm transition-all"><i class="fa-solid fa-xmark mr-1"></i>ไม่อนุมัติ</button>';
                     actionBtn += '</div>';
@@ -2895,7 +2895,7 @@ const google = {
                 }
             } else {
                 if (statusVal === 'ไม่อนุมัติ') {
-                    actionBtn = '<div class="flex flex-col gap-1">';
+                    actionBtn = '<div class="flex flex-row justify-end md:justify-center items-center gap-1.5 flex-wrap">';
                     if (disapproveReason) {
                         actionBtn += '<button onclick="viewDisapproveReason(\'' + disapproveReason.replace(/\x27/g, '\\x27') + '\')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm"><i class="fa-solid fa-circle-info mr-1"></i>เหตุผล</button>';
                     }
@@ -7179,12 +7179,12 @@ const google = {
             var actionBtnHtml = '';
             if (isPresident) {
                 if (statusVal === 'รออนุมัติ') {
-                    actionBtnHtml = '<div class="flex flex-col sm:flex-row justify-center gap-1.5">' +
+                    actionBtnHtml = '<div class="flex flex-row justify-end md:justify-center items-center gap-1.5 flex-wrap">' +
                         '<button onclick="approveRankPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-full text-xs shadow-sm transition-all"><i class="fa-solid fa-check mr-1"></i>อนุมัติ</button>' +
                         '<button onclick="disapproveRankPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1.5 px-3 rounded-full text-xs shadow-sm transition-all"><i class="fa-solid fa-xmark mr-1"></i>ไม่อนุมัติ</button>' +
                         '</div>';
                 } else if (statusVal === 'ไม่อนุมัติ') {
-                    actionBtnHtml = '<div class="flex justify-center gap-1.5">';
+                    actionBtnHtml = '<div class="flex flex-row justify-end md:justify-center items-center gap-1.5 flex-wrap">';
                     if (disapproveReason) {
                         actionBtnHtml += '<button onclick="viewDisapproveReason(\'' + disapproveReason.replace(/\x27/g, '\\x27') + '\')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm"><i class="fa-solid fa-circle-info mr-1"></i>เหตุผล</button>';
                     }
@@ -7195,7 +7195,7 @@ const google = {
                 }
             } else {
                 if (statusVal === 'ไม่อนุมัติ') {
-                    actionBtnHtml = '<div class="flex justify-center gap-1.5">';
+                    actionBtnHtml = '<div class="flex flex-row justify-end md:justify-center items-center gap-1.5 flex-wrap">';
                     if (disapproveReason) {
                         actionBtnHtml += '<button onclick="viewDisapproveReason(\'' + disapproveReason.replace(/\x27/g, '\\x27') + '\')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm"><i class="fa-solid fa-circle-info mr-1"></i>เหตุผล</button>';
                     }
