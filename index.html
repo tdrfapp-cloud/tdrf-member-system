@@ -10,6 +10,15 @@
   <!-- Favicon (Browser Tab Icon) -->
   <link rel="icon" type="image/x-icon" href="https://lh3.googleusercontent.com/d/14UHfJ5K51MNzhM_yLO84xQsXzkIce2i_">
 
+  <!-- PWA Configuration -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4A5320">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ทะเบียน สกร.">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -2112,6 +2121,17 @@
       &copy; 2026 All Rights Reserved
     </div>
   </footer>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('PWA Service Worker registered successfully with scope:', reg.scope))
+          .catch(err => console.error('PWA Service Worker registration failed:', err));
+      });
+    }
+  </script>
 
   <script>
 
