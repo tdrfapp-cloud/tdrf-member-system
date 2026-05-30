@@ -487,9 +487,16 @@
 
       <!-- ================= Admin Dashboard View ================= -->
       <div id="adminDashboardView" class="view-section">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-army-800 drop-shadow-sm" id="adminDashboardGreeting">ภาพรวมระบบ</h1>
-        <p class="text-gray-600 font-medium mt-1">สรุปข้อมูลสถิติของระบบทะเบียนสมาชิกและกิจกรรม</p>
+    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <div>
+            <h1 class="text-2xl font-bold text-army-800 drop-shadow-sm" id="adminDashboardGreeting">ภาพรวมระบบ</h1>
+            <p class="text-gray-600 font-medium mt-1">สรุปข้อมูลสถิติของระบบทะเบียนสมาชิกและกิจกรรม</p>
+        </div>
+        <div class="text-[11px] font-bold text-army-700 bg-white/75 border border-army-600/20 px-3.5 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 self-start sm:self-auto">
+            <i class="fa-solid fa-cloud-arrow-up text-army-500 animate-pulse"></i>
+            <span>สำรองข้อมูลล่าสุด:</span>
+            <span id="lastBackupTimeDisplay" class="text-amber-800">กำลังตรวจสอบ...</span>
+        </div>
     </div>
 
 
@@ -6987,6 +6994,12 @@ const google = {
             .withSuccessHandler(function (response) {
                 hideLoader();
                 if (response && response.success) {
+                    // Update Last Backup Time display
+                    var lastBackupEl = document.getElementById('lastBackupTimeDisplay');
+                    if (lastBackupEl) {
+                        lastBackupEl.innerText = response.lastBackupTime || 'ยังไม่มีการสำรองข้อมูล';
+                    }
+
                     // 1. Process Members
                     if (response.members && Array.isArray(response.members)) {
                         allMembers = response.members;
