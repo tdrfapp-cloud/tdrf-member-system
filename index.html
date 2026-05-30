@@ -1735,7 +1735,7 @@
                         </button>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                        <table class="responsive-table w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-armylight-200 text-army-800 text-sm tracking-wider">
                                     <th class="py-3 px-4 font-semibold">ชื่อกิจกรรม</th>
@@ -6695,10 +6695,7 @@ const google = {
                         .withSuccessHandler(function (res) {
                             hideLoader();
                             if (res.success) {
-                                Swal.fire('บันทึกแล้ว', res.message, 'success');
-                                var detailsSection = document.getElementById('pendingActivityParticipantsSection');
-                                if (detailsSection) detailsSection.classList.add('hidden');
-                                selectedPendingActivityId = null;
+                                Swal.fire('สำเร็จ', res.message, 'success');
                                 loadPresidentApprovals();
                                 loadMembers();
                             } else {
