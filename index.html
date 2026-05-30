@@ -2087,7 +2087,7 @@
 // ==========================================================
 // ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxL_rTPHSPi9dX_nUd_sohUfyOgKeEH8YlbmbWhfWdnemOTGRgjcVtQ2pY2fVkhkn3v/exec'; 
 
 const google = {
   script: {
@@ -6123,9 +6123,10 @@ const google = {
                 '<td class="py-2.5 px-3 text-center" data-label="วันที่จัด">' + a['Date'] + '</td>' +
                 '<td class="py-2.5 px-3 text-center" data-label="คะแนน"><span class="bg-armylight-200 text-army-800 font-bold px-2 py-0.5 rounded-full whitespace-nowrap inline-flex items-center justify-center">' + a['Score'] + ' คะแนน</span></td>' +
                 '<td class="py-2.5 px-3" data-label="ผู้รับผิดชอบ"><div class="font-medium">' + (a['ResponsiblePerson'] || '-') + '</div><div class="text-[10px] text-gray-500 mt-0.5">นำเรียนโดย: ' + (a['CreatedBy'] || '-') + '</div></td>' +
-                '<td class="py-2.5 px-3 text-center" data-label="จัดการ"><div class="flex justify-end md:justify-center gap-1.5">' +
-                '<button onclick="viewPendingActivityParticipants(\'' + a['ActivityID'] + '\', \'' + (a['Name'] || '').replace(/'/g, "\\'") + '\')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-2.5 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-list mr-1"></i> รายชื่อ</button>' +
-                '<button onclick="approveActivityScoresAction(\'' + a['ActivityID'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2.5 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-check mr-1"></i> อนุมัติ</button>' +
+                '<td class="py-2.5 px-3 text-center" data-label="จัดการ"><div class="flex justify-end md:justify-center gap-1 flex-wrap">' +
+                '<button onclick="viewPendingActivityParticipants(\'' + a['ActivityID'] + '\', \'' + (a['Name'] || '').replace(/'/g, "\\'") + '\')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-list mr-1"></i> รายชื่อ</button>' +
+                '<button onclick="approveActivityScoresAction(\'' + a['ActivityID'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-check mr-1"></i> อนุมัติ</button>' +
+                '<button onclick="disapproveActivityScoresAction(\'' + a['ActivityID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-xmark mr-1"></i> ไม่อนุมัติ</button>' +
                 '</div></td>';
             tbody.appendChild(tr);
         });
@@ -6209,11 +6210,17 @@ const google = {
                     var tr = document.createElement('tr');
                     tr.className = 'border-b text-[10px] hover:bg-gray-50';
                     var isApproved = p['AttendanceStatus'] === 'อนุมัติแล้ว';
+                    var isDisapproved = p['AttendanceStatus'] === 'ไม่อนุมัติ';
                     var actionBtn = '';
                     if (isApproved) {
                         actionBtn = '<span class="text-green-600 font-bold"><i class="fa-solid fa-circle-check"></i> อนุมัติแล้ว</span>';
+                    } else if (isDisapproved) {
+                        actionBtn = '<span class="text-red-500 font-bold"><i class="fa-solid fa-circle-xmark"></i> ไม่อนุมัติ</span>';
                     } else {
-                        actionBtn = '<button onclick="approveIndividualActivityScoreAction(\'' + selectedPendingActivityId + '\', \'' + p['รหัสสมาชิก'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-0.5 px-2 rounded-full text-[9px] shadow-sm transition-all"><i class="fa-solid fa-check"></i> อนุมัติ</button>';
+                        actionBtn = '<div class="flex justify-center gap-1">' +
+                            '<button onclick="approveIndividualActivityScoreAction(\'' + selectedPendingActivityId + '\', \'' + p['รหัสสมาชิก'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-0.5 px-2 rounded-full text-[9px] shadow-sm transition-all"><i class="fa-solid fa-check"></i> อนุมัติ</button>' +
+                            '<button onclick="disapproveIndividualActivityScoreAction(\'' + selectedPendingActivityId + '\', \'' + p['รหัสสมาชิก'] + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-0.5 px-2 rounded-full text-[9px] shadow-sm transition-all"><i class="fa-solid fa-xmark"></i> ไม่อนุมัติ</button>' +
+                            '</div>';
                     }
                     tr.innerHTML = '<td class="py-2 px-2 text-center text-gray-500">' + (idx + 1) + '</td>' +
                         '<td class="py-2 px-2 font-medium text-army-600 hover:text-army-800 cursor-pointer hover:underline" onclick="viewMemberDetails(\'' + p['รหัสสมาชิก'] + '\')">' + fullName + '</td>' +
@@ -6596,6 +6603,101 @@ const google = {
                             Swal.fire('ข้อผิดพลาด', err.message, 'error');
                         })
                         .disapproveRankPromotion(promotionId, result.value, adminName);
+                });
+            }
+        });
+    };
+
+    // === นายกสมาคม: ไม่อนุมัติคะแนนกิจกรรม (ทั้งกิจกรรม) ===
+    window.disapproveActivityScoresAction = function (activityId) {
+        Swal.fire({
+            title: '<div class="text-red-600"><i class="fa-solid fa-circle-xmark mr-2"></i>ไม่อนุมัติคะแนนกิจกรรม</div>',
+            html: '<div class="text-sm text-gray-600 mb-3">กรุณาระบุเหตุผลในการไม่อนุมัติคะแนนกิจกรรมนี้</div><textarea id="disapproveReasonInput" class="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-red-400 outline-none" rows="3" placeholder="ระบุเหตุผล..."></textarea>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'ยืนยันไม่อนุมัติ',
+            cancelButtonText: 'ยกเลิก',
+            customClass: { popup: 'rounded-3xl' },
+            preConfirm: function () {
+                var reason = document.getElementById('disapproveReasonInput').value.trim();
+                if (!reason) {
+                    Swal.showValidationMessage('กรุณาระบุเหตุผลในการปฏิเสธคำขอ');
+                    return false;
+                }
+                return reason;
+            }
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                promptPresidentPIN(function () {
+                    showLoader('กำลังบันทึกการไม่อนุมัติ...');
+                    var adminName = currentUser ? currentUser.name : 'President';
+                    google.script.run
+                        .withSuccessHandler(function (res) {
+                            hideLoader();
+                            if (res.success) {
+                                Swal.fire('บันทึกแล้ว', res.message, 'success');
+                                var detailsSection = document.getElementById('pendingActivityParticipantsSection');
+                                if (detailsSection) detailsSection.classList.add('hidden');
+                                selectedPendingActivityId = null;
+                                loadPresidentApprovals();
+                                loadMembers();
+                            } else {
+                                Swal.fire('ข้อผิดพลาด', res.message, 'error');
+                            }
+                        })
+                        .withFailureHandler(function (err) {
+                            hideLoader();
+                            Swal.fire('ข้อผิดพลาด', err.message, 'error');
+                        })
+                        .disapproveActivityScores(activityId, result.value, adminName);
+                });
+            }
+        });
+    };
+
+    // === นายกสมาคม: ปฏิเสธคะแนนกิจกรรมเฉพาะบุคคล ===
+    window.disapproveIndividualActivityScoreAction = function (activityId, memberId) {
+        Swal.fire({
+            title: '<div class="text-red-600"><i class="fa-solid fa-user-xmark mr-2"></i>ปฏิเสธคะแนนเฉพาะบุคคล</div>',
+            html: '<div class="text-sm text-gray-600 mb-3">กรุณาระบุเหตุผลในการปฏิเสธคะแนนรายคนนี้</div><textarea id="disapproveReasonInput" class="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-red-400 outline-none" rows="3" placeholder="ระบุเหตุผล..."></textarea>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'ยืนยันปฏิเสธ',
+            cancelButtonText: 'ยกเลิก',
+            customClass: { popup: 'rounded-3xl' },
+            preConfirm: function () {
+                var reason = document.getElementById('disapproveReasonInput').value.trim();
+                if (!reason) {
+                    Swal.showValidationMessage('กรุณาระบุเหตุผลการปฏิเสธ');
+                    return false;
+                }
+                return reason;
+            }
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                promptPresidentPIN(function () {
+                    showLoader('กำลังบันทึกปฏิเสธ...');
+                    var adminName = currentUser ? currentUser.name : 'President';
+                    google.script.run
+                        .withSuccessHandler(function (res) {
+                            hideLoader();
+                            if (res.success) {
+                                Swal.fire('สำเร็จ', res.message, 'success');
+                                viewPendingActivityParticipants(activityId, document.getElementById('pendingActivityName').innerText);
+                                loadMembers();
+                            } else {
+                                Swal.fire('ข้อผิดพลาด', res.message, 'error');
+                            }
+                        })
+                        .withFailureHandler(function (err) {
+                            hideLoader();
+                            Swal.fire('ข้อผิดพลาด', err.message, 'error');
+                        })
+                        .disapproveIndividualActivityScore(activityId, memberId, result.value, adminName);
                 });
             }
         });
