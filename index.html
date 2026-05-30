@@ -5053,7 +5053,7 @@ const google = {
         html5QrcodeScanner.scanFile(file, true)
             .then(decodedText => {
                 hideLoader();
-                confirmAttendance(decodedText);
+                confirmAttendance(decodedText, false);
                 input.value = ''; // Reset input
             })
             .catch(err => {
@@ -5068,7 +5068,7 @@ const google = {
         e.preventDefault();
         var memberId = document.getElementById('manualMemberId').value.trim().toUpperCase();
         if (memberId) {
-            confirmAttendance(memberId);
+            confirmAttendance(memberId, false);
             document.getElementById('manualMemberId').value = '';
         }
     }
@@ -5168,13 +5168,23 @@ const google = {
     }
 
     function onAttendeeScanSuccess(decodedText, decodedResult) {
-        stopAttendeeQRScanner();
         playBeepSound();
         const input = document.getElementById('manualMemberId');
         if (input) {
             input.value = decodedText;
         }
-        confirmAttendance(decodedText);
+        
+        // Stop attendee scanner to pause stream, but keep modal open
+        if (attendeeQRScanner && attendeeQRScanner.getState() === 2) {
+            attendeeQRScanner.stop().then(function () {
+                confirmAttendance(decodedText, true);
+            }).catch(function (err) {
+                console.error(err);
+                confirmAttendance(decodedText, true);
+            });
+        } else {
+            confirmAttendance(decodedText, true);
+        }
     }
 
     function playBeepSound() {
@@ -5230,13 +5240,17 @@ const google = {
         stopAttendeeQRScanner();
     }
 
-    function confirmAttendance(memberId) {
+    function confirmAttendance(memberId, wasFromScanner) {
         showLoader('กำลังตรวจสอบข้อมูล...');
         google.script.run
             .withSuccessHandler(function (member) {
                 hideLoader();
                 if (!member) {
-                    Swal.fire('ไม่พบข้อมูล', 'ไม่พบสมาชิกที่มีรหัส: ' + memberId, 'error');
+                    Swal.fire('ไม่พบข้อมูล', 'ไม่พบสมาชิกที่มีรหัส: ' + memberId, 'error').then(() => {
+                        if (wasFromScanner) {
+                            initAttendeeHtml5Scanner();
+                        }
+                    });
                     return;
                 }
 
@@ -5255,7 +5269,9 @@ const google = {
                 html += '<div class="absolute top-0 right-0 p-3 opacity-20"><i class="fa-solid fa-id-card text-6xl text-white"></i></div>';
                 html += '<div class="relative z-10">';
                 html += photoHtml;
-                html += '<h3 class="text-xl font-bold text-army-900 mt-4">' + (member['ขั้น'] || '') + ' ' + member['ชื่อ-สกุล (ไทย)'] + '</h3>';
+                var prefix = member['ขั้น'] || member['คำนำหน้า(ขั้น)'] || member['คำนำหน้า'] || '';
+                var displayName = (prefix ? prefix.toString().trim() + ' ' : '') + member['ชื่อ-สกุล (ไทย)'];
+                html += '<h3 class="text-xl font-bold text-army-900 mt-4">' + displayName + '</h3>';
                 html += '<p class="text-gray-500 font-medium text-sm mb-1">' + formatPhone(member['เบอร์โทร']) + '</p>';
                 html += '<p class="text-army-600 font-mono mt-1 font-medium bg-white/50 inline-block px-3 py-0.5 rounded-lg border border-white/60">' + member['รหัสสมาชิก'] + '</p>';
                 html += '</div></div>';
@@ -5276,18 +5292,26 @@ const google = {
                     buttonsStyling: false
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        saveAttendanceRecord(currentActivityId, member['รหัสสมาชิก']);
+                        saveAttendanceRecord(currentActivityId, member['รหัสสมาชิก'], wasFromScanner);
+                    } else {
+                        if (wasFromScanner) {
+                            initAttendeeHtml5Scanner();
+                        }
                     }
                 });
             })
             .withFailureHandler(function (err) {
                 hideLoader();
-                Swal.fire('ข้อผิดพลาด', err.message, 'error');
+                Swal.fire('ข้อผิดพลาด', err.message, 'error').then(() => {
+                    if (wasFromScanner) {
+                        initAttendeeHtml5Scanner();
+                    }
+                });
             })
             .getMemberByQR(memberId);
     }
 
-    function saveAttendanceRecord(actId, memId) {
+    function saveAttendanceRecord(actId, memId, wasFromScanner) {
         showLoader('กำลังบันทึก...');
         var adminName = currentUser ? currentUser.name : 'System';
         google.script.run
@@ -5301,15 +5325,27 @@ const google = {
                         timer: 2000,
                         showConfirmButton: false,
                         customClass: { popup: 'rounded-3xl' }
+                    }).then(() => {
+                        if (wasFromScanner) {
+                            initAttendeeHtml5Scanner();
+                        }
                     });
                     loadActivityParticipants(actId);
                 } else {
-                    Swal.fire('ผิดพลาด', res.message, 'error');
+                    Swal.fire('ผิดพลาด', res.message, 'error').then(() => {
+                        if (wasFromScanner) {
+                            initAttendeeHtml5Scanner();
+                        }
+                    });
                 }
             })
             .withFailureHandler(function (err) {
                 hideLoader();
-                Swal.fire('ข้อผิดพลาด', err.message, 'error');
+                Swal.fire('ข้อผิดพลาด', err.message, 'error').then(() => {
+                    if (wasFromScanner) {
+                        initAttendeeHtml5Scanner();
+                    }
+                });
             })
             .recordActivityAttendance(actId, memId, adminName);
     }
