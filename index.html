@@ -1834,15 +1834,6 @@
             
             <!-- Body -->
             <div class="p-6">
-                <!-- Dropdown เลือกกล้อง -->
-                <div class="mb-4">
-                    <label for="attendee-camera-select" class="block text-xs font-bold text-army-700 mb-1">กล้องอุปกรณ์</label>
-                    <select id="attendee-camera-select" onchange="startAttendeeScannerWithId(this.value)" 
-                        class="w-full border-gray-300 rounded-xl shadow-sm focus:border-army-600 focus:ring-2 focus:ring-army-600/30 p-2.5 border bg-white text-sm text-army-800">
-                        <option value="">-- กำลังดึงกล้อง... --</option>
-                    </select>
-                </div>
-                
                 <!-- ช่องแสดงภาพกล้อง -->
                 <div class="overflow-hidden rounded-2xl border-2 border-dashed border-army-600/30 p-1.5 bg-armylight-100/50 shadow-inner">
                     <div id="attendee-qr-reader" class="w-full overflow-hidden rounded-xl bg-black aspect-square"></div>
@@ -5028,7 +5019,7 @@ const google = {
     }
 
     // ==========================================================
-    // 📸 ระบบสแกน QR Code สำหรับบันทึกผู้เข้าร่วมกิจกรรม
+    // 📸 ระบบสแกน QR Code สำหรับบันทึกผู้เข้าร่วมกิจกรรม (กล้องหลังอย่างเดียว)
     // ==========================================================
     var attendeeQRScanner = null;
 
@@ -5043,10 +5034,7 @@ const google = {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
 
-        const cameraSelect = document.getElementById('attendee-camera-select');
-        if (cameraSelect) cameraSelect.innerHTML = '<option value="">-- กำลังดึงกล้อง... --</option>';
-
-        showLoader('กำลังเรียกใช้งานกล้อง...');
+        showLoader('กำลังเรียกใช้งานกล้องหลัง...');
 
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             hideLoader();
@@ -5054,14 +5042,14 @@ const google = {
             return;
         }
 
-        navigator.mediaDevices.getUserMedia({ video: true })
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
             .then(function (stream) {
                 stream.getTracks().forEach(track => track.stop());
                 hideLoader();
                 initAttendeeHtml5Scanner();
             })
             .catch(function (err) {
-                console.warn("Direct getUserMedia failed for attendee scanner, trying fallback", err);
+                console.warn("Direct rear camera getUserMedia failed, trying library fallback", err);
                 hideLoader();
                 initAttendeeHtml5Scanner();
             });
@@ -5083,80 +5071,20 @@ const google = {
                 await attendeeQRScanner.stop();
             }
 
+            // บังคับเปิดเฉพาะกล้องหลัง (facingMode: "environment")
             attendeeQRScanner.start(
                 { facingMode: "environment" },
                 config,
                 onAttendeeScanSuccess
             ).then(() => {
                 hideLoader();
-                loadAttendeeCameraList();
             }).catch(err => {
-                console.warn("Attendee environment camera failed, listing cameras...", err);
-                Html5Qrcode.getCameras().then(cameras => {
-                    if (cameras && cameras.length > 0) {
-                        populateAttendeeCameraSelect(cameras);
-                        attendeeQRScanner.start(cameras[0].id, config, onAttendeeScanSuccess)
-                            .then(() => hideLoader())
-                            .catch(e => handleAttendeeScannerFailure(e));
-                    } else {
-                        handleAttendeeScannerFailure(err);
-                    }
-                }).catch(e => handleAttendeeScannerFailure(err));
+                console.error("Failed to start attendee rear camera", err);
+                hideLoader();
+                handleAttendeeScannerFailure(err);
             });
         } catch (error) {
             handleAttendeeScannerFailure(error);
-        }
-    }
-
-    function loadAttendeeCameraList() {
-        Html5Qrcode.getCameras().then(cameras => {
-            if (cameras && cameras.length > 0) {
-                populateAttendeeCameraSelect(cameras);
-            }
-        }).catch(err => console.warn("Could not load attendee camera list", err));
-    }
-
-    function populateAttendeeCameraSelect(cameras) {
-        const select = document.getElementById('attendee-camera-select');
-        if (!select) return;
-
-        select.innerHTML = '<option value="">-- สลับกล้อง --</option>';
-        cameras.forEach((camera, index) => {
-            const option = document.createElement('option');
-            option.value = camera.id;
-            option.text = camera.label || `กล้องตัวที่ ${index + 1}`;
-            select.appendChild(option);
-        });
-    }
-
-    function startAttendeeScannerWithId(cameraId) {
-        if (!cameraId) return;
-        if (!attendeeQRScanner) {
-            attendeeQRScanner = new Html5Qrcode("attendee-qr-reader");
-        }
-
-        const config = {
-            fps: 20,
-            qrbox: { width: 250, height: 250 },
-            aspectRatio: 1.0
-        };
-
-        const state = attendeeQRScanner.getState();
-        if (state === 2 || state === 3) {
-            attendeeQRScanner.stop().then(() => doStart()).catch(() => doStart());
-        } else {
-            doStart();
-        }
-
-        function doStart() {
-            showLoader('กำลังเปลี่ยนกล้อง...');
-            attendeeQRScanner.start(cameraId, config, onAttendeeScanSuccess)
-                .then(() => hideLoader())
-                .catch(err => {
-                    console.error("Attendee camera switch failed", err);
-                    hideLoader();
-                    handleAttendeeScannerFailure(err);
-                });
         }
     }
 
