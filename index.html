@@ -34,6 +34,9 @@
   <!-- HTML2Canvas for saving images -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+  <!-- SheetJS for Excel Import/Export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
   <!-- Google Fonts: Prompt -->
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -1543,11 +1546,19 @@
         </div>
         <div class="flex flex-wrap gap-3 w-full md:w-auto">
             <button onclick="loadMembers()"
-                class="bg-white hover:bg-gray-100 text-gray-700 px-5 py-2.5 rounded-full shadow-sm flex items-center transition-colors border border-gray-200 flex-1 md:flex-none justify-center">
+                class="bg-white hover:bg-gray-100 text-gray-700 px-4 py-2.5 rounded-full shadow-sm flex items-center transition-colors border border-gray-200 flex-1 md:flex-none justify-center">
                 <i class="fa-solid fa-rotate mr-2"></i> รีเฟรช
             </button>
+            <button onclick="exportMembersToExcel()"
+                class="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-full shadow-md flex items-center transition-all flex-1 md:flex-none justify-center font-bold">
+                <i class="fa-solid fa-file-excel mr-2"></i> ส่งออก Excel
+            </button>
+            <button onclick="openExcelImportModal()"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-full shadow-md flex items-center transition-all flex-1 md:flex-none justify-center font-bold">
+                <i class="fa-solid fa-file-import mr-2"></i> นำเข้า Excel
+            </button>
             <button onclick="openNewMemberModal()"
-                class="bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white px-5 py-2.5 rounded-full shadow-md flex items-center transition-all hover:-translate-y-0.5 flex-1 md:flex-none justify-center font-bold">
+                class="bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white px-4 py-2.5 rounded-full shadow-md flex items-center transition-all hover:-translate-y-0.5 flex-1 md:flex-none justify-center font-bold">
                 <i class="fa-solid fa-plus mr-2"></i> เพิ่มสมาชิก
             </button>
         </div>
@@ -1675,27 +1686,87 @@
             </div>
         </div>
 
-        <!-- 3. Promotion Pending Members Panel -->
-        <div id="panelPromotionMembersList" class="hidden">
-            <div class="overflow-x-auto">
-                <table class="responsive-table w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-armylight-200 text-army-800 text-sm tracking-wider">
-                            <th class="py-3 px-4 font-semibold w-12 text-center">#</th>
-                            <th class="py-3 px-4 font-semibold w-36">รหัสสมาชิก</th>
-                            <th class="py-3 px-4 font-semibold min-w-[220px]">ชื่อสมาชิก</th>
-                            <th class="py-3 px-4 font-semibold w-48">ยศ / ตำแหน่งใหม่</th>
-                            <th class="py-3 px-4 font-semibold text-center w-48">วัน เวลา ผู้บันทึก</th>
-                            <th class="py-3 px-4 font-semibold text-center w-28">สถานะ</th>
-                            <th id="thPromotionManage" class="py-3 px-4 font-semibold text-center w-36">จัดการ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="pendingPromotionsListTableBody" class="text-sm text-gray-700 divide-y divide-army-400/20">
-                        <tr>
-                            <td colspan="7" class="text-center py-8 text-gray-500">ไม่มีรายการอนุมัติเลื่อนยศตำแหน่งค้างอยู่</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <!-- ================= Excel Import Modal ================= -->
+    <div id="excelImportModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4 backdrop-blur-sm transition-all duration-300">
+        <div class="glass w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] scale-95 transition-transform duration-300 animate-[fadeIn_0.3s_ease-out]">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-6 py-4 flex justify-between items-center shadow-md">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-file-import text-blue-200"></i> นำเข้าข้อมูลสมาชิกแบบกลุ่ม (Excel)
+                </h3>
+                <button onclick="closeExcelImportModal()" class="text-white/80 hover:text-white hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-gray-50/50">
+                <!-- Instructions / Template Download -->
+                <div class="dog-tag-bg p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/70 border border-army-600/10">
+                    <div class="space-y-1">
+                        <h4 class="text-sm font-extrabold text-army-800 flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-blue-600"></i> ขั้นตอนการนำเข้าข้อมูลสมาชิก</h4>
+                        <p class="text-xs text-gray-600 font-medium">ดาวน์โหลดเทมเพลตต้นแบบ กรอกข้อมูลให้ครบถ้วนตามคอลัมน์ แล้วแนบไฟล์เพื่อตรวจสอบ</p>
+                    </div>
+                    <button type="button" onclick="downloadExcelTemplate()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-2.5 px-5 rounded-full text-xs shadow-md transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap">
+                        <i class="fa-solid fa-download"></i> ดาวน์โหลดเทมเพลต Excel
+                    </button>
+                </div>
+                
+                <!-- File Input Drag and Drop Area -->
+                <div id="excelDropZone" class="border-2 border-dashed border-blue-400 hover:border-blue-600 rounded-3xl p-8 text-center bg-blue-50/20 hover:bg-blue-50/40 transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group relative">
+                    <input type="file" id="excelFileInput" accept=".xlsx, .xls" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleExcelFileSelect(event)">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-file-arrow-up"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-sm font-bold text-gray-700">คลิกเพื่อเลือกไฟล์ หรือลากไฟล์ Excel มาวางที่นี่</p>
+                        <p class="text-xs text-gray-500 font-medium">รองรับไฟล์ฟอร์แมต .xlsx หรือ .xls (ขนาดไม่เกิน 10MB)</p>
+                    </div>
+                    <div id="excelSelectedFileName" class="hidden text-xs font-bold text-green-700 bg-green-50 border border-green-200 px-4 py-1.5 rounded-full flex items-center gap-1.5 animate-bounce">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span id="selectedFileNameSpan">-</span>
+                    </div>
+                </div>
+                
+                <!-- Excel Table Preview Panel -->
+                <div id="excelPreviewPanel" class="hidden space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-sm font-extrabold text-army-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-list-check text-blue-600"></i> ตรวจสอบรายชื่อที่จะนำเข้า (<span id="excelPreviewCount">0</span> รายการ)
+                        </h4>
+                        <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-full border border-amber-200">
+                            *ข้อมูลที่มีรหัสสมาชิกซ้ำกับในฐานข้อมูลหลักจะถูกละเว้นโดยอัตโนมัติ
+                        </span>
+                    </div>
+                    
+                    <div class="overflow-x-auto border border-gray-200 rounded-2xl shadow-inner max-h-[300px] bg-white">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-700 border-b border-gray-200 sticky top-0 font-bold">
+                                    <th class="py-2.5 px-3 w-10 text-center bg-gray-100">#</th>
+                                    <th class="py-2.5 px-3 w-32 bg-gray-100">รหัสสมาชิก</th>
+                                    <th class="py-2.5 px-3 min-w-[150px] bg-gray-100">ชื่อ-สกุล (ไทย)</th>
+                                    <th class="py-2.5 px-3 w-28 bg-gray-100">เลขบัตรประชาชน</th>
+                                    <th class="py-2.5 px-3 w-24 bg-gray-100">ประเภทสมาชิก</th>
+                                    <th class="py-2.5 px-3 w-28 bg-gray-100">ยศ/ตำแหน่ง</th>
+                                </tr>
+                            </thead>
+                            <tbody id="excelPreviewTableBody" class="divide-y divide-gray-100 text-gray-600 font-medium">
+                                <!-- Previews will load here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-end gap-3 rounded-b-3xl">
+                <button type="button" onclick="closeExcelImportModal()" class="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-5 rounded-full border border-gray-300 text-xs shadow-sm transition-colors cursor-pointer">
+                    ยกเลิก
+                </button>
+                <button type="button" id="btnConfirmExcelImport" onclick="confirmExcelImport()" disabled class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full text-xs shadow-md transition-all flex items-center gap-1.5 opacity-50 cursor-not-allowed">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> ยืนยันการนำเข้าข้อมูล
+                </button>
             </div>
         </div>
     </div>
@@ -7331,6 +7402,302 @@ const google = {
                         Swal.fire('ข้อผิดพลาด', err.message, 'error');
                     })
                     .deletePendingPromotion(promotionId);
+        });
+    };
+
+    // ==========================================================
+    // 📊 EXCEL EXPORT AND IMPORT SYSTEMS (SHEETJS)
+    // ==========================================================
+
+    // 1. ส่งออกข้อมูลทะเบียนสมาชิกทั้งหมดเป็น Excel
+    window.exportMembersToExcel = function () {
+        if (!allMembers || allMembers.length === 0) {
+            Swal.fire('ข้อผิดพลาด', 'ไม่มีข้อมูลสมาชิกในระบบสำหรับส่งออก', 'warning');
+            return;
+        }
+
+        showLoader('กำลังจัดเตรียมข้อมูลส่งออก...');
+        
+        try {
+            // จัดการข้อมูล แปลงหัวข้อคอลัมน์เป็นภาษาไทย
+            const dataToExport = allMembers.map(m => ({
+                'รหัสสมาชิก': m['รหัสสมาชิก'] || '',
+                'คำนำหน้า(ยศ)': m['คำนำหน้า(ขั้น)'] || m['คำนำหน้า'] || '',
+                'ชื่อ-สกุล (ไทย)': m['ชื่อ-สกุล (ไทย)'] || m['ชื่อ'] || '',
+                'ชื่อ-สกุล (อังกฤษ)': m['ชื่อ-สกุล (อังกฤษ)'] || '',
+                'เลขบัตรประชาชน': m['เลขบัตรประชาชน'] || '',
+                'วันเกิด': m['วันเกิด'] || '',
+                'อายุ': m['อายุ'] || '',
+                'ที่อยู่ตามทะเบียนบ้าน': m['ที่อยู่ตามทะเบียนบ้าน'] || m['ที่อยู่'] || '',
+                'ที่อยู่ปัจจุบัน': m['ที่อยู่ปัจจุบัน'] || '',
+                'ประเภทสมาชิก': m['ประเภทสมาชิก'] || 'สามัญ',
+                'วันเริ่มเข้าทะเบียน': m['วันเริ่มเข้าทะเบียน'] || m['วันเริ่มต้น'] || '',
+                'วันสิ้นสุดสมาชิกภาพ': m['วันสิ้นสุด'] || '',
+                'สถานภาพสมาชิก': m['สถานภาพสมาชิก'] || 'ปกติ',
+                'เบอร์โทร': m['เบอร์โทร'] || '',
+                'อีเมล': m['อีเมล'] || '',
+                'Line ID': m['Line ID'] || '',
+                'กรุ๊ปเลือด': m['กรุ๊ปเลือด'] || '',
+                'อาชีพ': m['อาชีพ'] || '',
+                'วุฒิการศึกษา': m['วุฒิการศึกษา'] || '',
+                'ชื่อผู้ติดต่อฉุกเฉิน': m['ชื่อผู้ติดต่อฉุกเฉิน'] || '',
+                'เบอร์ผู้ติดต่อฉุกเฉิน': m['เบอร์ผู้ติดต่อฉุกเฉิน'] || '',
+                'ความสัมพันธ์ผู้ติดต่อฉุกเฉิน': m['ความสัมพันธ์ผู้ติดต่อฉุกเฉิน'] || '',
+                'ยศ': m['ยศ'] || '',
+                'อัตรา': m['อัตรา'] || '',
+                'ตำแหน่ง': m['ตำแหน่ง'] || '',
+                'คะแนนสะสม': m['TotalScore'] || 0,
+                'หมายเหตุ': m['หมายเหตุ'] || ''
+            }));
+
+            // สร้าง Workbook และ Worksheet
+            const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'ทะเบียนสมาชิกหลัก');
+
+            // จัดการความกว้างของคอลัมน์อัตโนมัติ
+            const maxLen = 20;
+            worksheet['!cols'] = Object.keys(dataToExport[0]).map(() => ({ wch: maxLen }));
+
+            // ดาวน์โหลดไฟล์
+            const dateStr = new Date().toLocaleDateString('th-TH').replace(/\//g, '-');
+            XLSX.writeFile(workbook, `ทะเบียนผู้กำกับกำลังสำรอง_สกร_${dateStr}.xlsx`);
+            
+            hideLoader();
+            Swal.fire('สำเร็จ', 'ส่งออกข้อมูลสมาชิกสำเร็จเรียบร้อย', 'success');
+        } catch (err) {
+            hideLoader();
+            console.error(err);
+            Swal.fire('ข้อผิดพลาด', 'เกิดข้อผิดพลาดในการส่งออกข้อมูล: ' + err.toString(), 'error');
+        }
+    };
+
+    // 2. ควบคุมการแสดงผล Modal นำเข้า
+    window.openExcelImportModal = function () {
+        const modal = document.getElementById('excelImportModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        resetExcelImportForm();
+    };
+
+    window.closeExcelImportModal = function () {
+        const modal = document.getElementById('excelImportModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        resetExcelImportForm();
+    };
+
+    // รีเซ็ตไฟล์และตารางพรีวิว
+    function resetExcelImportForm() {
+        document.getElementById('excelFileInput').value = '';
+        document.getElementById('excelSelectedFileName').classList.add('hidden');
+        document.getElementById('excelPreviewPanel').classList.add('hidden');
+        document.getElementById('excelPreviewTableBody').innerHTML = '';
+        
+        const btn = document.getElementById('btnConfirmExcelImport');
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+        
+        importedMembersTempList = [];
+    }
+
+    let importedMembersTempList = [];
+
+    // 3. ดาวน์โหลดเทมเพลต Excel เปล่าสำหรับนำเข้า
+    window.downloadExcelTemplate = function () {
+        try {
+            const templateHeaders = [
+                {
+                    'รหัสสมาชิก': 'SGR-001',
+                    'คำนำหน้า(ยศ)': 'ว่าที่ พ.ต.',
+                    'ชื่อ-สกุล (ไทย)': 'สมศักดิ์ รักชาติ',
+                    'ชื่อ-สกุล (อังกฤษ)': 'Somsak Rakchat',
+                    'เลขบัตรประชาชน': '1234567890123',
+                    'วันเกิด': '2525-05-30',
+                    'อายุ': '44',
+                    'ที่อยู่ตามทะเบียนบ้าน': '123/45 ถนนทหาร แขวงถนนนครไชยศรี เขตดุสิต กทม. 10300',
+                    'ที่อยู่ปัจจุบัน': '123/45 ถนนทหาร แขวงถนนนครไชยศรี เขตดุสิต กทม. 10300',
+                    'ประเภทสมาชิก': 'สามัญ',
+                    'วันเริ่มเข้าทะเบียน': '2569-01-01',
+                    'วันสิ้นสุดสมาชิกภาพ': '2574-01-01',
+                    'สถานภาพสมาชิก': 'ปกติ',
+                    'เบอร์โทร': '0812345678',
+                    'อีเมล': 'somsak@email.com',
+                    'Line ID': 'somsak_line',
+                    'กรุ๊ปเลือด': 'A',
+                    'อาชีพ': 'ข้าราชการ',
+                    'วุฒิการศึกษา': 'ปริญญาตรี',
+                    'ชื่อผู้ติดต่อฉุกเฉิน': 'นางสมศรี รักชาติ',
+                    'เบอร์ผู้ติดต่อฉุกเฉิน': '0898765432',
+                    'ความสัมพันธ์ผู้ติดต่อฉุกเฉิน': 'ภรรยา',
+                    'ยศ': 'พ.ต.ต.',
+                    'อัตรา': 'ร.อ.',
+                    'ตำแหน่ง': 'ผกก.กองร้อยโยธา',
+                    'หมายเหตุ': 'กรอกข้อมูลตามตัวอย่างนี้และลบแถวนี้ออกก่อนนำเข้า'
+                }
+            ];
+
+            const worksheet = XLSX.utils.json_to_sheet(templateHeaders);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Template_Import');
+
+            // ปรับความกว้างคอลัมน์
+            worksheet['!cols'] = Object.keys(templateHeaders[0]).map(() => ({ wch: 22 }));
+
+            XLSX.writeFile(workbook, 'เทมเพลตนำเข้าข้อมูลสมาชิก_สกร.xlsx');
+            Swal.fire('สำเร็จ', 'ดาวน์โหลดเทมเพลตสำเร็จเรียบร้อย กรอกข้อมูลและลบแถวตัวอย่างออกก่อนอัปโหลด', 'success');
+        } catch (err) {
+            Swal.fire('ข้อผิดพลาด', 'เกิดข้อผิดพลาดในการสร้างเทมเพลต: ' + err.toString(), 'error');
+        }
+    };
+
+    // 4. จัดการวิเคราะห์อ่านไฟล์ Excel
+    window.handleExcelFileSelect = function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        showLoader('กำลังอ่านและตรวจสอบวิเคราะห์ไฟล์...');
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // ดึงชีทแรกสุด
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                
+                // แปลงเป็น JSON Array
+                const json = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+                
+                if (!json || json.length === 0) {
+                    hideLoader();
+                    Swal.fire('เกิดข้อผิดพลาด', 'ไม่พบแถวข้อมูลสมาชิกในไฟล์ Excel นี้ กรุณาตรวจสอบว่ามีข้อมูลในตาราง', 'warning');
+                    resetExcelImportForm();
+                    return;
+                }
+
+                // นำข้อมูลหัวฟิลด์มาเช็กเบื้องต้น
+                const sampleRow = json[0];
+                const hasRequired = ('รหัสสมาชิก' in sampleRow) && ('ชื่อ-สกุล (ไทย)' in sampleRow || 'ชื่อ-สกุล' in sampleRow);
+                
+                if (!hasRequired) {
+                    hideLoader();
+                    Swal.fire('ไฟล์ไม่ถูกต้อง', 'ไม่พบหัวข้อคอลัมน์บังคับอย่างน้อย: "รหัสสมาชิก" และ "ชื่อ-สกุล (ไทย)" กรุณาใช้เทมเพลตมาตรฐานของระบบ', 'error');
+                    resetExcelImportForm();
+                    return;
+                }
+
+                // กรองรายชื่อ คัดแยกข้อมูลที่กรอกจริงๆ
+                importedMembersTempList = json.filter(row => {
+                    // ข้ามแถวตัวอย่าง หรือ แถวที่ไม่มีรหัส
+                    const mId = (row['รหัสสมาชิก'] || '').toString().trim();
+                    return mId !== "" && mId !== "SGR-001";
+                });
+
+                if (importedMembersTempList.length === 0) {
+                    hideLoader();
+                    Swal.fire('ไม่พบข้อมูลสำหรับนำเข้า', 'ไม่พบสมาชิกรายการใหม่ที่นำเข้าได้ (กรุณาลบแถวตัวอย่างของระบบ SGR-001 ออกก่อนกรอกข้อมูล)', 'warning');
+                    resetExcelImportForm();
+                    return;
+                }
+
+                // แสดงผลชื่อไฟล์ในดีไซน์มน
+                document.getElementById('selectedFileNameSpan').innerText = file.name;
+                document.getElementById('excelSelectedFileName').classList.remove('hidden');
+
+                // เรนเดอร์ตารางพรีวิวก่อนกดบันทึก
+                renderExcelImportPreview(importedMembersTempList);
+                
+                hideLoader();
+            } catch (err) {
+                hideLoader();
+                console.error(err);
+                Swal.fire('ข้อผิดพลาด', 'การประมวลผลไฟล์ล้มเหลว: ' + err.toString(), 'error');
+                resetExcelImportForm();
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    };
+
+    // เรนเดอร์ตารางพรีวิว
+    function renderExcelImportPreview(list) {
+        const tbody = document.getElementById('excelPreviewTableBody');
+        tbody.innerHTML = '';
+        
+        list.forEach((m, idx) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50 border-b border-gray-100 transition-colors';
+            
+            const fullName = m['ชื่อ-สกุล (ไทย)'] || m['ชื่อ-สกุล'] || m['ชื่อ'] || '-';
+            const idCard = m['เลขบัตรประชาชน'] || '-';
+            const mType = m['ประเภทสมาชิก'] || 'สามัญ';
+            const mId = m['รหัสสมาชิก'] || '-';
+            const rankPos = (m['ยศ'] || m['ตำแหน่ง'] ? (m['ยศ'] || '-') + ' / ' + (m['ตำแหน่ง'] || '-') : '-');
+
+            tr.innerHTML = `
+                <td class="py-2.5 px-3 text-center bg-gray-50/50 text-gray-500 font-bold">${idx + 1}</td>
+                <td class="py-2.5 px-3 font-mono font-bold text-blue-700">${mId}</td>
+                <td class="py-2.5 px-3 text-gray-800 font-bold">${fullName}</td>
+                <td class="py-2.5 px-3 text-gray-500">${idCard}</td>
+                <td class="py-2.5 px-3"><span class="bg-gray-100 text-gray-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-gray-200">${mType}</span></td>
+                <td class="py-2.5 px-3 text-gray-600">${rankPos}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('excelPreviewCount').innerText = list.length;
+        document.getElementById('excelPreviewPanel').classList.remove('hidden');
+
+        // ปลดล็อกปุ่มยืนยัน
+        const btn = document.getElementById('btnConfirmExcelImport');
+        btn.disabled = false;
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+
+    // 5. ส่งข้อมูลไปยัง Apps Script หลังบ้าน
+    window.confirmExcelImport = function () {
+        if (!importedMembersTempList || importedMembersTempList.length === 0) {
+            Swal.fire('ข้อผิดพลาด', 'ไม่มีข้อมูลสมาชิกพร้อมนำเข้า', 'warning');
+            return;
+        }
+
+        const adminName = currentUser ? currentUser.name : 'แอดมิน';
+
+        Swal.fire({
+            title: 'ยืนยันการนำเข้าข้อมูลแบบกลุ่ม?',
+            text: `ต้องการอัปโหลดข้อมูลสมาชิกจำนวน ${importedMembersTempList.length} รายการ เข้าระบบทะเบียนใช่หรือไม่? (รหัสสมาชิกที่ซ้ำในระบบจะถูกละเว้นอัตโนมัติ)`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#aaa',
+            confirmButtonText: 'ยืนยันนำเข้า',
+            cancelButtonText: 'ยกเลิก'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                closeExcelImportModal();
+                showLoader('กำลังนำเข้าและบันทึกข้อมูลสมาชิกลงฐานข้อมูลแบบกลุ่ม...');
+
+                google.script.run
+                    .withSuccessHandler(function (response) {
+                        hideLoader();
+                        if (response.success) {
+                            Swal.fire({
+                                title: 'นำเข้าสำเร็จ!',
+                                text: response.message,
+                                icon: 'success'
+                            });
+                            loadMembers(); // อัปเดตข้อมูลตารางหลัก
+                        } else {
+                            Swal.fire('ข้อผิดพลาด', response.message || 'บันทึกข้อมูลล้มเหลว', 'error');
+                        }
+                    })
+                    .withFailureHandler(function (err) {
+                        hideLoader();
+                        Swal.fire('เกิดข้อผิดพลาด', err.message, 'error');
+                    })
+                    .importMembersBatch(importedMembersTempList, adminName);
             }
         });
     };
