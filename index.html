@@ -1754,13 +1754,16 @@
                         <p class="text-army-600 text-sm mt-1">กรอกรหัสสมาชิก, เลขบัตรประชาชน หรือเบอร์โทร</p>
                     </div>
 
-                    <form onsubmit="handleManualRecord(event)" class="flex flex-col gap-4">
+                    <form onsubmit="handleManualRecord(event)" class="flex flex-col gap-3">
                         <div class="relative">
                             <input type="text" id="manualMemberId" placeholder="กรอกข้อมูลเพื่อค้นหา..." required 
                                 class="w-full border-2 border-gray-200 rounded-2xl shadow-inner focus:border-army-600 focus:ring-4 focus:ring-army-600/10 p-4 border bg-white/90 focus:bg-white transition-all text-center font-bold tracking-wider text-xl text-army-800">
                         </div>
-                        <button type="submit" class="bg-army-600 hover:bg-army-700 text-white font-bold py-4 px-6 rounded-2xl shadow-md transition-all flex justify-center items-center hover:-translate-y-1 active:translate-y-0 text-lg">
+                        <button type="submit" class="w-full bg-army-600 hover:bg-army-700 text-white font-bold py-4 px-6 rounded-2xl shadow-md transition-all flex justify-center items-center hover:-translate-y-0.5 active:translate-y-0 text-lg">
                             <i class="fa-solid fa-user-check mr-2"></i> บันทึกเข้าร่วมกิจกรรม
+                        </button>
+                        <button type="button" onclick="openAttendeeQRScanner()" class="w-full bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white font-bold py-3 px-6 rounded-2xl shadow-md transition-all flex justify-center items-center hover:-translate-y-0.5 active:translate-y-0 text-sm border border-armylight-400/30">
+                            <i class="fa-solid fa-camera mr-2 text-base animate-pulse"></i> สแกนด้วยกล้อง (QR Code)
                         </button>
                     </form>
                     
@@ -1812,6 +1815,53 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal สแกน QR Code สำหรับบันทึกผู้เข้าร่วม -->
+    <div id="attendee-qr-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="glass w-full max-w-md rounded-3xl shadow-2xl border border-army-600/20 overflow-hidden animate-fadeIn">
+            <!-- Header -->
+            <div class="p-5 border-b border-army-600/10 bg-army-600 text-white flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center">
+                    <i class="fa-solid fa-qrcode mr-2 text-xl text-armylight-200 animate-pulse"></i> สแกน QR Code ผู้เข้าร่วม
+                </h3>
+                <button type="button" onclick="stopAttendeeQRScanner()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6">
+                <!-- Dropdown เลือกกล้อง -->
+                <div class="mb-4">
+                    <label for="attendee-camera-select" class="block text-xs font-bold text-army-700 mb-1">กล้องอุปกรณ์</label>
+                    <select id="attendee-camera-select" onchange="startAttendeeScannerWithId(this.value)" 
+                        class="w-full border-gray-300 rounded-xl shadow-sm focus:border-army-600 focus:ring-2 focus:ring-army-600/30 p-2.5 border bg-white text-sm text-army-800">
+                        <option value="">-- กำลังดึงกล้อง... --</option>
+                    </select>
+                </div>
+                
+                <!-- ช่องแสดงภาพกล้อง -->
+                <div class="overflow-hidden rounded-2xl border-2 border-dashed border-army-600/30 p-1.5 bg-armylight-100/50 shadow-inner">
+                    <div id="attendee-qr-reader" class="w-full overflow-hidden rounded-xl bg-black aspect-square"></div>
+                </div>
+                
+                <!-- คำแนะนำสแกน -->
+                <div class="mt-4 p-3 bg-armylight-100/70 border border-armylight-400/20 rounded-xl text-xs text-army-800 flex items-start gap-2">
+                    <i class="fa-solid fa-circle-info text-army-600 mt-0.5"></i>
+                    <div>
+                        <strong>คำแนะนำ:</strong> นำ QR Code ของผู้เข้าร่วมมาแสดงที่หน้ากล้อง ระบบจะทำการบันทึกและสแกนรหัสให้อัตโนมัติพร้อมสัญญาณเสียงแจ้งเตือน
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="p-4 border-t border-army-600/10 bg-gray-50 flex justify-end">
+                <button type="button" onclick="stopAttendeeQRScanner()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2.5 px-6 rounded-full text-sm shadow-sm transition-all hover:shadow">
+                    ปิดหน้ากล้อง
+                </button>
             </div>
         </div>
     </div>
@@ -4975,6 +5025,226 @@ const google = {
             confirmAttendance(memberId);
             document.getElementById('manualMemberId').value = '';
         }
+    }
+
+    // ==========================================================
+    // 📸 ระบบสแกน QR Code สำหรับบันทึกผู้เข้าร่วมกิจกรรม
+    // ==========================================================
+    var attendeeQRScanner = null;
+
+    function openAttendeeQRScanner() {
+        if (!currentActivityId) {
+            Swal.fire('ข้อผิดพลาด', 'กรุณาเลือกกิจกรรมก่อนดำเนินการสแกน', 'error');
+            return;
+        }
+
+        const modal = document.getElementById('attendee-qr-modal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        const cameraSelect = document.getElementById('attendee-camera-select');
+        if (cameraSelect) cameraSelect.innerHTML = '<option value="">-- กำลังดึงกล้อง... --</option>';
+
+        showLoader('กำลังเรียกใช้งานกล้อง...');
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            hideLoader();
+            handleAttendeeScannerFailure({ name: "BrowserNotSupported", message: "Navigator not supported" });
+            return;
+        }
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                hideLoader();
+                initAttendeeHtml5Scanner();
+            })
+            .catch(function (err) {
+                console.warn("Direct getUserMedia failed for attendee scanner, trying fallback", err);
+                hideLoader();
+                initAttendeeHtml5Scanner();
+            });
+    }
+
+    async function initAttendeeHtml5Scanner() {
+        const config = {
+            fps: 20,
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0
+        };
+
+        try {
+            if (!attendeeQRScanner) {
+                attendeeQRScanner = new Html5Qrcode("attendee-qr-reader");
+            }
+
+            if (attendeeQRScanner.getState() === 2) {
+                await attendeeQRScanner.stop();
+            }
+
+            attendeeQRScanner.start(
+                { facingMode: "environment" },
+                config,
+                onAttendeeScanSuccess
+            ).then(() => {
+                hideLoader();
+                loadAttendeeCameraList();
+            }).catch(err => {
+                console.warn("Attendee environment camera failed, listing cameras...", err);
+                Html5Qrcode.getCameras().then(cameras => {
+                    if (cameras && cameras.length > 0) {
+                        populateAttendeeCameraSelect(cameras);
+                        attendeeQRScanner.start(cameras[0].id, config, onAttendeeScanSuccess)
+                            .then(() => hideLoader())
+                            .catch(e => handleAttendeeScannerFailure(e));
+                    } else {
+                        handleAttendeeScannerFailure(err);
+                    }
+                }).catch(e => handleAttendeeScannerFailure(err));
+            });
+        } catch (error) {
+            handleAttendeeScannerFailure(error);
+        }
+    }
+
+    function loadAttendeeCameraList() {
+        Html5Qrcode.getCameras().then(cameras => {
+            if (cameras && cameras.length > 0) {
+                populateAttendeeCameraSelect(cameras);
+            }
+        }).catch(err => console.warn("Could not load attendee camera list", err));
+    }
+
+    function populateAttendeeCameraSelect(cameras) {
+        const select = document.getElementById('attendee-camera-select');
+        if (!select) return;
+
+        select.innerHTML = '<option value="">-- สลับกล้อง --</option>';
+        cameras.forEach((camera, index) => {
+            const option = document.createElement('option');
+            option.value = camera.id;
+            option.text = camera.label || `กล้องตัวที่ ${index + 1}`;
+            select.appendChild(option);
+        });
+    }
+
+    function startAttendeeScannerWithId(cameraId) {
+        if (!cameraId) return;
+        if (!attendeeQRScanner) {
+            attendeeQRScanner = new Html5Qrcode("attendee-qr-reader");
+        }
+
+        const config = {
+            fps: 20,
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0
+        };
+
+        const state = attendeeQRScanner.getState();
+        if (state === 2 || state === 3) {
+            attendeeQRScanner.stop().then(() => doStart()).catch(() => doStart());
+        } else {
+            doStart();
+        }
+
+        function doStart() {
+            showLoader('กำลังเปลี่ยนกล้อง...');
+            attendeeQRScanner.start(cameraId, config, onAttendeeScanSuccess)
+                .then(() => hideLoader())
+                .catch(err => {
+                    console.error("Attendee camera switch failed", err);
+                    hideLoader();
+                    handleAttendeeScannerFailure(err);
+                });
+        }
+    }
+
+    function stopAttendeeQRScanner() {
+        if (attendeeQRScanner) {
+            const state = attendeeQRScanner.getState();
+            if (state === 2) {
+                attendeeQRScanner.stop().then(() => {
+                    closeAttendeeModal();
+                }).catch(err => {
+                    console.error("Failed to stop attendee scanner", err);
+                    closeAttendeeModal();
+                });
+                return;
+            }
+        }
+        closeAttendeeModal();
+    }
+
+    function closeAttendeeModal() {
+        const modal = document.getElementById('attendee-qr-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    }
+
+    function onAttendeeScanSuccess(decodedText, decodedResult) {
+        stopAttendeeQRScanner();
+        playBeepSound();
+        const input = document.getElementById('manualMemberId');
+        if (input) {
+            input.value = decodedText;
+        }
+        confirmAttendance(decodedText);
+    }
+
+    function playBeepSound() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 1000;
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.05);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.35);
+        } catch (e) {
+            console.warn('AudioContext is not supported or blocked by user action.', e);
+        }
+    }
+
+    function handleAttendeeScannerFailure(err) {
+        console.error("Attendee Scanner Error Details:", err);
+        let errorName = err.name || 'Error';
+        let errorMsg = err.message || err.toString();
+
+        let msg = 'ไม่สามารถเข้าถึงกล้องได้';
+        let icon = 'error';
+
+        if (errorName === 'NotAllowedError' || errorMsg.includes('Permission denied')) {
+            msg = '<b>บราวเซอร์บล็อกการเข้าถึงกล้อง</b><br><br>1. คลิกไอคอนแม่กุญแจข้าง URL > เลือกอนุญาตกล้อง<br>2. หากใช้หลายบัญชี Google แนะนำให้ใช้ <b>"โหมดไม่ระบุตัวตน" (Incognito)</b><br>3. ตรวจสอบว่าไม่ได้เปิดผ่านแอป LINE หรือ Facebook';
+            icon = 'warning';
+        } else if (errorName === 'NotFoundError' || errorMsg.includes('Requested device not found')) {
+            msg = 'ไม่พบอุปกรณ์กล้อง หรือกล้องถูกโปรแกรมอื่นใช้งานอยู่';
+        } else if (errorName === 'BrowserNotSupported') {
+            msg = 'บราวเซอร์นี้ไม่รองรับการใช้งานกล้องผ่านเว็บ';
+        }
+
+        Swal.fire({
+            title: 'พบข้อผิดพลาดกล้อง',
+            html: '<div class="text-left text-sm">' + msg + '<br><br><small class="text-gray-400">รายละเอียด: ' + errorName + '</small></div>',
+            icon: icon,
+            confirmButtonText: 'ตกลง',
+            customClass: {
+                popup: 'rounded-3xl',
+                confirmButton: 'bg-army-600 hover:bg-army-700 text-white rounded-full px-6 py-2.5 font-bold shadow-md'
+            }
+        });
+        
+        stopAttendeeQRScanner();
     }
 
     function confirmAttendance(memberId) {
