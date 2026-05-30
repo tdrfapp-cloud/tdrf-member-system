@@ -2046,48 +2046,56 @@
 // ==========================================================
 // ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbzSz1WV9R4lr1m9JnBJOQ8BwUlTlLBbkajXQrmlSeM/dev'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
 
 const google = {
   script: {
-    run: {
-      withSuccessHandler: function(successCallback) {
-        return {
-          withFailureHandler: function(failureCallback) {
-            return new Proxy({}, {
-              get(target, propKey) {
-                return function(...args) {
-                  fetch(GAS_API_URL, {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({
-                      action: propKey,
-                      args: args
-                    })
-                  })
-                  .then(response => response.json())
-                  .then(data => {
-                    if (data && data.success !== false) {
-                      successCallback(data);
-                    } else {
-                      if (failureCallback) {
-                        failureCallback(new Error(data.message || 'Error occurred while processing request'));
-                      } else {
-                        console.error(data.message);
-                      }
-                    }
-                  })
-                  .catch(err => {
-                    if (failureCallback) failureCallback(err);
-                  });
-                };
-              }
-            });
+    run: (function() {
+      function createRunProxy(successCallback, failureCallback) {
+        return new Proxy({}, {
+          get(target, propKey) {
+            if (propKey === 'withSuccessHandler') {
+              return function(newSuccess) {
+                return createRunProxy(newSuccess, failureCallback);
+              };
+            }
+            if (propKey === 'withFailureHandler') {
+              return function(newFailure) {
+                return createRunProxy(successCallback, newFailure);
+              };
+            }
+            
+            return function(...args) {
+              fetch(GAS_API_URL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({
+                  action: propKey,
+                  args: args
+                })
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data && data.success !== false) {
+                  if (successCallback) successCallback(data);
+                } else {
+                  if (failureCallback) {
+                    failureCallback(new Error(data.message || 'Error occurred while processing request'));
+                  } else {
+                    console.error(data.message);
+                  }
+                }
+              })
+              .catch(err => {
+                if (failureCallback) failureCallback(err);
+              });
+            };
           }
-        };
+        });
       }
-    }
+      return createRunProxy(null, null);
+    })()
   }
 };
 
