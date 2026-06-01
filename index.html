@@ -76,7 +76,8 @@
   <style>
     body {
       font-family: 'Prompt', sans-serif;
-      background-color: #f0f4eb; /* Very light greenish-gray */
+      background-color: #f0f4eb;
+      /* Very light greenish-gray */
     }
 
     .glass {
@@ -90,14 +91,15 @@
     /* Dog Tag 3D Texture */
     .dog-tag-bg {
       background: linear-gradient(135deg, #e5e5e5 0%, #c4c4c4 100%),
-                  repeating-linear-gradient(45deg, rgba(255,255,255,0.4) 0px, rgba(255,255,255,0.4) 1px, transparent 1px, transparent 3px);
-      box-shadow: inset 2px 2px 5px rgba(255,255,255,0.8),
-                  inset -3px -3px 6px rgba(0,0,0,0.4),
-                  0 10px 25px rgba(0,0,0,0.5);
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.4) 0px, rgba(255, 255, 255, 0.4) 1px, transparent 1px, transparent 3px);
+      box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+        inset -3px -3px 6px rgba(0, 0, 0, 0.4),
+        0 10px 25px rgba(0, 0, 0, 0.5);
       border: 2px solid #a8a8a8;
       border-radius: 1.5rem;
       position: relative;
     }
+
     .dog-tag-bg::before {
       content: '';
       position: absolute;
@@ -107,7 +109,7 @@
       height: 12px;
       background: #2a2a2a;
       border-radius: 50%;
-      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.8), 1px 1px 1px rgba(255,255,255,0.8);
+      box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.8), 1px 1px 1px rgba(255, 255, 255, 0.8);
     }
 
     /* Spinner Overlay */
@@ -167,9 +169,10 @@
     }
 
     @media print {
-      body > *:not(#printReportArea) {
+      body>*:not(#printReportArea) {
         display: none !important;
       }
+
       #printReportArea {
         display: block !important;
         position: absolute;
@@ -184,14 +187,33 @@
         print-color-adjust: exact;
       }
     }
+
     @media (min-width: 768px) {
       .sidebar-collapsed-desktop {
+        width: 5rem !important;
+      }
+      .sidebar-collapsed-desktop span.menu-text,
+      .sidebar-collapsed-desktop span.sidebar-logo-text {
         display: none !important;
+      }
+      .sidebar-collapsed-desktop .sidebar-logo-container {
+        width: 3rem !important;
+        height: 3rem !important;
+        padding: 0.25rem !important;
+      }
+      .sidebar-collapsed-desktop .menu-item {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .sidebar-collapsed-desktop .menu-icon {
+        margin-right: 0 !important;
       }
     }
 
     /* Mobile Responsive Tables and Segmented Tabs Styling */
     @media (max-width: 767px) {
+
       /* Mobile Tabs as a gorgeous Grid Segment Control */
       .approval-tabs-container {
         display: grid !important;
@@ -200,6 +222,7 @@
         border-bottom: none !important;
         padding-bottom: 0.5rem !important;
       }
+
       .approval-tabs-container button {
         border: 1px solid rgba(184, 144, 28, 0.25) !important;
         border-radius: 9999px !important;
@@ -211,6 +234,7 @@
         border-bottom-width: 1px !important;
         transition: all 0.2s ease !important;
       }
+
       .approval-tabs-container button.border-\[\#B8901C\],
       .approval-tabs-container button.border-army-600 {
         background-color: #B8901C !important;
@@ -220,17 +244,19 @@
       }
 
       /* Mobile Card Layout for Tables */
-      table.responsive-table, 
-      table.responsive-table thead, 
-      table.responsive-table tbody, 
-      table.responsive-table th, 
-      table.responsive-table td, 
+      table.responsive-table,
+      table.responsive-table thead,
+      table.responsive-table tbody,
+      table.responsive-table th,
+      table.responsive-table td,
       table.responsive-table tr {
         display: block !important;
       }
+
       table.responsive-table thead {
         display: none !important;
       }
+
       table.responsive-table tr {
         display: flex !important;
         flex-direction: column !important;
@@ -256,7 +282,8 @@
       table.responsive-table td[data-label="ชื่อ-นามสกุล"],
       table.responsive-table td[data-label="ชื่อกิจกรรม"],
       table.responsive-table td[data-label="รายละเอียดข้อความ"] {
-        order: -1 !important; /* Put on the absolute top of the card flex block */
+        order: -1 !important;
+        /* Put on the absolute top of the card flex block */
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -282,8 +309,8 @@
       }
 
       /* Adjust inner flex alignment inside Card Header */
-      table.responsive-table td[data-label="ข้อมูลสมาชิก"] > *,
-      table.responsive-table td[data-label="ข้อมูลผู้สมัคร"] > * {
+      table.responsive-table td[data-label="ข้อมูลสมาชิก"]>*,
+      table.responsive-table td[data-label="ข้อมูลผู้สมัคร"]>* {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -317,9 +344,11 @@
         min-height: 2.75rem !important;
         text-align: right !important;
       }
+
       table.responsive-table td:last-child {
         border-bottom: none !important;
       }
+
       table.responsive-table td::before {
         content: attr(data-label) !important;
         font-weight: 700 !important;
@@ -330,7 +359,8 @@
         padding-right: 0.5rem !important;
         white-space: nowrap !important;
       }
-      table.responsive-table td > * {
+
+      table.responsive-table td>* {
         max-width: 65% !important;
         text-align: right !important;
       }
@@ -352,23 +382,28 @@
       <div class="flex justify-between h-16">
         <div class="flex items-center">
           <!-- Mobile Menu Button -->
-          <button onclick="toggleMobileMenu()" class="md:hidden text-white hover:text-armylight-200 mr-4 focus:outline-none">
+          <button onclick="toggleMobileMenu()"
+            class="md:hidden text-white hover:text-armylight-200 mr-4 focus:outline-none">
             <i class="fa-solid fa-bars text-xl"></i>
           </button>
-          
+
           <!-- Desktop Sidebar Toggle Button -->
-          <button onclick="toggleSidebar()" class="hidden md:flex text-white hover:text-armylight-200 mr-4 focus:outline-none items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all" title="ย่อ/ขยาย เมนูด้านข้าง">
+          <button onclick="toggleSidebar()"
+            class="hidden md:flex text-white hover:text-armylight-200 mr-4 focus:outline-none items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all"
+            title="ย่อ/ขยาย เมนูด้านข้าง">
             <i id="sidebarToggleIcon" class="fa-solid fa-arrow-left-long text-lg"></i>
           </button>
-          
+
           <span class="font-bold text-xl text-white tracking-wide">ระบบทะเบียน สกร.</span>
         </div>
         <div class="flex items-center space-x-4">
           <span id="userGreeting" class="text-armylight-100 font-medium hidden sm:inline-block"></span>
-          <button id="userManagementBtn" onclick="showView('userManagement')" class="text-white hover:bg-army-500 hover:border-army-500 border border-white/30 rounded-full px-4 py-1.5 font-medium text-sm transition-all shadow-sm flex items-center hidden">
+          <button id="userManagementBtn" onclick="showView('userManagement')"
+            class="text-white hover:bg-army-500 hover:border-army-500 border border-white/30 rounded-full px-4 py-1.5 font-medium text-sm transition-all shadow-sm flex items-center hidden">
             <i class="fa-solid fa-users-gear mr-2"></i> <span class="hidden sm:inline">จัดการผู้ใช้งาน</span>
           </button>
-          <button onclick="logout()" class="text-white hover:bg-red-500 hover:border-red-500 border border-white/30 rounded-full px-4 py-1.5 font-medium text-sm transition-all shadow-sm flex items-center">
+          <button onclick="logout()"
+            class="text-white hover:bg-red-500 hover:border-red-500 border border-white/30 rounded-full px-4 py-1.5 font-medium text-sm transition-all shadow-sm flex items-center">
             <i class="fa-solid fa-sign-out-alt mr-2"></i> <span class="hidden sm:inline">ออกจากระบบ</span>
           </button>
         </div>
@@ -380,50 +415,57 @@
   <div class="flex flex-col md:flex-row max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8 gap-6 relative">
 
     <!-- Mobile Overlay -->
-    <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+    <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden" onclick="toggleMobileMenu()">
+    </div>
 
-    <aside id="sidebar" class="w-64 flex-shrink-0 hidden fixed md:static inset-y-0 left-0 z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out bg-white md:bg-transparent h-full md:h-auto shadow-2xl md:shadow-none overflow-y-auto">
-      <div class="glass md:rounded-2xl p-4 sticky top-20 min-h-full md:min-h-0">
+    <aside id="sidebar"
+      class="w-64 flex-shrink-0 hidden fixed md:static inset-y-0 left-0 z-50 transform -translate-x-full md:translate-x-0 transition-all duration-300 ease-in-out bg-army-900 md:rounded-2xl h-full md:h-[calc(100vh-6rem)] shadow-2xl overflow-y-auto border border-army-700">
+      <div class="p-4 flex flex-col h-full sticky top-0">
         <!-- Sidebar Brand Logo (Large & Balanced) -->
-        <div class="flex flex-col items-center mb-6 mt-2 pb-5 border-b border-army-600/10">
-          <div class="w-28 h-28 flex items-center justify-center bg-white rounded-full p-2 shadow-md border border-army-600/20 hover:scale-105 transition-transform duration-300">
-            <img src="https://lh3.googleusercontent.com/d/1TJE0iqk9OTNjzzEJzez-aMElpOoPDUC_" alt="Logo" class="w-full h-full object-contain rounded-full">
+        <div class="flex flex-col items-center mb-6 mt-2 pb-5 border-b border-army-700/50">
+          <div
+            class="sidebar-logo-container w-24 h-24 flex items-center justify-center bg-white rounded-full p-1.5 shadow-lg shadow-black/50 border-2 border-army-500 hover:scale-105 transition-all duration-300">
+            <img src="https://lh3.googleusercontent.com/d/1TJE0iqk9OTNjzzEJzez-aMElpOoPDUC_" alt="Logo"
+              class="w-full h-full object-contain rounded-full">
           </div>
-          <span class="font-bold text-xs text-army-800 mt-3 text-center leading-tight tracking-wide">สมาคมกำลังสำรอง<br>รักษาดินแดนไทย</span>
+          <span
+            class="sidebar-logo-text font-bold text-sm text-army-100 mt-4 text-center leading-tight tracking-wide drop-shadow-md">สมาคมกำลังสำรอง<br>รักษาดินแดนไทย</span>
         </div>
 
         <!-- Mobile Sidebar Header -->
-        <div class="md:hidden flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
-          <span class="font-bold text-army-600 text-lg">เมนูหลัก</span>
-          <button onclick="toggleMobileMenu()" class="text-gray-500 hover:text-red-500 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+        <div class="md:hidden flex justify-between items-center mb-6 pb-4 border-b border-army-700">
+          <span class="font-bold text-army-200 text-lg">เมนูหลัก</span>
+          <button onclick="toggleMobileMenu()"
+            class="text-gray-400 hover:text-white w-8 h-8 rounded-full bg-army-800 flex items-center justify-center transition-colors">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-        
-        <nav class="space-y-2">
+
+        <nav class="space-y-2 flex-1 overflow-x-hidden">
           <a href="javascript:void(0);" onclick="showView('adminDashboard'); toggleMobileMenu();"
-            class="menu-item block px-4 py-3 rounded-2xl text-gray-700 hover:bg-armylight-100 hover:text-army-600 transition-colors font-medium flex items-center">
-            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3 group-hover:bg-army-100">
+            class="menu-item block px-4 py-3 rounded-xl text-gray-300 hover:bg-army-800 hover:text-white transition-all font-medium flex items-center group">
+            <div class="w-8 h-8 flex-shrink-0 rounded-full bg-army-800/50 flex items-center justify-center mr-3 group-hover:bg-army-700 shadow-sm border border-white/5 transition-colors menu-icon">
               <i class="fa-solid fa-chart-pie"></i>
-            </div> ภาพรวมระบบ
+            </div> <span class="menu-text whitespace-nowrap">ภาพรวมระบบ</span>
           </a>
-          <a href="javascript:void(0);" onclick="showView('presidentApproval'); toggleMobileMenu();" id="menuPresidentApproval"
-            class="menu-item hidden px-4 py-3 rounded-2xl text-gray-700 hover:bg-[#FFFDF0] hover:text-[#8A6D1C] border border-transparent hover:border-[#F5D061] transition-all font-medium flex items-center">
-            <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3 text-yellow-600">
+          <a href="javascript:void(0);" onclick="showView('presidentApproval'); toggleMobileMenu();"
+            id="menuPresidentApproval"
+            class="menu-item hidden px-4 py-3 rounded-xl text-yellow-500/80 hover:bg-yellow-500/10 hover:text-yellow-400 transition-all font-medium flex items-center group border border-transparent hover:border-yellow-500/30">
+            <div class="w-8 h-8 flex-shrink-0 rounded-full bg-yellow-500/10 flex items-center justify-center mr-3 text-yellow-500 group-hover:bg-yellow-500/20 shadow-sm border border-yellow-500/20 transition-colors menu-icon">
               <i class="fa-solid fa-stamp"></i>
-            </div> ศูนย์กลางการอนุมัติ
+            </div> <span class="menu-text whitespace-nowrap">ศูนย์กลางการอนุมัติ</span>
           </a>
           <a href="javascript:void(0);" onclick="showView('memberList'); toggleMobileMenu();"
-            class="menu-item block px-4 py-3 rounded-2xl text-gray-700 hover:bg-armylight-100 hover:text-army-600 transition-colors font-medium flex items-center">
-            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3 group-hover:bg-army-100">
+            class="menu-item block px-4 py-3 rounded-xl text-gray-300 hover:bg-army-800 hover:text-white transition-all font-medium flex items-center group">
+            <div class="w-8 h-8 flex-shrink-0 rounded-full bg-army-800/50 flex items-center justify-center mr-3 group-hover:bg-army-700 shadow-sm border border-white/5 transition-colors menu-icon">
               <i class="fa-solid fa-address-book"></i>
-            </div> ทะเบียนสมาชิก
+            </div> <span class="menu-text whitespace-nowrap">ทะเบียนสมาชิก</span>
           </a>
           <a href="javascript:void(0);" onclick="showView('activityManagement'); toggleMobileMenu();"
-            class="menu-item block px-4 py-3 rounded-2xl text-gray-700 hover:bg-armylight-100 hover:text-army-600 transition-colors font-medium flex items-center">
-            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3 group-hover:bg-army-100">
+            class="menu-item block px-4 py-3 rounded-xl text-gray-300 hover:bg-army-800 hover:text-white transition-all font-medium flex items-center group">
+            <div class="w-8 h-8 flex-shrink-0 rounded-full bg-army-800/50 flex items-center justify-center mr-3 group-hover:bg-army-700 shadow-sm border border-white/5 transition-colors menu-icon">
               <i class="fa-solid fa-clipboard-list"></i>
-            </div> บันทึกผลงาน
+            </div> <span class="menu-text whitespace-nowrap">บันทึกผลงาน</span>
           </a>
         </nav>
       </div>
@@ -1573,11 +1615,13 @@
             </button>
             <button type="button" onclick="switchMemberListTab('pending')" id="tabPendingMembersList"
                 class="px-5 py-2.5 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap">
-                <i class="fa-solid fa-user-clock"></i> สมาชิกรออนุมัติเข้าทะเบียน (<span id="countPendingMembersList">0</span>)
+                <i class="fa-solid fa-user-clock"></i> สมาชิกรออนุมัติเข้าทะเบียน (<span
+                    id="countPendingMembersList">0</span>)
             </button>
             <button type="button" onclick="switchMemberListTab('promotion')" id="tabPromotionMembersList"
                 class="px-5 py-2.5 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap">
-                <i class="fa-solid fa-angles-up"></i> สมาชิกรออนุมัติเลื่อนขั้น (<span id="countPendingPromotionsList">0</span>)
+                <i class="fa-solid fa-angles-up"></i> สมาชิกรออนุมัติเลื่อนขั้น (<span
+                    id="countPendingPromotionsList">0</span>)
             </button>
         </div>
 
@@ -1686,90 +1730,136 @@
             </div>
         </div>
 
-    <!-- ================= Excel Import Modal ================= -->
-    <div id="excelImportModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4 backdrop-blur-sm transition-all duration-300">
-        <div class="glass w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] scale-95 transition-transform duration-300 animate-[fadeIn_0.3s_ease-out]">
-            <!-- Modal Header -->
-            <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-6 py-4 flex justify-between items-center shadow-md">
-                <h3 class="text-xl font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-file-import text-blue-200"></i> นำเข้าข้อมูลสมาชิกแบบกลุ่ม (Excel)
-                </h3>
-                <button onclick="closeExcelImportModal()" class="text-white/80 hover:text-white hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            
-            <!-- Modal Body -->
-            <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-gray-50/50">
-                <!-- Instructions / Template Download -->
-                <div class="dog-tag-bg p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/70 border border-army-600/10">
-                    <div class="space-y-1">
-                        <h4 class="text-sm font-extrabold text-army-800 flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-blue-600"></i> ขั้นตอนการนำเข้าข้อมูลสมาชิก</h4>
-                        <p class="text-xs text-gray-600 font-medium">ดาวน์โหลดเทมเพลตต้นแบบ กรอกข้อมูลให้ครบถ้วนตามคอลัมน์ แล้วแนบไฟล์เพื่อตรวจสอบ</p>
-                    </div>
-                    <button type="button" onclick="downloadExcelTemplate()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-2.5 px-5 rounded-full text-xs shadow-md transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap">
-                        <i class="fa-solid fa-download"></i> ดาวน์โหลดเทมเพลต Excel
+        <!-- ================= Excel Import Modal ================= -->
+        <div id="excelImportModal"
+            class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4 backdrop-blur-sm transition-all duration-300">
+            <div
+                class="glass w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] scale-95 transition-transform duration-300 animate-[fadeIn_0.3s_ease-out]">
+                <!-- Modal Header -->
+                <div
+                    class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-6 py-4 flex justify-between items-center shadow-md">
+                    <h3 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-file-import text-blue-200"></i> นำเข้าข้อมูลสมาชิกแบบกลุ่ม (Excel)
+                    </h3>
+                    <button onclick="closeExcelImportModal()"
+                        class="text-white/80 hover:text-white hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
                 </div>
-                
-                <!-- File Input Drag and Drop Area -->
-                <div id="excelDropZone" class="border-2 border-dashed border-blue-400 hover:border-blue-600 rounded-3xl p-8 text-center bg-blue-50/20 hover:bg-blue-50/40 transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group relative">
-                    <input type="file" id="excelFileInput" accept=".xlsx, .xls" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleExcelFileSelect(event)">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-file-arrow-up"></i>
+
+                <!-- Modal Body -->
+                <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-gray-50/50">
+                    <!-- Instructions / Template Download -->
+                    <div
+                        class="dog-tag-bg p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/70 border border-army-600/10">
+                        <div class="space-y-1">
+                            <h4 class="text-sm font-extrabold text-army-800 flex items-center gap-1.5"><i
+                                    class="fa-solid fa-circle-info text-blue-600"></i> ขั้นตอนการนำเข้าข้อมูลสมาชิก</h4>
+                            <p class="text-xs text-gray-600 font-medium">ดาวน์โหลดเทมเพลตต้นแบบ
+                                กรอกข้อมูลให้ครบถ้วนตามคอลัมน์ แล้วแนบไฟล์เพื่อตรวจสอบ</p>
+                        </div>
+                        <button type="button" onclick="downloadExcelTemplate()"
+                            class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-2.5 px-5 rounded-full text-xs shadow-md transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer whitespace-nowrap">
+                            <i class="fa-solid fa-download"></i> ดาวน์โหลดเทมเพลต Excel
+                        </button>
                     </div>
-                    <div class="space-y-1">
-                        <p class="text-sm font-bold text-gray-700">คลิกเพื่อเลือกไฟล์ หรือลากไฟล์ Excel มาวางที่นี่</p>
-                        <p class="text-xs text-gray-500 font-medium">รองรับไฟล์ฟอร์แมต .xlsx หรือ .xls (ขนาดไม่เกิน 10MB)</p>
+
+                    <!-- File Input Drag and Drop Area -->
+                    <div id="excelDropZone"
+                        class="border-2 border-dashed border-blue-400 hover:border-blue-600 rounded-3xl p-8 text-center bg-blue-50/20 hover:bg-blue-50/40 transition-all cursor-pointer flex flex-col items-center justify-center gap-3 group relative">
+                        <input type="file" id="excelFileInput" accept=".xlsx, .xls"
+                            class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleExcelFileSelect(event)">
+                        <div
+                            class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-arrow-up"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-sm font-bold text-gray-700">คลิกเพื่อเลือกไฟล์ หรือลากไฟล์ Excel มาวางที่นี่
+                            </p>
+                            <p class="text-xs text-gray-500 font-medium">รองรับไฟล์ฟอร์แมต .xlsx หรือ .xls (ขนาดไม่เกิน
+                                10MB)</p>
+                        </div>
+                        <div id="excelSelectedFileName"
+                            class="hidden text-xs font-bold text-green-700 bg-green-50 border border-green-200 px-4 py-1.5 rounded-full flex items-center gap-1.5 animate-bounce">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="selectedFileNameSpan">-</span>
+                        </div>
                     </div>
-                    <div id="excelSelectedFileName" class="hidden text-xs font-bold text-green-700 bg-green-50 border border-green-200 px-4 py-1.5 rounded-full flex items-center gap-1.5 animate-bounce">
-                        <i class="fa-solid fa-circle-check"></i>
-                        <span id="selectedFileNameSpan">-</span>
+
+                    <!-- Excel Table Preview Panel -->
+                    <div id="excelPreviewPanel" class="hidden space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-sm font-extrabold text-army-800 flex items-center gap-1.5">
+                                <i class="fa-solid fa-list-check text-blue-600"></i> ตรวจสอบรายชื่อที่จะนำเข้า (<span
+                                    id="excelPreviewCount">0</span> รายการ)
+                            </h4>
+                            <span
+                                class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-full border border-amber-200">
+                                *ข้อมูลที่มีรหัสสมาชิกซ้ำกับในฐานข้อมูลหลักจะถูกละเว้นโดยอัตโนมัติ
+                            </span>
+                        </div>
+
+                        <div
+                            class="overflow-x-auto border border-gray-200 rounded-2xl shadow-inner max-h-[300px] bg-white">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr
+                                        class="bg-gray-100 text-gray-700 border-b border-gray-200 sticky top-0 font-bold">
+                                        <th class="py-2.5 px-3 w-10 text-center bg-gray-100">#</th>
+                                        <th class="py-2.5 px-3 w-32 bg-gray-100">รหัสสมาชิก</th>
+                                        <th class="py-2.5 px-3 min-w-[150px] bg-gray-100">ชื่อ-สกุล (ไทย)</th>
+                                        <th class="py-2.5 px-3 w-28 bg-gray-100">เลขบัตรประชาชน</th>
+                                        <th class="py-2.5 px-3 w-24 bg-gray-100">ประเภทสมาชิก</th>
+                                        <th class="py-2.5 px-3 w-28 bg-gray-100">ยศ/ตำแหน่ง</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="excelPreviewTableBody"
+                                    class="divide-y divide-gray-100 text-gray-600 font-medium">
+                                    <!-- Previews will load here -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Excel Table Preview Panel -->
-                <div id="excelPreviewPanel" class="hidden space-y-3">
-                    <div class="flex justify-between items-center">
-                        <h4 class="text-sm font-extrabold text-army-800 flex items-center gap-1.5">
-                            <i class="fa-solid fa-list-check text-blue-600"></i> ตรวจสอบรายชื่อที่จะนำเข้า (<span id="excelPreviewCount">0</span> รายการ)
-                        </h4>
-                        <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-full border border-amber-200">
-                            *ข้อมูลที่มีรหัสสมาชิกซ้ำกับในฐานข้อมูลหลักจะถูกละเว้นโดยอัตโนมัติ
-                        </span>
-                    </div>
-                    
-                    <div class="overflow-x-auto border border-gray-200 rounded-2xl shadow-inner max-h-[300px] bg-white">
-                        <table class="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr class="bg-gray-100 text-gray-700 border-b border-gray-200 sticky top-0 font-bold">
-                                    <th class="py-2.5 px-3 w-10 text-center bg-gray-100">#</th>
-                                    <th class="py-2.5 px-3 w-32 bg-gray-100">รหัสสมาชิก</th>
-                                    <th class="py-2.5 px-3 min-w-[150px] bg-gray-100">ชื่อ-สกุล (ไทย)</th>
-                                    <th class="py-2.5 px-3 w-28 bg-gray-100">เลขบัตรประชาชน</th>
-                                    <th class="py-2.5 px-3 w-24 bg-gray-100">ประเภทสมาชิก</th>
-                                    <th class="py-2.5 px-3 w-28 bg-gray-100">ยศ/ตำแหน่ง</th>
-                                </tr>
-                            </thead>
-                            <tbody id="excelPreviewTableBody" class="divide-y divide-gray-100 text-gray-600 font-medium">
-                                <!-- Previews will load here -->
-                            </tbody>
-                        </table>
-                    </div>
+
+                <!-- Modal Footer -->
+                <div class="bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-end gap-3 rounded-b-3xl">
+                    <button type="button" onclick="closeExcelImportModal()"
+                        class="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-5 rounded-full border border-gray-300 text-xs shadow-sm transition-colors cursor-pointer">
+                        ยกเลิก
+                    </button>
+                    <button type="button" id="btnConfirmExcelImport" onclick="confirmExcelImport()" disabled
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full text-xs shadow-md transition-all flex items-center gap-1.5 opacity-50 cursor-not-allowed">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> ยืนยันการนำเข้าข้อมูล
+                    </button>
                 </div>
-            </div>
-            
-            <!-- Modal Footer -->
-            <div class="bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-end gap-3 rounded-b-3xl">
-                <button type="button" onclick="closeExcelImportModal()" class="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-5 rounded-full border border-gray-300 text-xs shadow-sm transition-colors cursor-pointer">
-                    ยกเลิก
-                </button>
-                <button type="button" id="btnConfirmExcelImport" onclick="confirmExcelImport()" disabled class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full text-xs shadow-md transition-all flex items-center gap-1.5 opacity-50 cursor-not-allowed">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> ยืนยันการนำเข้าข้อมูล
-                </button>
             </div>
         </div>
+    </div> <!-- 3. Promotion Members Panel -->
+    <div id="panelPromotionMembersList" class="hidden">
+        <div class="overflow-x-auto">
+            <table class="responsive-table w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-armylight-200 text-army-800 text-sm tracking-wider">
+                        <th class="py-3 px-4 font-semibold w-12 text-center">#</th>
+                        <th class="py-3 px-4 font-semibold w-36">รหัสสมาชิก</th>
+                        <th class="py-3 px-4 font-semibold min-w-[220px]">ชื่อสมาชิก</th>
+                        <th class="py-3 px-4 font-semibold w-48">ยศ / ตำแหน่งใหม่</th>
+                        <th class="py-3 px-4 font-semibold w-48">ผู้บันทึก / เวลา</th>
+                        <th class="py-3 px-4 font-semibold text-center w-28">สถานะ</th>
+                        <th id="thPromotionManage" class="py-3 px-4 font-semibold text-center w-36">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="pendingPromotionsListTableBody" class="text-sm text-gray-700 divide-y divide-army-400/20">
+                    <tr>
+                        <td colspan="7" class="text-center py-8 text-gray-500">ไม่มีรายการอนุมัติเลื่อนยศตำแหน่งค้างอยู่
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
 </div>
 
       <!-- ================= Activity Management View ================= -->
@@ -2216,7 +2306,7 @@
 // ==========================================================
 // ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxlsEL5VNDBJK2jhBYQ1q5bcuByLSrXnVY4CcIcD6rxNsqpaeBmk7wvxvZZsirEXQnv/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
 
 const google = {
   script: {
@@ -2400,14 +2490,23 @@ const google = {
         // อัปเดตเมนูบาร์ด้านข้าง
         var menuItems = document.querySelectorAll('.menu-item');
         for (var j = 0; j < menuItems.length; j++) {
-            menuItems[j].classList.remove('bg-armylight-100', 'text-army-600', 'font-semibold');
-            menuItems[j].classList.add('text-gray-700');
+            menuItems[j].classList.remove('bg-army-800', 'text-white', 'font-semibold', 'bg-yellow-500/20', 'text-yellow-400', 'border-yellow-500/30');
+            if (menuItems[j].id === 'menuPresidentApproval') {
+                menuItems[j].classList.add('text-yellow-500/80');
+            } else {
+                menuItems[j].classList.add('text-gray-300');
+            }
         }
 
         var activeLink = document.querySelector('.menu-item[onclick="showView(\'' + viewId + '\'); toggleMobileMenu();"]');
         if (activeLink) {
-            activeLink.classList.remove('text-gray-700');
-            activeLink.classList.add('bg-armylight-100', 'text-army-600', 'font-semibold');
+            if (activeLink.id === 'menuPresidentApproval') {
+                activeLink.classList.remove('text-yellow-500/80');
+                activeLink.classList.add('bg-yellow-500/20', 'text-yellow-400', 'font-semibold', 'border-yellow-500/30');
+            } else {
+                activeLink.classList.remove('text-gray-300');
+                activeLink.classList.add('bg-army-800', 'text-white', 'font-semibold');
+            }
         }
     }
 
@@ -5271,7 +5370,7 @@ const google = {
         if (input) {
             input.value = decodedText;
         }
-        
+
         // Stop attendee scanner to pause stream, but keep modal open
         if (attendeeQRScanner && attendeeQRScanner.getState() === 2) {
             attendeeQRScanner.stop().then(function () {
@@ -5334,7 +5433,7 @@ const google = {
                 confirmButton: 'bg-army-600 hover:bg-army-700 text-white rounded-full px-6 py-2.5 font-bold shadow-md'
             }
         });
-        
+
         stopAttendeeQRScanner();
     }
 
@@ -7418,7 +7517,7 @@ const google = {
         }
 
         showLoader('กำลังจัดเตรียมข้อมูลส่งออก...');
-        
+
         try {
             // จัดการข้อมูล แปลงหัวข้อคอลัมน์เป็นภาษาไทย
             const dataToExport = allMembers.map(m => ({
@@ -7463,7 +7562,7 @@ const google = {
             // ดาวน์โหลดไฟล์
             const dateStr = new Date().toLocaleDateString('th-TH').replace(/\//g, '-');
             XLSX.writeFile(workbook, `ทะเบียนผู้กำกับกำลังสำรอง_สกร_${dateStr}.xlsx`);
-            
+
             hideLoader();
             Swal.fire('สำเร็จ', 'ส่งออกข้อมูลสมาชิกสำเร็จเรียบร้อย', 'success');
         } catch (err) {
@@ -7494,11 +7593,11 @@ const google = {
         document.getElementById('excelSelectedFileName').classList.add('hidden');
         document.getElementById('excelPreviewPanel').classList.add('hidden');
         document.getElementById('excelPreviewTableBody').innerHTML = '';
-        
+
         const btn = document.getElementById('btnConfirmExcelImport');
         btn.disabled = true;
         btn.classList.add('opacity-50', 'cursor-not-allowed');
-        
+
         importedMembersTempList = [];
     }
 
@@ -7564,14 +7663,14 @@ const google = {
             try {
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, { type: 'array' });
-                
+
                 // ดึงชีทแรกสุด
                 const firstSheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[firstSheetName];
-                
+
                 // แปลงเป็น JSON Array
                 const json = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-                
+
                 if (!json || json.length === 0) {
                     hideLoader();
                     Swal.fire('เกิดข้อผิดพลาด', 'ไม่พบแถวข้อมูลสมาชิกในไฟล์ Excel นี้ กรุณาตรวจสอบว่ามีข้อมูลในตาราง', 'warning');
@@ -7582,7 +7681,7 @@ const google = {
                 // นำข้อมูลหัวฟิลด์มาเช็กเบื้องต้น
                 const sampleRow = json[0];
                 const hasRequired = ('รหัสสมาชิก' in sampleRow) && ('ชื่อ-สกุล (ไทย)' in sampleRow || 'ชื่อ-สกุล' in sampleRow);
-                
+
                 if (!hasRequired) {
                     hideLoader();
                     Swal.fire('ไฟล์ไม่ถูกต้อง', 'ไม่พบหัวข้อคอลัมน์บังคับอย่างน้อย: "รหัสสมาชิก" และ "ชื่อ-สกุล (ไทย)" กรุณาใช้เทมเพลตมาตรฐานของระบบ', 'error');
@@ -7610,7 +7709,7 @@ const google = {
 
                 // เรนเดอร์ตารางพรีวิวก่อนกดบันทึก
                 renderExcelImportPreview(importedMembersTempList);
-                
+
                 hideLoader();
             } catch (err) {
                 hideLoader();
@@ -7626,11 +7725,11 @@ const google = {
     function renderExcelImportPreview(list) {
         const tbody = document.getElementById('excelPreviewTableBody');
         tbody.innerHTML = '';
-        
+
         list.forEach((m, idx) => {
             const tr = document.createElement('tr');
             tr.className = 'hover:bg-gray-50 border-b border-gray-100 transition-colors';
-            
+
             const fullName = m['ชื่อ-สกุล (ไทย)'] || m['ชื่อ-สกุล'] || m['ชื่อ'] || '-';
             const idCard = m['เลขบัตรประชาชน'] || '-';
             const mType = m['ประเภทสมาชิก'] || 'สามัญ';
