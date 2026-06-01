@@ -700,6 +700,19 @@
                     <i class="fa-solid fa-bell"></i>
                 </div>
             </div>
+
+            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-4 rounded-2xl flex items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
+                onclick="switchApprovalTab('specialpoints')">
+                <div>
+                    <span
+                        class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติคะแนนพิเศษ</span>
+                    <h3 class="text-2xl font-black text-amber-900 mt-1" id="countPendingSpecialPoints">0</h3>
+                </div>
+                <div
+                    class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-lg">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+            </div>
         </div>
 
         <!-- Approval Tabs navigation -->
@@ -719,6 +732,10 @@
             <button type="button" onclick="switchApprovalTab('notifications')" id="tabApproveNotifications"
                 class="px-5 py-3 text-sm font-bold border-b-4 border-transparent text-gray-500 hover:text-[#8A6D1C] focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap bg-white/10 rounded-t-2xl">
                 <i class="fa-solid fa-bell"></i> แจ้งเตือนรับทราบ
+            </button>
+            <button type="button" onclick="switchApprovalTab('specialpoints')" id="tabApproveSpecialPoints"
+                class="px-5 py-3 text-sm font-bold border-b-4 border-transparent text-gray-500 hover:text-[#8A6D1C] focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap bg-white/10 rounded-t-2xl">
+                <i class="fa-solid fa-award"></i> อนุมัติคะแนนพิเศษ
             </button>
         </div>
 
@@ -865,6 +882,34 @@
                             <tr>
                                 <td colspan="5" class="text-center py-6 text-gray-400 italic">ไม่มีรายการแจ้งเตือนตกค้าง
                                 </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 5. Special Points Pending Approval -->
+            <div id="panelApproveSpecialPoints" class="approval-panel hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-sm text-[#8A6D1C] font-black"><i
+                            class="fa-solid fa-info-circle mr-1.5"></i>รายการคะแนนพิเศษที่อยู่ระหว่างรอการอนุมัติ</span>
+                </div>
+                <div class="overflow-x-auto rounded-2xl border border-gray-200 shadow-inner bg-white">
+                    <table class="responsive-table w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-700 font-bold border-b border-gray-200">
+                                <th class="py-3 px-4 w-12 text-center">#</th>
+                                <th class="py-3 px-4">ชื่อผู้รับคะแนน</th>
+                                <th class="py-3 px-4">ชื่อผลงาน/คะแนน</th>
+                                <th class="py-3 px-4 text-center">คะแนน</th>
+                                <th class="py-3 px-4 text-center">วันที่บันทึก</th>
+                                <th class="py-3 px-4 text-center w-24">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingSpecialPointsTableBody" class="divide-y divide-gray-100">
+                            <tr>
+                                <td colspan="6" class="text-center py-12 text-gray-400 italic">
+                                    ไม่มีคะแนนพิเศษที่รอการอนุมัติ</td>
                             </tr>
                         </tbody>
                     </table>
@@ -2264,11 +2309,12 @@
                             <th class="py-3 px-4 font-semibold w-16">#</th>
                             <th class="py-3 px-4 font-semibold">ชื่อกิจกรรม</th>
                             <th class="py-3 px-4 font-semibold text-center w-32">วันที่เข้าร่วม</th>
+                            <th class="py-3 px-4 font-semibold text-center w-32">สถานะ</th>
                             <th class="py-3 px-4 font-semibold text-center w-32">คะแนนที่ได้</th>
                         </tr>
                     </thead>
                     <tbody id="memberActivityTableBody" class="text-sm text-gray-700">
-                        <tr><td colspan="4" class="text-center py-8 text-gray-500">กำลังโหลดข้อมูล...</td></tr>
+                        <tr><td colspan="5" class="text-center py-8 text-gray-500">กำลังโหลดข้อมูล...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -3386,7 +3432,10 @@ const google = {
         // --- ย้ายกล่องอัตราชั้นขึ้นมาไว้ตรงนี้ ---
         if (m['ชั้น'] || m['อัตรา'] || m['ตำแหน่ง']) {
             html += '  <div class="mb-6 px-2">';
-            html += '    <div class="bg-army-50 rounded-xl border border-army-200 p-3 shadow-sm">';
+            html += '    <div class="bg-army-50 rounded-xl border border-army-200 p-3 shadow-sm relative">';
+            if (m['hasPendingPromotion']) {
+                html += '      <div class="absolute -top-3 -right-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse border-2 border-white">รออนุมัติเลื่อนชั้น</div>';
+            }
             html += '      <div class="flex items-center text-army-800 font-bold text-xs uppercase tracking-wider mb-2"><i class="fa-solid fa-award mr-2"></i> อัตราชั้นผู้กำกับกำลังสำรอง</div>';
             html += '      <div class="grid grid-cols-3 gap-2">';
             html += '        <div><div class="text-[9px] text-army-500 font-bold">ชั้น</div><div class="text-xs font-bold text-gray-800 leading-tight">' + (m['ชั้น'] || '-') + '</div></div>';
@@ -3471,6 +3520,7 @@ const google = {
         html += '<div class="mt-8 flex justify-center gap-2 flex-wrap">';
         html += '  <button onclick="saveMemberCardAsImage(\'' + memberId + '\')" class="bg-army-700 hover:bg-army-800 text-white font-bold py-2 px-4 rounded-full shadow-md transition-colors text-sm flex items-center"><i class="fa-solid fa-download mr-2"></i> บันทึกข้อมูลสมาชิก</button>';
         html += '  <button onclick="printMemberReport(\'' + memberId + '\')" class="bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white font-bold py-2 px-4 rounded-full shadow-md transition-colors text-sm flex items-center"><i class="fa-solid fa-print mr-2"></i> พิมพ์รายงาน (A4)</button>';
+        html += '  <button onclick="viewMemberEditHistory(\'' + memberId + '\')" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition-colors text-sm flex items-center"><i class="fa-solid fa-clock-rotate-left mr-2"></i> ประวัติการแก้ไข</button>';
         html += '</div>';
 
         Swal.fire({
@@ -3499,6 +3549,62 @@ const google = {
             }
         });
     }
+
+    window.viewMemberEditHistory = function(memberId) {
+        showLoader('กำลังโหลดประวัติการแก้ไข...');
+        google.script.run
+            .withSuccessHandler(function(history) {
+                hideLoader();
+                if (!history || history.length === 0) {
+                    Swal.fire('ประวัติการแก้ไข', 'ไม่พบประวัติการแก้ไขข้อมูลของสมาชิกรายนี้', 'info');
+                    return;
+                }
+                var html = '<div class="overflow-x-auto rounded-xl border border-gray-200 mt-2">';
+                html += '<table class="w-full text-left border-collapse text-xs bg-white shadow-inner">';
+                html += '<thead class="bg-gray-100 text-gray-700"><tr>';
+                html += '<th class="py-2 px-3 border-b text-center">วันเวลาที่แก้ไข</th>';
+                html += '<th class="py-2 px-3 border-b">ผู้แก้ไข</th>';
+                html += '<th class="py-2 px-3 border-b">การเปลี่ยนแปลง</th>';
+                html += '</tr></thead><tbody class="divide-y divide-gray-100">';
+                
+                for(var i=0; i<history.length; i++) {
+                    var h = history[i];
+                    var changes = h.Changes;
+                    try {
+                        var parsed = JSON.parse(changes);
+                        var changeStrs = [];
+                        for(var k in parsed) {
+                            changeStrs.push('<b>' + k + '</b>: <span class="line-through text-red-400">' + (parsed[k].old || '-') + '</span> &rarr; <span class="text-green-600 font-bold">' + (parsed[k].new || '-') + '</span>');
+                        }
+                        changes = changeStrs.join('<br>');
+                    } catch(e) {}
+                    
+                    html += '<tr class="hover:bg-gray-50 transition-colors">';
+                    html += '<td class="py-3 px-3 text-center whitespace-nowrap text-gray-500">' + h.Timestamp + '</td>';
+                    html += '<td class="py-3 px-3 font-medium">' + h.EditorName + '</td>';
+                    html += '<td class="py-3 px-3 leading-relaxed text-left text-gray-700">' + changes + '</td>';
+                    html += '</tr>';
+                }
+                html += '</tbody></table></div>';
+                
+                Swal.fire({
+                    title: '<div class="text-army-800 font-bold text-lg border-b pb-3 mb-2"><i class="fa-solid fa-clock-rotate-left mr-2"></i>ประวัติการแก้ไขข้อมูลสมาชิก</div>',
+                    html: html,
+                    width: 700,
+                    showCloseButton: true,
+                    confirmButtonText: 'ปิดหน้าต่าง',
+                    customClass: {
+                        popup: 'rounded-3xl shadow-2xl',
+                        confirmButton: 'bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2.5 px-6 rounded-full shadow-sm'
+                    }
+                });
+            })
+            .withFailureHandler(function(err) {
+                hideLoader();
+                Swal.fire('ข้อผิดพลาด', 'ไม่สามารถโหลดประวัติได้: ' + err.message, 'error');
+            })
+            .getMemberEditHistory(memberId);
+    };
 
     window.saveMemberCardAsImage = function (memberId) {
         if (typeof html2canvas === 'undefined') {
@@ -4333,12 +4439,21 @@ const google = {
                         manageButtons = '<span class="text-gray-400 text-[10px] italic">กิจกรรม</span>';
                     }
 
+                    var statusHtml = '<span class="px-2 py-1 rounded text-[10px] ' + 
+                        (p.status === 'รออนุมัติ' ? 'bg-yellow-100 text-yellow-800' : 
+                        (p.status === 'ไม่อนุมัติ' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800')) + '">' + (p.status || 'อนุมัติแล้ว') + '</span>';
+                    
+                    if (p.status === 'ไม่อนุมัติ' && p.reason) {
+                        statusHtml += ' <button onclick="viewDisapproveReason(\'' + p.reason.replace(/\x27/g, '\\x27') + '\')" class="ml-1 text-gray-500 hover:text-gray-700" title="ดูเหตุผล"><i class="fa-solid fa-circle-info"></i></button>';
+                    }
+
                     tr.innerHTML = `
                         <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ${typeClass} flex items-center w-fit"><i class="fa-solid ${typeIcon} mr-1 text-[8px]"></i>${p.type}</span></td>
                         <td class="py-3 px-4 font-medium text-gray-800">${p.name}</td>
                         <td class="py-3 px-4 text-center font-bold ${p.score >= 0 ? 'text-green-600' : 'text-red-600'}">${p.score >= 0 ? '+' : ''}${p.score}</td>
                         <td class="py-3 px-4 text-center text-gray-500 text-[11px]">${p.date}</td>
                         <td class="py-3 px-4 text-gray-600 text-xs">${p.recorder || '-'}</td>
+                        <td class="py-3 px-4 text-center">${statusHtml}</td>
                         <td class="py-3 px-4 text-center">${manageButtons}</td>
                     `;
                     tbody.appendChild(tr);
@@ -4635,20 +4750,18 @@ const google = {
                             hideLoader();
                             if (res.success) {
                                 Swal.fire({
-                                    icon: 'success',
-                                    title: 'สำเร็จ',
-                                    text: 'เลื่อนชั้นสมาชิกเรียบร้อยแล้ว (บันทึกเข้ารหัส: ' + data.memberId + ')',
+                                    icon: 'info',
+                                    title: 'ส่งคำร้องสำเร็จ',
+                                    text: 'กำลังรอการอนุมัติการเลื่อนชั้นจากนายกสมาคม',
                                     customClass: { popup: 'rounded-3xl' }
                                 });
 
-                                // Update UI
-                                document.getElementById('memberRank').value = data.rank;
-                                document.getElementById('memberRate').value = data.rate;
-                                document.getElementById('memberPosition').value = data.position;
-
-                                // Update prefix
-                                var prefixSelect = document.getElementById('classLevel');
-                                if (prefixSelect) prefixSelect.value = nextMap.prefix;
+                                // Load members list if necessary
+                                loadMembers();
+                                
+                                // Reset the form inside modal without closing it, or just let them close it
+                                document.getElementById('rankAdjustmentForm').reset();
+                                document.getElementById('raDocPreview').innerHTML = '';
 
                                 loadMembers();
                             } else {
