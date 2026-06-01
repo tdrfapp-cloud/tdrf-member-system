@@ -4421,7 +4421,10 @@ const google = {
 
                 for (var i = 0; i < history.length; i++) {
                     var p = history[i];
-                    periodTotal += parseFloat(p.score) || 0;
+                    var effStatus = p.status || 'อนุมัติแล้ว';
+                    if (effStatus === 'อนุมัติแล้ว') {
+                        periodTotal += parseFloat(p.score) || 0;
+                    }
                     var typeClass = p.type === 'คะแนนพิเศษ' ? 'text-blue-600 bg-blue-50 border border-blue-200' : 'text-green-600 bg-green-50 border border-green-200';
                     var typeIcon = p.type === 'คะแนนพิเศษ' ? 'fa-star' : 'fa-calendar-check';
                     var tr = document.createElement('tr');
@@ -4429,12 +4432,16 @@ const google = {
 
                     var manageButtons = '';
                     if (p.type === 'คะแนนพิเศษ') {
-                        manageButtons = `
-                            <div class="flex justify-center gap-2">
-                                <button onclick="editSpecialPoint('${p.rowIndex}', '${p.pointId}', '${p.name}', '${p.score}', '${p.date}', '${p.recorder || ''}')" class="text-amber-500 hover:text-amber-700 w-8 h-8 rounded-full hover:bg-amber-50 transition-all"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="deleteSpecialPointAction('${p.rowIndex}')" class="text-red-400 hover:text-red-600 w-8 h-8 rounded-full hover:bg-red-50 transition-all"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        `;
+                        if (effStatus === 'อนุมัติแล้ว') {
+                            manageButtons = '<span class="text-gray-400 text-[10px] italic"><i class="fa-solid fa-lock mr-1"></i>ไม่สามารถแก้ไขได้</span>';
+                        } else {
+                            manageButtons = `
+                                <div class="flex justify-center gap-2">
+                                    <button onclick="editSpecialPoint('${p.rowIndex}', '${p.pointId}', '${p.name}', '${p.score}', '${p.date}', '${p.recorder || ''}')" class="text-amber-500 hover:text-amber-700 w-8 h-8 rounded-full hover:bg-amber-50 transition-all"><i class="fa-solid fa-pen"></i></button>
+                                    <button onclick="deleteSpecialPointAction('${p.rowIndex}')" class="text-red-400 hover:text-red-600 w-8 h-8 rounded-full hover:bg-red-50 transition-all"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                            `;
+                        }
                     } else {
                         manageButtons = '<span class="text-gray-400 text-[10px] italic">กิจกรรม</span>';
                     }
@@ -4516,7 +4523,12 @@ const google = {
             .withSuccessHandler(function (res) {
                 hideLoader();
                 if (res.success) {
-                    Swal.fire('สำเร็จ', res.message, 'success');
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'ส่งคำร้องสำเร็จ',
+                        text: 'กำลังรอการพิจารณาอนุมัติคะแนนพิเศษจากนายกสมาคม',
+                        customClass: { popup: 'rounded-3xl' }
+                    });
                     document.getElementById('specialPointForm').reset();
                     document.getElementById('spRowIndex').value = '';
                     document.getElementById('spPointId').value = '';
