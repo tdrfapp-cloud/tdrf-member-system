@@ -648,68 +648,55 @@
         class="bg-gradient-to-br from-[#FFFDF0] via-[#FFF9D6] to-[#FFF3B3] border border-[#F5D061] border-t-8 border-[#D4AF37] p-6 md:p-8 rounded-3xl shadow-xl transition-all mb-8">
 
         <!-- Stats Badges row -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-4 rounded-2xl flex items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
+        <div class="grid grid-cols-4 gap-2 md:gap-4 mb-8">
+            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-2 md:p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
                 onclick="switchApprovalTab('members')">
-                <div>
+                <div class="text-center sm:text-left">
                     <span
-                        class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติสมาชิกใหม่</span>
-                    <h3 class="text-2xl font-black text-amber-900 mt-1" id="countPendingMembers">0</h3>
+                        class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติสมาชิกใหม่</span>
+                    <h3 class="text-lg md:text-2xl font-black text-amber-900 mt-0.5 md:mt-1" id="countPendingMembers">0</h3>
                 </div>
                 <div
-                    class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-lg">
+                    class="w-8 h-8 md:w-10 md:h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-sm md:text-lg mt-1 sm:mt-0">
                     <i class="fa-solid fa-user-plus"></i>
                 </div>
             </div>
 
-            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-4 rounded-2xl flex items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
+            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-2 md:p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
                 onclick="switchApprovalTab('activities')">
-                <div>
+                <div class="text-center sm:text-left">
                     <span
-                        class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติคะแนนกิจกรรม</span>
-                    <h3 class="text-2xl font-black text-amber-900 mt-1" id="countPendingActivities">0</h3>
+                        class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติคะแนนกิจกรรม</span>
+                    <h3 class="text-lg md:text-2xl font-black text-amber-900 mt-0.5 md:mt-1" id="countPendingActivities">0</h3>
                 </div>
                 <div
-                    class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-lg">
+                    class="w-8 h-8 md:w-10 md:h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-sm md:text-lg mt-1 sm:mt-0">
                     <i class="fa-solid fa-star"></i>
                 </div>
             </div>
 
-            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-4 rounded-2xl flex items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
+            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-2 md:p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
                 onclick="switchApprovalTab('promotions')">
-                <div>
+                <div class="text-center sm:text-left">
                     <span
-                        class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติเลื่อนชั้น</span>
-                    <h3 class="text-2xl font-black text-amber-900 mt-1" id="countPendingPromotions">0</h3>
+                        class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติเลื่อนชั้น</span>
+                    <h3 class="text-lg md:text-2xl font-black text-amber-900 mt-0.5 md:mt-1" id="countPendingPromotions">0</h3>
                 </div>
                 <div
-                    class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-lg">
+                    class="w-8 h-8 md:w-10 md:h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-sm md:text-lg mt-1 sm:mt-0">
                     <i class="fa-solid fa-angles-up"></i>
                 </div>
             </div>
 
-            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-4 rounded-2xl flex items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
-                onclick="switchApprovalTab('notifications')">
-                <div>
-                    <span
-                        class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">แจ้งเตือนรับทราบ</span>
-                    <h3 class="text-2xl font-black text-amber-900 mt-1" id="countPendingNotifications">0</h3>
-                </div>
-                <div
-                    class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-lg">
-                    <i class="fa-solid fa-bell"></i>
-                </div>
-            </div>
-
-            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-4 rounded-2xl flex items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
+            <div class="bg-white/70 backdrop-blur-md border border-[#F5D061]/30 p-2 md:p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between shadow-sm cursor-pointer hover:bg-white transition-colors"
                 onclick="switchApprovalTab('specialpoints')">
-                <div>
+                <div class="text-center sm:text-left">
                     <span
-                        class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติคะแนนพิเศษ</span>
-                    <h3 class="text-2xl font-black text-amber-900 mt-1" id="countPendingSpecialPoints">0</h3>
+                        class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-wider block">อนุมัติคะแนนพิเศษ</span>
+                    <h3 class="text-lg md:text-2xl font-black text-amber-900 mt-0.5 md:mt-1" id="countPendingSpecialPoints">0</h3>
                 </div>
                 <div
-                    class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-lg">
+                    class="w-8 h-8 md:w-10 md:h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-sm md:text-lg mt-1 sm:mt-0">
                     <i class="fa-solid fa-award"></i>
                 </div>
             </div>
@@ -729,10 +716,7 @@
                 class="px-5 py-3 text-sm font-bold border-b-4 border-transparent text-gray-500 hover:text-[#8A6D1C] focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap bg-white/10 rounded-t-2xl">
                 <i class="fa-solid fa-angles-up"></i> อนุมัติเลื่อนชั้น
             </button>
-            <button type="button" onclick="switchApprovalTab('notifications')" id="tabApproveNotifications"
-                class="px-5 py-3 text-sm font-bold border-b-4 border-transparent text-gray-500 hover:text-[#8A6D1C] focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap bg-white/10 rounded-t-2xl">
-                <i class="fa-solid fa-bell"></i> แจ้งเตือนรับทราบ
-            </button>
+
             <button type="button" onclick="switchApprovalTab('specialpoints')" id="tabApproveSpecialPoints"
                 class="px-5 py-3 text-sm font-bold border-b-4 border-transparent text-gray-500 hover:text-[#8A6D1C] focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap bg-white/10 rounded-t-2xl">
                 <i class="fa-solid fa-award"></i> อนุมัติคะแนนพิเศษ
@@ -801,43 +785,57 @@
                     </table>
                 </div>
 
-                <!-- Detail View for Selected Activity participants -->
+                <!-- Detail View for Selected Activity participants (Modal) -->
                 <div id="pendingActivityParticipantsSection"
-                    class="hidden p-5 md:p-6 rounded-3xl bg-gray-50 border border-gray-200 shadow-sm animate-fadeIn">
-                    <h4
-                        class="font-bold text-sm text-army-800 mb-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                        <span class="flex items-center"><i class="fa-solid fa-users-viewfinder mr-2 text-army-600"></i>
-                            รายชื่อผู้เข้าร่วมสำหรับกิจกรรม: <span id="pendingActivityName"
-                                class="font-black text-army-700 bg-army-100 px-3 py-1 rounded-md ml-2 border border-army-300/40">...</span></span>
-                        <button type="button" id="btnConfirmApproveScores" onclick="approveActivityAttendanceWithPIN()"
-                            class="bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-6 rounded-full shadow-md text-xs transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
-                            <i class="fa-solid fa-check-double"></i> อนุมัติคะแนนทั้งหมด (ใส่ PIN)
-                        </button>
-                    </h4>
-                    <div class="overflow-x-auto max-h-[300px] rounded-xl border border-gray-100 bg-white shadow-inner">
-                        <table class="responsive-table w-full text-left border-collapse text-xs bg-white">
-                            <thead>
-                                <tr class="bg-gray-100 text-gray-600 font-bold border-b border-gray-100">
-                                    <th class="py-2.5 px-3 text-center w-12">#</th>
-                                    <th class="py-2.5 px-3">ชื่อ-นามสกุล</th>
-                                    <th class="py-2.5 px-3 text-center w-32">รหัสสมาชิก</th>
-                                    <th class="py-2.5 px-3 text-center w-48">เวลาสแกน</th>
-                                    <th class="py-2.5 px-3 text-center w-28">จัดการ</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pendingActivityParticipantsBody">
-                                <!-- Populated via JS -->
-                            </tbody>
-                        </table>
+                    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] hidden flex items-center justify-center p-4">
+                    <div class="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border border-gray-100">
+                        <!-- Header -->
+                        <div class="bg-gradient-to-r from-[#8A6D1C] to-[#B8901C] p-5 flex justify-between items-center text-white">
+                            <h4 class="font-bold text-lg flex items-center gap-2">
+                                <i class="fa-solid fa-users-viewfinder"></i>
+                                รายชื่อผู้เข้าร่วมสำหรับกิจกรรม: <span id="pendingActivityName" class="text-amber-200 ml-1">...</span>
+                            </h4>
+                            <button onclick="document.getElementById('pendingActivityParticipantsSection').classList.add('hidden'); document.getElementById('pendingActivityParticipantsSection').classList.remove('flex');" class="text-white/70 hover:text-white hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center transition-all">
+                                <i class="fa-solid fa-xmark text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Body -->
+                        <div class="p-6 overflow-y-auto bg-gray-50 flex-1">
+                            <div class="flex justify-end mb-4">
+                                <button type="button" id="btnConfirmApproveScores" onclick="approveActivityAttendanceWithPIN()"
+                                    class="bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-6 rounded-full shadow-md text-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
+                                    <i class="fa-solid fa-check-double"></i> อนุมัติทั้งหมด
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+                                <table class="responsive-table w-full text-left border-collapse text-xs bg-white">
+                                    <thead>
+                                        <tr class="bg-gray-100 text-gray-700 font-bold border-b border-gray-200">
+                                            <th class="py-3 px-4 text-center w-12">#</th>
+                                            <th class="py-3 px-4">ชื่อ-นามสกุล</th>
+                                            <th class="py-3 px-4 text-center w-32">รหัสสมาชิก</th>
+                                            <th class="py-3 px-4 text-center w-48">เวลาสแกน</th>
+                                            <th class="py-3 px-4 text-center w-28">จัดการ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pendingActivityParticipantsBody">
+                                        <!-- Populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- 3. Promotions Pending Approval -->
             <div id="panelApprovePromotions" class="approval-panel hidden">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-sm text-[#8A6D1C] font-black"><i
-                            class="fa-solid fa-info-circle mr-1.5"></i>รายการเลื่อนชั้นอัตราชันยศผู้กำกับกำลังสำรองที่อยู่ระหว่างรอการอนุมัติ</span>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
+                    <span class="text-sm text-[#8A6D1C] font-black"><i class="fa-solid fa-info-circle mr-1.5"></i>รายการคำขอเลื่อนชั้น อัตรา ตำแหน่ง ผู้กำกับกำลังสำรอง</span>
+                    <button type="button" onclick="approveAllRankPromotionsAction()" class="bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-5 rounded-full shadow-md text-xs transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-check-double"></i> อนุมัติทั้งหมด
+                    </button>
                 </div>
                 <div class="overflow-x-auto rounded-2xl border border-gray-200 shadow-inner bg-white">
                     <table class="responsive-table w-full text-left border-collapse text-xs">
@@ -846,7 +844,7 @@
                                 <th class="py-3 px-4 w-12 text-center">#</th>
                                 <th class="py-3 px-4">รหัสสมาชิก</th>
                                 <th class="py-3 px-4">ชื่อสมาชิก</th>
-                                <th class="py-3 px-4">ยศ / ตำแหน่งใหม่</th>
+                                <th class="py-3 px-4">ยศ-ตำแหน่ง (ขอปรับ)</th>
                                 <th class="py-3 px-4">ผู้ขอบันทึก</th>
                                 <th class="py-3 px-4 text-center w-24">จัดการ</th>
                             </tr>
@@ -855,33 +853,6 @@
                             <tr>
                                 <td colspan="6" class="text-center py-12 text-gray-400 italic">
                                     ไม่มีรายการการเลื่อนชั้นที่รอการอนุมัติ</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 4. Notifications Pending Acknowledgment -->
-            <div id="panelApproveNotifications" class="approval-panel hidden">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-sm text-[#8A6D1C] font-black"><i
-                            class="fa-solid fa-info-circle mr-1.5"></i>รายการรับทราบการดำเนินงานสำคัญระบบทะเบียนกำลังพล</span>
-                </div>
-                <div class="overflow-x-auto rounded-2xl border border-gray-200 shadow-inner bg-white">
-                    <table class="responsive-table w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="bg-gray-50 text-gray-700 font-bold border-b border-gray-200">
-                                <th class="py-3 px-4 w-12 text-center">#</th>
-                                <th class="py-3 px-4 w-32">ประเภทกิจกรรม</th>
-                                <th class="py-3 px-4">รายละเอียดข้อความ</th>
-                                <th class="py-3 px-4 text-center w-40">วันเวลาเกิดเรื่อง</th>
-                                <th class="py-3 px-4 text-center w-24">จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pendingNotificationsTableBody" class="divide-y divide-gray-100">
-                            <tr>
-                                <td colspan="5" class="text-center py-6 text-gray-400 italic">ไม่มีรายการแจ้งเตือนตกค้าง
-                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -899,6 +870,7 @@
                         <thead>
                             <tr class="bg-gray-50 text-gray-700 font-bold border-b border-gray-200">
                                 <th class="py-3 px-4 w-12 text-center">#</th>
+                                <th class="py-3 px-4 font-semibold">รหัสสมาชิก</th>
                                 <th class="py-3 px-4">ชื่อผู้รับคะแนน</th>
                                 <th class="py-3 px-4">ชื่อผลงาน/คะแนน</th>
                                 <th class="py-3 px-4 text-center">คะแนน</th>
@@ -908,7 +880,7 @@
                         </thead>
                         <tbody id="pendingSpecialPointsTableBody" class="divide-y divide-gray-100">
                             <tr>
-                                <td colspan="6" class="text-center py-12 text-gray-400 italic">
+                                <td colspan="7" class="text-center py-12 text-gray-400 italic">
                                     ไม่มีคะแนนพิเศษที่รอการอนุมัติ</td>
                             </tr>
                         </tbody>
@@ -933,14 +905,28 @@
         <div class="p-6 md:p-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <div class="pr-8">
-                    <h1 id="formTitle" class="text-3xl font-bold text-army-900 drop-shadow-sm uppercase tracking-wide">
-                        <i class="fa-solid fa-id-card-clip mr-2 text-army-600"></i>เพิ่มสมาชิกใหม่</h1>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <h1 id="formTitle" class="text-3xl font-bold text-army-900 drop-shadow-sm uppercase tracking-wide">
+                            <i class="fa-solid fa-id-card-clip mr-2 text-army-600"></i>เพิ่มสมาชิกใหม่</h1>
+                        <div id="revokeStatusTag" class="hidden items-center bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold border border-red-200 shadow-sm">
+                            <i class="fa-solid fa-ban mr-1.5"></i>สถานะ: พ้นสภาพ
+                        </div>
+                    </div>
                     <p class="text-army-700 font-medium mt-1">กรอกข้อมูลสมาชิกใหม่ หรืออ่านข้อมูลจากบัตรประชาชน</p>
+                    <p id="revokeStatusTextTop" class="hidden text-red-600 text-xs mt-1 font-bold"></p>
                 </div>
-                <button type="button" onclick="readThaiIDCard()"
-                    class="bg-army-600 hover:bg-army-700 text-white px-5 py-2.5 rounded-full shadow-md flex items-center transition-all hover:-translate-y-0.5 whitespace-nowrap">
-                    <i class="fa-solid fa-id-card mr-2"></i> อ่านบัตรประชาชน
-                </button>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" id="btnRevertRevoke" onclick="revertRevokeStatus()" class="hidden bg-white border border-red-300 text-red-600 hover:bg-red-50 font-bold py-2.5 px-4 rounded-full shadow-md transition-colors text-sm whitespace-nowrap">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> ยกเลิกพ้นสภาพ
+                    </button>
+                    <button type="button" id="btnRevokeMemberTop" onclick="revokeMemberAction()" class="hidden md:hidden bg-orange-100 hover:bg-orange-200 text-orange-800 border border-orange-300 font-bold py-2.5 px-4 rounded-full shadow-md transition-colors text-sm whitespace-nowrap">
+                        <i class="fa-solid fa-ban mr-1"></i> พ้นสภาพ
+                    </button>
+                    <button type="button" onclick="readThaiIDCard()"
+                        class="bg-army-600 hover:bg-army-700 text-white px-5 py-2.5 rounded-full shadow-md flex items-center transition-all hover:-translate-y-0.5 whitespace-nowrap">
+                        <i class="fa-solid fa-id-card mr-2"></i> อ่านบัตรประชาชน
+                    </button>
+                </div>
             </div>
 
             <div class="bg-white/60 backdrop-blur-md border border-white/40 p-6 rounded-2xl shadow-inner">
@@ -1198,7 +1184,7 @@
                     </div>
 
                     <h3 class="text-lg font-semibold text-blue-700 border-b pb-2 mb-4 mt-6">ข้อมูลสมาชิกภาพ</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">ประเภทสมาชิก</label>
                             <select id="memberType"
@@ -1207,6 +1193,12 @@
                                 <option value="วิสามัญ">วิสามัญ</option>
                                 <option value="กิตติมศักดิ์">กิตติมศักดิ์</option>
                             </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">รุ่น ผกก.</label>
+                            <input type="number" id="memberBatch" min="0"
+                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                                placeholder="ระบุรุ่น (ตัวเลขเท่านั้น)">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">วันเริ่มต้นสมาชิกภาพ
@@ -1234,20 +1226,7 @@
                         </div>
                     </div>
 
-                    <div id="revokeStatusContainer"
-                        class="hidden mb-6 p-4 rounded-xl bg-red-50 border-2 border-red-200 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h4 class="text-red-800 font-bold text-lg"><i
-                                        class="fa-solid fa-stamp text-red-500 mr-2"></i>สถานะ: พ้นสภาพ</h4>
-                                <p class="text-red-600 text-sm mt-1" id="revokeStatusText"></p>
-                            </div>
-                            <button type="button" onclick="revertRevokeStatus()"
-                                class="bg-white border border-red-300 text-red-600 hover:bg-red-50 font-bold py-1.5 px-4 rounded-md shadow-sm transition-colors text-sm">
-                                <i class="fa-solid fa-rotate-left mr-1"></i> ยกเลิกการพ้นสภาพ
-                            </button>
-                        </div>
-                    </div>
+
 
                     <h3 class="text-lg font-semibold text-blue-700 border-b pb-2 mb-4 mt-6">อัปโหลดเอกสาร (เลือกไฟล์ได้)
                     </h3>
@@ -1261,7 +1240,7 @@
                                     class="hidden text-[10px] text-blue-600 hover:underline font-bold"><i
                                         class="fa-solid fa-eye"></i> ดูไฟล์เดิม</a>
                             </div>
-                            <input type="file" id="idCardCopy" accept="image/*,.pdf"
+                            <input type="file" id="idCardCopy" accept="image/*,.pdf" onchange="previewFile(this, 'idCardViewLink')"
                                 class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700">
                         </div>
                         <div>
@@ -1272,7 +1251,7 @@
                                     class="hidden text-[10px] text-blue-600 hover:underline font-bold"><i
                                         class="fa-solid fa-eye"></i> ดูไฟล์เดิม</a>
                             </div>
-                            <input type="file" id="appForm" accept="image/*,.pdf"
+                            <input type="file" id="appForm" accept="image/*,.pdf" onchange="previewFile(this, 'appFormViewLink')"
                                 class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700">
                         </div>
                         <div>
@@ -1283,7 +1262,7 @@
                                     class="hidden text-[10px] text-blue-600 hover:underline font-bold"><i
                                         class="fa-solid fa-eye"></i> ดูไฟล์เดิม</a>
                             </div>
-                            <input type="file" id="otherDocs" accept="image/*,.pdf"
+                            <input type="file" id="otherDocs" accept="image/*,.pdf" onchange="previewFile(this, 'otherDocsViewLink')"
                                 class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700">
                         </div>
                     </div>
@@ -1419,13 +1398,14 @@
                             <th class="py-3 px-4 border-b text-center">คะแนน</th>
                             <th class="py-3 px-4 border-b text-center">วันที่ได้รับ</th>
                             <th class="py-3 px-4 border-b">ผู้บันทึก</th>
+                            <th class="py-3 px-4 border-b text-center">สถานะ</th>
                             <th class="py-3 px-4 border-b text-center">จัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="specialPointsTableBody" class="text-sm text-gray-600 divide-y divide-gray-50">
                         <!-- Loaded via JS -->
                         <tr>
-                            <td colspan="6" class="text-center py-8 text-gray-400 font-medium">กำลังโหลดประวัติ...</td>
+                            <td colspan="7" class="text-center py-8 text-gray-400 font-medium">กำลังโหลดประวัติ...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1653,7 +1633,7 @@
         <div class="flex border-b border-army-400/20 px-4 pt-2 overflow-x-auto bg-white/50">
             <button type="button" onclick="switchMemberListTab('active')" id="tabActiveMembersList"
                 class="px-5 py-2.5 text-sm font-bold border-b-2 border-army-600 text-army-600 focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap">
-                <i class="fa-solid fa-address-book"></i> ทะเบียนสมาชิกหลัก
+                <i class="fa-solid fa-address-book"></i> ทะเบียนหลัก
             </button>
             <button type="button" onclick="switchMemberListTab('pending')" id="tabPendingMembersList"
                 class="px-5 py-2.5 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 focus:outline-none transition-all flex items-center gap-1.5 whitespace-nowrap">
@@ -1914,37 +1894,36 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="flex flex-col gap-6">
             <!-- Form สร้างกิจกรรม -->
-            <div class="lg:col-span-1">
-                <div class="glass p-6 rounded-3xl shadow-sm sticky top-4">
+            <div class="w-full">
+                <div class="glass p-6 rounded-3xl shadow-sm mb-4">
                     <h3 class="text-lg font-bold text-army-800 mb-4 border-b border-army-400/30 pb-2"><i class="fa-solid fa-plus-circle text-armylight-400 mr-2"></i> สร้างกิจกรรมใหม่</h3>
-                    <form id="activityForm" onsubmit="handleActivitySubmit(event)">
-                        <div class="mb-4">
+                    <form id="activityForm" onsubmit="handleActivitySubmit(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                        <div class="lg:col-span-2">
                             <label class="block text-sm font-bold text-army-800 mb-1">ชื่อกิจกรรม <span class="text-red-500">*</span></label>
                             <input type="text" id="actName" required class="w-full border-gray-300 rounded-xl shadow-inner focus:border-armylight-400 focus:ring-2 focus:ring-armylight-400/50 p-2.5 border bg-white/80 focus:bg-white transition-all">
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label class="block text-sm font-bold text-army-800 mb-1">วันที่จัดกิจกรรม <span class="text-red-500">*</span></label>
                             <input type="text" id="actDate" required placeholder="เช่น 01/01/2567" class="w-full border-gray-300 rounded-xl shadow-inner focus:border-armylight-400 focus:ring-2 focus:ring-armylight-400/50 p-2.5 border bg-white/80 focus:bg-white transition-all">
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label class="block text-sm font-bold text-army-800 mb-1">ผู้รับผิดชอบกิจกรรม</label>
                             <input type="text" id="actResponsible" placeholder="ระบุชื่อหรือหน่วยงาน" class="w-full border-gray-300 rounded-xl shadow-inner focus:border-armylight-400 focus:ring-2 focus:ring-armylight-400/50 p-2.5 border bg-white/80 focus:bg-white transition-all">
                         </div>
-                        <div class="mb-6">
-                            <label class="block text-sm font-bold text-army-800 mb-1">คะแนนของกิจกรรม <span class="text-red-500">*</span></label>
-                            <input type="number" id="actScore" required min="1" class="w-full border-gray-300 rounded-xl shadow-inner focus:border-armylight-400 focus:ring-2 focus:ring-armylight-400/50 p-2.5 border bg-white/80 focus:bg-white transition-all">
+
+                        <div class="lg:col-span-5 flex justify-end mt-2">
+                            <button type="submit" class="bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white font-bold py-2.5 px-10 rounded-full shadow-md hover:shadow-lg transition-all flex justify-center items-center hover:-translate-y-0.5">
+                                <i class="fa-solid fa-plus mr-2"></i> บันทึกกิจกรรม
+                            </button>
                         </div>
-                        <button type="submit" class="w-full bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white font-bold py-3 px-4 rounded-full shadow-md hover:shadow-lg transition-all flex justify-center items-center hover:-translate-y-0.5">
-                            <i class="fa-solid fa-plus mr-2"></i> บันทึกกิจกรรม
-                        </button>
                     </form>
                 </div>
             </div>
 
             <!-- Table แสดงกิจกรรม -->
-            <div class="lg:col-span-2">
+            <div class="w-full">
                 <div class="glass rounded-3xl shadow-sm overflow-hidden">
                     <div class="p-4 border-b border-army-400/20 bg-white/50 flex justify-between items-center">
                         <h3 class="font-bold text-army-800"><i class="fa-solid fa-list-ul mr-2 text-armylight-400"></i>รายการกิจกรรม</h3>
@@ -2055,7 +2034,7 @@
                                     <th class="py-3 px-4 font-semibold">ชื่อ-สกุล</th>
                                     <th class="py-3 px-4 font-semibold text-center">รหัสสมาชิก</th>
                                     <th class="py-3 px-4 font-semibold text-center">เวลาบันทึก/ผู้สแกน</th>
-                                    <th class="py-3 px-4 font-semibold text-center w-16">จัดการ</th>
+                                    <th class="py-3 px-4 font-semibold text-center w-24">สถานะ/จัดการ</th>
                                 </tr>
                             </thead>
                             <tbody id="participantTableBody" class="text-sm text-gray-700 divide-y divide-army-400/20 bg-white/30">
@@ -2348,7 +2327,7 @@
 // ==========================================================
 // ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxlsEL5VNDBJK2jhBYQ1q5bcuByLSrXnVY4CcIcD6rxNsqpaeBmk7wvxvZZsirEXQnv/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
 
 const google = {
   script: {
@@ -2693,6 +2672,18 @@ const google = {
         }
     }
 
+    window.previewFile = function(input, linkId) {
+        var link = document.getElementById(linkId);
+        if (input.files && input.files[0]) {
+            var fileUrl = URL.createObjectURL(input.files[0]);
+            link.href = fileUrl;
+            link.classList.remove('hidden');
+            link.innerHTML = '<i class="fa-solid fa-eye"></i> ดูไฟล์ที่เลือก';
+        } else {
+            link.classList.add('hidden');
+        }
+    };
+
     function previewProfilePhoto(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -2842,6 +2833,7 @@ const google = {
                 emergencyPhone: getValueSafe('emergencyPhone'),
                 emergencyRelation: getValueSafe('emergencyRelation'),
                 memberType: getValueSafe('memberType'),
+                memberBatch: getValueSafe('memberBatch'),
                 startDate: getValueSafe('startDate'),
                 endDate: getValueSafe('endDate'),
                 initialTenure: getValueSafe('newMemberTenureSelect'),
@@ -3251,12 +3243,11 @@ const google = {
             var ringClass = 'border-gray-200 group-hover:ring-army-400';
             if (m['ขั้น'] === 'ผกก.ท.') ringClass = 'border-2 border-army-600 ring-2 ring-army-400';
             else if (m['ขั้น'] === 'ผกก.อ.') ringClass = 'border-2 border-yellow-500 ring-2 ring-yellow-400';
-            var photoHtml = photoSrc ? '<img src="' + photoSrc + '" class="w-10 h-10 rounded-full object-cover mr-3 shadow-sm transition-all ' + ringClass + '">' : '<div class="w-10 h-10 rounded-full bg-gray-200 mr-3 flex items-center justify-center shadow-sm transition-all ' + ringClass + '"><i class="fa-solid fa-user text-gray-400"></i></div>';
-            var idHtml = '<div class="font-medium text-army-700 relative inline-block whitespace-nowrap">' + m['รหัสสมาชิก'];
+            var photoHtml = photoSrc ? '<img src="' + photoSrc + '" class="w-10 h-10 rounded-full object-cover mr-3 shadow-sm transition-all cursor-pointer hover:scale-110 ' + ringClass + '" onclick="event.stopPropagation(); viewLargePhoto(\'' + photoSrc + '\')" title="คลิกเพื่อดูรูปขยาย">' : '<div class="w-10 h-10 rounded-full bg-gray-200 mr-3 flex items-center justify-center shadow-sm transition-all ' + ringClass + '"><i class="fa-solid fa-user text-gray-400"></i></div>';
+            var idHtml = '<div class="font-medium text-army-700">' + m['รหัสสมาชิก'] + '</div>';
             if (m['สถานะพิเศษ'] === 'พ้นสภาพ') {
-                idHtml += '<div class="absolute -top-2 -right-8 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm border border-white transform rotate-12 whitespace-nowrap pointer-events-none z-10"><i class="fa-solid fa-ban mr-1"></i>' + (m['สาเหตุการพ้นสภาพ'] || 'พ้นสภาพ') + '</div>';
+                idHtml += '<div class="mt-1 bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm inline-flex items-center whitespace-normal max-w-[120px] leading-tight border border-red-200"><i class="fa-solid fa-ban mr-1"></i>' + (m['สาเหตุการพ้นสภาพ'] || 'พ้นสภาพ') + '</div>';
             }
-            idHtml += '</div>';
             var memAge = calculateMemberAge(m['วันเริ่ม']);
             var totalScore = m['TotalScore'] || 0;
             var fullName = (m['ขั้น'] || m['คำนำหน้า(ขั้น)'] || '') + (m['ชื่อ-สกุล (ไทย)'] || m['ชื่อ'] || m['ชื่อ (ไทย)'] || '') + (m['นามสกุล'] || m['นามสกุล (ไทย)'] || m['Surname'] ? ' ' + (m['นามสกุล'] || m['นามสกุล (ไทย)'] || m['Surname']) : '');
@@ -3288,7 +3279,7 @@ const google = {
             tableHtml += '  <td class="py-3 px-4 text-center" data-label="คะแนนสะสม"><button onclick="openSpecialPointsModal(\'' + m['รหัสสมาชิก'] + '\', \'' + fullName.replace(/'/g, "\\'") + '\')" class="bg-armylight-100 text-army-800 border border-armylight-400/50 hover:bg-armylight-200 font-bold py-1.5 px-3 rounded-full text-xs shadow-sm transition-colors hover:-translate-y-0.5 whitespace-nowrap inline-flex items-center justify-center"><i class="fa-solid fa-star text-amber-500 mr-1"></i> ' + totalScore + '</button></td>';
             tableHtml += '  <td class="py-3 px-4 text-center" data-label="จัดการ">';
             tableHtml += '    <div class="flex justify-end md:justify-center gap-1.5">';
-            tableHtml += '      <button onclick="viewQRCode(\'' + (m['QRCode'] || '') + '\')" class="text-army-500 hover:text-army-700 mx-1 transition-colors text-base" title="QR Code"><i class="fa-solid fa-qrcode"></i></button>';
+            tableHtml += '      <button onclick="viewQRCode(\'' + (m['QRCode'] || '') + '\', \'' + fullName.replace(/'/g, "\\'") + '\')" class="text-army-500 hover:text-army-700 mx-1 transition-colors text-base" title="QR Code"><i class="fa-solid fa-qrcode"></i></button>';
             tableHtml += '      <button onclick="window.editMember(\'' + m['รหัสสมาชิก'] + '\')" class="text-amber-500 hover:text-amber-700 mx-1 transition-colors text-base" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>';
             tableHtml += '      <button onclick="openSpecialPointsModal(\'' + m['รหัสสมาชิก'] + '\', \'' + fullName.replace(/'/g, "\\'") + '\')" class="text-green-500 hover:text-green-700 mx-1 transition-colors text-base" title="ประวัติคะแนนสะสม"><i class="fa-solid fa-star"></i></button>';
             tableHtml += '    </div>';
@@ -3360,17 +3351,72 @@ const google = {
             if (el) el.value = '';
         });
     }
-    function viewQRCode(url) {
+    function viewQRCode(url, name) {
         if (!url) {
             Swal.fire('ข้อผิดพลาด', 'ไม่พบ QR Code', 'error');
             return;
         }
         Swal.fire({
             title: 'QR Code ประจำตัว',
+            html: name ? '<div class="text-lg font-bold text-army-800 mt-2">' + name + '</div>' : '',
             imageUrl: url,
             imageWidth: 200,
             imageHeight: 200,
-            imageAlt: 'QR Code'
+            imageAlt: 'QR Code',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa-solid fa-download mr-1"></i> ดาวน์โหลด',
+            cancelButtonText: 'ปิด',
+            confirmButtonColor: '#059669', // emerald-600
+        }).then((result) => {
+            if (result.isConfirmed) {
+                showLoader('กำลังเตรียมไฟล์ภาพดาวน์โหลด...');
+                // Render QR Code + Name on Canvas to download
+                var img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = function() {
+                    hideLoader();
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+                    
+                    var size = 300;
+                    var textHeight = 60;
+                    canvas.width = size;
+                    canvas.height = size + textHeight;
+                    
+                    // Draw white background
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Draw QR Code
+                    ctx.drawImage(img, 0, 0, size, size);
+                    
+                    // Draw Text
+                    ctx.fillStyle = '#000000';
+                    ctx.font = 'bold 16px "Sarabun", "Helvetica Neue", sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(name || 'QR Code', size / 2, size + (textHeight / 2));
+                    
+                    var dataUrl = canvas.toDataURL('image/png');
+                    var a = document.createElement('a');
+                    a.href = dataUrl;
+                    a.download = (name ? 'QRCode_' + name : 'QRCode') + '.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+                img.onerror = function() {
+                    hideLoader();
+                    // Fallback to direct download if canvas loading fails
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = (name ? 'QRCode_' + name : 'QRCode') + '.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+                img.src = url;
+            }
         });
     }
 
@@ -3407,8 +3453,8 @@ const google = {
         html += '<div id="memberCardCaptureArea" class="text-left relative dog-tag-bg rounded-t-[1.5rem] rounded-b-xl overflow-hidden shadow-sm flex flex-col" style="width: 100%; box-sizing: border-box;">';
 
         if (m['สถานะพิเศษ'] === 'พ้นสภาพ') {
-            html += '<div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none overflow-hidden">';
-            html += '  <div class="border-4 border-red-600 text-red-600 text-4xl md:text-5xl font-black py-4 px-8 rounded-2xl transform -rotate-12 opacity-80 shadow-lg bg-white/20 tracking-widest whitespace-nowrap" style="backdrop-filter: blur(2px);">' + (m['สาเหตุการพ้นสภาพ'] || 'พ้นสภาพ') + '</div>';
+            html += '<div class="absolute inset-0 z-20 flex items-start justify-end sm:items-center sm:justify-center pointer-events-none overflow-hidden p-2 sm:p-0">';
+            html += '  <div class="border-2 sm:border-4 border-red-600 text-red-600 text-xs sm:text-4xl md:text-5xl font-black py-1 px-2.5 sm:py-4 sm:px-8 rounded-lg sm:rounded-2xl transform -rotate-12 opacity-80 shadow-md sm:shadow-lg bg-white/80 sm:bg-white/20 tracking-wider sm:tracking-widest whitespace-nowrap mt-4 mr-4 sm:mt-0 sm:mr-0" style="backdrop-filter: blur(2px);">' + (m['สาเหตุการพ้นสภาพ'] || 'พ้นสภาพ') + '</div>';
             html += '</div>';
         }
         html += '  <div class="bg-army-600 p-6 text-center relative mb-16 h-24 shadow-inner border-b-4 border-armylight-400 w-full">';
@@ -3468,7 +3514,8 @@ const google = {
         var totalScore = m['TotalScore'] || 0;
 
         html += '    <div class="bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm"><div class="text-xs text-army-600 font-bold mb-1"><i class="fa-solid fa-clock mr-1"></i> อายุสมาชิก</div><div class="font-bold text-gray-800">' + memberTenure + '</div></div>';
-        html += '    <div class="bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm"><div class="text-xs text-army-600 font-bold mb-1"><i class="fa-solid fa-star text-amber-500 mr-1"></i> คะแนนสะสม</div><div class="font-bold text-army-700">' + totalScore + ' คะแนน</div></div>';
+        html += '    <div class="bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm"><div class="text-xs text-army-600 font-bold mb-1"><i class="fa-solid fa-layer-group mr-1"></i> รุ่น ผกก.</div><div class="font-medium text-gray-800">' + (m['รุ่น ผกก.'] || m['รุ่น'] || '-') + '</div></div>';
+        html += '    <div class="bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm col-span-2"><div class="text-xs text-army-600 font-bold mb-1"><i class="fa-solid fa-star text-amber-500 mr-1"></i> คะแนนสะสม</div><div class="font-bold text-army-700">' + totalScore + ' คะแนน</div></div>';
 
 
 
@@ -3499,7 +3546,9 @@ const google = {
         html += '  <div class="flex justify-center mt-6 pt-4 border-t border-army-400/30">';
         html += '    <div class="text-center">';
         html += '      <div class="text-xs font-bold text-army-600 mb-2">QR Code ประจำตัว</div>';
-        html += '      <img src="' + qrUrl + '" onclick="viewQRCode(\'' + qrUrl + '\')" class="w-24 h-24 border-2 border-white/60 p-1 rounded-xl bg-white shadow-sm mx-auto cursor-pointer hover:shadow-md hover:border-armylight-400 transition-all" title="คลิกเพื่อขยาย">';
+        html += '      <img src="' + qrUrl + '" onclick="viewQRCode(\'' + qrUrl + '\', \'' + detailFullName.replace(/'/g, "\\'") + '\')" class="w-24 h-24 border-2 border-white/60 p-1 rounded-xl bg-white shadow-sm mx-auto cursor-pointer hover:shadow-md hover:border-armylight-400 transition-all" title="คลิกเพื่อขยาย">';
+        html += '      <div class="text-xs text-army-800 font-bold mt-1.5 leading-tight">' + detailFullName + '</div>';
+        html += '      <button type="button" onclick="viewQRCode(\'' + qrUrl + '\', \'' + detailFullName.replace(/'/g, "\\'") + '\')" class="mt-2 text-army-600 hover:text-army-800 text-[11px] font-bold border border-army-300 hover:bg-army-50 px-3 py-1 rounded-full shadow-sm transition-all flex items-center gap-1.5 mx-auto"><i class="fa-solid fa-download"></i> ดาวน์โหลด QR</button>';
         html += '    </div>';
         html += '  </div>';
 
@@ -3515,7 +3564,7 @@ const google = {
         html += '</div>'; // End of memberCardCaptureArea
 
         html += '<div class="mt-8 flex justify-center gap-2 flex-wrap">';
-        html += '  <button onclick="saveMemberCardAsImage(\'' + memberId + '\')" class="bg-army-700 hover:bg-army-800 text-white font-bold py-2 px-4 rounded-full shadow-md transition-colors text-sm flex items-center"><i class="fa-solid fa-download mr-2"></i> บันทึกข้อมูลสมาชิก</button>';
+        html += '  <button onclick="saveMemberCardAsImage(\'' + memberId + '\')" class="bg-army-700 hover:bg-army-800 text-white font-bold py-2 px-4 rounded-full shadow-md transition-colors text-sm flex items-center"><i class="fa-solid fa-download mr-2"></i> บันทึกภาพ</button>';
         html += '  <button onclick="printMemberReport(\'' + memberId + '\')" class="bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white font-bold py-2 px-4 rounded-full shadow-md transition-colors text-sm flex items-center"><i class="fa-solid fa-print mr-2"></i> พิมพ์รายงาน (A4)</button>';
         html += '  <button onclick="viewMemberEditHistory(\'' + memberId + '\')" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition-colors text-sm flex items-center"><i class="fa-solid fa-clock-rotate-left mr-2"></i> ประวัติการแก้ไข</button>';
         html += '</div>';
@@ -3550,8 +3599,13 @@ const google = {
     window.viewMemberEditHistory = function(memberId) {
         showLoader('กำลังโหลดประวัติการแก้ไข...');
         google.script.run
-            .withSuccessHandler(function(history) {
+            .withSuccessHandler(function(res) {
                 hideLoader();
+                if (res && res.success === false) {
+                    Swal.fire('ข้อผิดพลาด', 'ไม่สามารถโหลดประวัติได้: ' + res.message, 'error');
+                    return;
+                }
+                var history = (res && res.history) ? res.history : [];
                 if (!history || history.length === 0) {
                     Swal.fire('ประวัติการแก้ไข', 'ไม่พบประวัติการแก้ไขข้อมูลของสมาชิกรายนี้', 'info');
                     return;
@@ -3566,19 +3620,15 @@ const google = {
                 
                 for(var i=0; i<history.length; i++) {
                     var h = history[i];
-                    var changes = h.Changes;
-                    try {
-                        var parsed = JSON.parse(changes);
-                        var changeStrs = [];
-                        for(var k in parsed) {
-                            changeStrs.push('<b>' + k + '</b>: <span class="line-through text-red-400">' + (parsed[k].old || '-') + '</span> &rarr; <span class="text-green-600 font-bold">' + (parsed[k].new || '-') + '</span>');
-                        }
-                        changes = changeStrs.join('<br>');
-                    } catch(e) {}
+                    var changes = h.details || '';
+                    // Convert " | " to "<br>" for better display
+                    changes = changes.split(' | ').map(function(c) {
+                        return '<div class="mb-1"><i class="fa-solid fa-angle-right text-gray-400 mr-1 text-[10px]"></i> ' + c + '</div>';
+                    }).join('');
                     
                     html += '<tr class="hover:bg-gray-50 transition-colors">';
-                    html += '<td class="py-3 px-3 text-center whitespace-nowrap text-gray-500">' + h.Timestamp + '</td>';
-                    html += '<td class="py-3 px-3 font-medium">' + h.EditorName + '</td>';
+                    html += '<td class="py-3 px-3 text-center whitespace-nowrap text-gray-500">' + (h.timestamp || '') + '</td>';
+                    html += '<td class="py-3 px-3 font-medium">' + (h.editedBy || '') + '</td>';
                     html += '<td class="py-3 px-3 leading-relaxed text-left text-gray-700">' + changes + '</td>';
                     html += '</tr>';
                 }
@@ -3616,9 +3666,51 @@ const google = {
 
         html2canvas(element, {
             scale: 2,
-            backgroundColor: null,
+            backgroundColor: '#ffffff',
             useCORS: true,
-            logging: false
+            logging: false,
+            width: element.offsetWidth,
+            height: element.offsetHeight,
+            onclone: function(clonedDoc) {
+                var clonedEl = clonedDoc.getElementById('memberCardCaptureArea');
+                if (clonedEl) {
+                    clonedEl.style.width = '380px';
+                    clonedEl.style.height = 'auto';
+                    clonedEl.style.minHeight = '550px';
+                    
+                    // Fix logo aspect ratio
+                    var logoImg = clonedEl.querySelector('img[alt="Logo"]');
+                    if (logoImg) {
+                        logoImg.style.width = '100px';
+                        logoImg.style.height = '100px';
+                        logoImg.style.objectFit = 'contain';
+                    }
+                    
+                    // Fix avatar photo aspect ratio
+                    var avatarImg = clonedEl.querySelector('img[title="คลิกเพื่อขยายรูปภาพ"]');
+                    if (avatarImg) {
+                        avatarImg.style.width = '160px';
+                        avatarImg.style.height = '160px';
+                        avatarImg.style.borderRadius = '50%';
+                        avatarImg.style.objectFit = 'cover';
+                    }
+                    
+                    // Fix resignation stamp if present
+                    var stamp = clonedEl.querySelector('.absolute.inset-0.z-20');
+                    if (stamp) {
+                        stamp.style.display = 'flex';
+                        stamp.style.alignItems = 'center';
+                        stamp.style.justifyContent = 'center';
+                        var innerStamp = stamp.querySelector('.border-4');
+                        if (innerStamp) {
+                            innerStamp.style.transform = 'rotate(-12deg)';
+                            innerStamp.style.width = '240px';
+                            innerStamp.style.textAlign = 'center';
+                            innerStamp.style.fontSize = '32px';
+                        }
+                    }
+                }
+            }
         }).then(function (canvas) {
             hideLoader();
             var link = document.createElement('a');
@@ -3669,7 +3761,7 @@ const google = {
                         actsHtml += '<tr class="hover:bg-white transition-colors">';
                         actsHtml += '  <td class="py-2.5 px-3 text-gray-800 font-medium">' + a.name + '</td>';
                         actsHtml += '  <td class="py-2.5 px-3 text-center text-army-600 text-xs">' + a.date + '</td>';
-                        actsHtml += '  <td class="py-2.5 px-3 text-center text-green-600 font-bold bg-green-50/50">+' + a.score + '</td>';
+                        actsHtml += '  <td class="py-2.5 px-3 text-center text-green-600 font-bold bg-green-50/50">' + a.score + '</td>';
                         actsHtml += '</tr>';
                     }
                     actsHtml += '</tbody></table></div>';
@@ -3722,6 +3814,50 @@ const google = {
         modal.classList.remove('flex');
         resetMemberForm();
     }
+
+    window.viewMemberEditHistory = function(memberId) {
+        Swal.fire({
+            title: 'ประวัติการแก้ไขข้อมูล',
+            html: '<div class="text-center py-4 text-army-600"><i class="fa-solid fa-spinner fa-spin text-2xl"></i><div class="mt-2 text-sm">กำลังโหลด...</div></div>',
+            showConfirmButton: false,
+            showCloseButton: true,
+            customClass: { popup: 'rounded-2xl' },
+            didOpen: () => {
+                google.script.run
+                    .withSuccessHandler(function(res) {
+                        if (res && res.success) {
+                            var hist = res.history || [];
+                            var histHtml = '<div class="max-h-[60vh] overflow-y-auto text-left">';
+                            if (hist.length === 0) {
+                                histHtml += '<div class="text-center py-6 text-gray-500 italic">ไม่พบประวัติการแก้ไขข้อมูล</div>';
+                            } else {
+                                histHtml += '<ul class="relative border-l border-gray-200 ml-3">';
+                                // Ensure oldest to newest if backend returns oldest first, or newest first depending on array.
+                                // Let's just reverse the array so newest is at top. Wait, maybe the prompt wants oldest to newest?
+                                // Prompt: "7.1 เรียงลำดับจากเก่าไปใหม่ (จากบนลงล่าง) ในหน้าประวัติการแก้ไขข้อมูลสมาชิก" -> Sort Oldest to Newest.
+                                // The backend returns whatever is in the sheet (oldest to newest). So just iterate normally.
+                                hist.forEach(function(h) {
+                                    histHtml += '<li class="mb-4 ml-4">';
+                                    histHtml += '<div class="absolute w-3 h-3 bg-blue-500 rounded-full -left-1.5 border border-white"></div>';
+                                    histHtml += '<div class="text-xs text-gray-500 mb-1">' + h.timestamp + ' โดย ' + h.editedBy + '</div>';
+                                    histHtml += '<div class="text-sm text-gray-800 bg-gray-50 p-2 rounded-lg border border-gray-100">' + h.details.replace(/\n/g, '<br>') + '</div>';
+                                    histHtml += '</li>';
+                                });
+                                histHtml += '</ul>';
+                            }
+                            histHtml += '</div>';
+                            Swal.update({ html: histHtml });
+                        } else {
+                            Swal.update({ html: '<div class="text-center py-4 text-red-500">เกิดข้อผิดพลาดในการโหลดข้อมูล</div>' });
+                        }
+                    })
+                    .withFailureHandler(function() {
+                        Swal.update({ html: '<div class="text-center py-4 text-red-500">เกิดข้อผิดพลาดในการเชื่อมต่อ</div>' });
+                    })
+                    .getMemberEditHistory(memberId);
+            }
+        });
+    };
 
     window.editMember = function (memberId) {
         console.log("Attempting to edit member:", memberId);
@@ -3798,6 +3934,7 @@ const google = {
         setValueSafe('emergencyPhone', m['เบอร์ผู้ติดต่อฉุกเฉิน']);
         setValueSafe('emergencyRelation', m['ความสัมพันธ์ผู้ติดต่อฉุกเฉิน']);
         setValueSafe('memberType', m['ประเภทสมาชิก']);
+        setValueSafe('memberBatch', m['รุ่น ผกก.'] || m['รุ่น'] || '');
         setValueSafe('startDate', m['วันเริ่ม'] || m['วันเริ่มสมาชิก']);
         setValueSafe('endDate', m['วันสิ้นสุด'] || m['วันสิ้นสุดสมาชิก']);
         setValueSafe('phone', m['เบอร์โทร'] || m['โทรศัพท์']);
@@ -3831,12 +3968,20 @@ const google = {
         }
 
         if (m['สถานะพิเศษ'] === 'พ้นสภาพ') {
-            document.getElementById('revokeStatusContainer').classList.remove('hidden');
-            document.getElementById('revokeStatusText').innerText = 'สาเหตุ: ' + (m['สาเหตุการพ้นสภาพ'] || '-') + ' (' + (m['รายละเอียดสาเหตุ'] || '-') + ')';
+            document.getElementById('revokeStatusTag').classList.remove('hidden');
+            document.getElementById('revokeStatusTag').classList.add('flex');
+            document.getElementById('revokeStatusTextTop').classList.remove('hidden');
+            document.getElementById('revokeStatusTextTop').innerText = 'สาเหตุ: ' + (m['สาเหตุการพ้นสภาพ'] || '-') + ' (' + (m['รายละเอียดสาเหตุ'] || '-') + ')';
             document.getElementById('btnRevokeMember').classList.add('hidden');
+            if(document.getElementById('btnRevokeMemberTop')) document.getElementById('btnRevokeMemberTop').classList.add('hidden');
+            document.getElementById('btnRevertRevoke').classList.remove('hidden');
         } else {
-            document.getElementById('revokeStatusContainer').classList.add('hidden');
+            document.getElementById('revokeStatusTag').classList.add('hidden');
+            document.getElementById('revokeStatusTag').classList.remove('flex');
+            document.getElementById('revokeStatusTextTop').classList.add('hidden');
             document.getElementById('btnRevokeMember').classList.remove('hidden');
+            if(document.getElementById('btnRevokeMemberTop')) document.getElementById('btnRevokeMemberTop').classList.remove('hidden');
+            document.getElementById('btnRevertRevoke').classList.add('hidden');
         }
         document.getElementById('btnDeleteMember').classList.remove('hidden');
 
@@ -3880,7 +4025,16 @@ const google = {
         const checkAndAddFileView = (url, linkId) => {
             const linkEl = document.getElementById(linkId);
             if (url && url !== "") {
-                linkEl.href = getDriveImageUrl(url);
+                var viewUrl = url;
+                if (url.indexOf('drive.google.com') > -1) {
+                    var match1 = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                    var match2 = url.match(/id=([a-zA-Z0-9_-]+)/);
+                    var id = match1 ? match1[1] : (match2 ? match2[1] : null);
+                    if (id) {
+                        viewUrl = 'https://drive.google.com/file/d/' + id + '/view';
+                    }
+                }
+                linkEl.href = viewUrl;
                 linkEl.classList.remove('hidden');
             } else {
                 linkEl.classList.add('hidden');
@@ -4032,7 +4186,7 @@ const google = {
                         for (var i = 0; i < history.length; i++) {
                             var h = history[i];
                             var docLink = h['DocUrl'] ? '<a href="' + h['DocUrl'] + '" target="_blank" class="text-blue-600 hover:text-blue-800"><i class="fa-solid fa-file-pdf"></i></a>' : '-';
-                            var slipLink = h['SlipUrl'] ? '<a href="' + h['SlipUrl'] + '" target="_blank" class="text-green-600 hover:text-green-800 ml-2"><i class="fa-solid fa-receipt"></i></a>' : '';
+                            var slipLink = h['SlipUrl'] ? '<a href="' + h['SlipUrl'] + '" target="_blank" class="text-green-600 hover:text-green-800 "><i class="fa-solid fa-receipt"></i></a>' : '';
 
                             tbody.innerHTML += '<tr class="border-b border-gray-100">' +
                                 '<td class="py-2 px-3">' + h['Timestamp'] + '</td>' +
@@ -4164,8 +4318,11 @@ const google = {
         document.getElementById('appFormViewLink').classList.add('hidden');
         document.getElementById('otherDocsViewLink').classList.add('hidden');
 
-        document.getElementById('revokeStatusContainer').classList.add('hidden');
+        document.getElementById('revokeStatusTag').classList.add('hidden');
+        document.getElementById('revokeStatusTag').classList.remove('flex');
+        document.getElementById('revokeStatusTextTop').classList.add('hidden');
         document.getElementById('btnRevokeMember').classList.add('hidden');
+        document.getElementById('btnRevertRevoke').classList.add('hidden');
         document.getElementById('btnDeleteMember').classList.add('hidden');
 
         var spBtn = document.getElementById('btnSpecialPoints');
@@ -4288,9 +4445,17 @@ const google = {
                     .withSuccessHandler(function (res) {
                         hideLoader();
                         if (res.success) {
+                            var targetIndex = allMembers.findIndex(function(m) { return m['รหัสสมาชิก'] === memberId; });
+                            if (targetIndex !== -1) {
+                                allMembers[targetIndex]['สถานะพิเศษ'] = 'พ้นสภาพ';
+                                allMembers[targetIndex]['สถานภาพสมาชิก'] = 'พ้นสภาพ';
+                                allMembers[targetIndex]['สถานภาพ'] = 'พ้นสภาพ';
+                                allMembers[targetIndex]['สาเหตุการพ้นสภาพ'] = result.value.reason;
+                                allMembers[targetIndex]['รายละเอียดสาเหตุ'] = result.value.details;
+                            }
                             Swal.fire('สำเร็จ', 'บันทึกสถานะพ้นสภาพเรียบร้อย', 'success');
                             closeMemberModal();
-                            loadMembers();
+                            filterMembers();
                         } else {
                             Swal.fire('ข้อผิดพลาด', res.message, 'error');
                         }
@@ -4325,9 +4490,17 @@ const google = {
                     .withSuccessHandler(function (res) {
                         hideLoader();
                         if (res.success) {
+                            var targetIndex = allMembers.findIndex(function(m) { return m['รหัสสมาชิก'] === memberId; });
+                            if (targetIndex !== -1) {
+                                allMembers[targetIndex]['สถานะพิเศษ'] = '';
+                                allMembers[targetIndex]['สถานภาพสมาชิก'] = 'ปกติ';
+                                allMembers[targetIndex]['สถานภาพ'] = 'ปกติ';
+                                allMembers[targetIndex]['สาเหตุการพ้นสภาพ'] = '';
+                                allMembers[targetIndex]['รายละเอียดสาเหตุ'] = '';
+                            }
                             Swal.fire('สำเร็จ', 'ยกเลิกสถานะพ้นสภาพเรียบร้อย', 'success');
                             closeMemberModal();
-                            loadMembers();
+                            filterMembers();
                         } else {
                             Swal.fire('ข้อผิดพลาด', res.message, 'error');
                         }
@@ -4402,7 +4575,7 @@ const google = {
 
     function loadMemberPointHistory(memberId, startDate, endDate) {
         var tbody = document.getElementById('specialPointsTableBody');
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-army-500 font-medium"><i class="fa-solid fa-spinner fa-spin mr-2"></i>กำลังโหลดประวัติ...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-army-500 font-medium"><i class="fa-solid fa-spinner fa-spin mr-2"></i>กำลังโหลดประวัติ...</td></tr>';
 
         google.script.run
             .withSuccessHandler(function (res) {
@@ -4411,7 +4584,7 @@ const google = {
                 var periodTotal = 0;
 
                 if (!history || history.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-500">ไม่พบประวัติคะแนนสะสมในช่วงเวลาที่เลือก</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-500">ไม่พบประวัติคะแนนสะสมในช่วงเวลาที่เลือก</td></tr>';
                     document.getElementById('spPeriodTotal').innerText = '0';
                     return;
                 }
@@ -4434,8 +4607,7 @@ const google = {
                         } else {
                             manageButtons = `
                                 <div class="flex justify-center gap-2">
-                                    <button onclick="editSpecialPoint('${p.rowIndex}', '${p.pointId}', '${p.name}', '${p.score}', '${p.date}', '${p.recorder || ''}')" class="text-amber-500 hover:text-amber-700 w-8 h-8 rounded-full hover:bg-amber-50 transition-all"><i class="fa-solid fa-pen"></i></button>
-                                    <button onclick="deleteSpecialPointAction('${p.rowIndex}')" class="text-red-400 hover:text-red-600 w-8 h-8 rounded-full hover:bg-red-50 transition-all"><i class="fa-solid fa-trash-can"></i></button>
+                                    <button onclick="deleteSpecialPointAction('${p.pointId}')" class="text-red-400 hover:text-red-600 w-8 h-8 rounded-full hover:bg-red-50 transition-all"><i class="fa-solid fa-trash-can"></i></button>
                                 </div>
                             `;
                         }
@@ -4454,7 +4626,7 @@ const google = {
                     tr.innerHTML = `
                         <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ${typeClass} flex items-center w-fit"><i class="fa-solid ${typeIcon} mr-1 text-[8px]"></i>${p.type}</span></td>
                         <td class="py-3 px-4 font-medium text-gray-800">${p.name}</td>
-                        <td class="py-3 px-4 text-center font-bold ${p.score >= 0 ? 'text-green-600' : 'text-red-600'}">${p.score >= 0 ? '+' : ''}${p.score}</td>
+                        <td class="py-3 px-4 text-center font-bold ${p.score >= 0 ? 'text-green-600' : 'text-red-600'}">${p.score}</td>
                         <td class="py-3 px-4 text-center text-gray-500 text-[11px]">${p.date}</td>
                         <td class="py-3 px-4 text-gray-600 text-xs">${p.recorder || '-'}</td>
                         <td class="py-3 px-4 text-center">${statusHtml}</td>
@@ -4466,6 +4638,16 @@ const google = {
             })
             .getMemberScores(memberId, startDate, endDate);
     }
+
+    window.viewDisapproveReason = function(reason) {
+        Swal.fire({
+            title: 'เหตุผลที่ไม่อนุมัติ',
+            html: '<div class="text-left bg-red-50 p-4 rounded-lg border border-red-100 text-red-800">' + reason + '</div>',
+            icon: 'info',
+            confirmButtonText: 'ปิด',
+            customClass: { popup: 'rounded-2xl' }
+        });
+    };
 
     function resetPointHistoryFilter() {
         var memberId = document.getElementById('spMemberId').innerText;
@@ -4544,7 +4726,7 @@ const google = {
             .saveSpecialPoint(data, recorder);
     }
 
-    function deleteSpecialPointAction(rowIndex) {
+    function deleteSpecialPointAction(pointId) {
         var memberId = document.getElementById('spMemberId').innerText;
         Swal.fire({
             title: 'ยืนยันการลบ?',
@@ -4571,7 +4753,7 @@ const google = {
                         hideLoader();
                         Swal.fire('ข้อผิดพลาด', err.message, 'error');
                     })
-                    .deleteSpecialPoint(rowIndex);
+                    .deleteSpecialPoint(pointId);
             }
         });
     }
@@ -4919,26 +5101,25 @@ const google = {
                             var tr = document.createElement('tr');
                             tr.className = 'border-b border-army-400/20 hover:bg-white transition-colors';
 
-                            var status = a['Status'] || 'เปิดรับสมัคร';
+                            var status = a['Status'] || 'เปิดลงทะเบียน';
                             var statusBadge = '';
-                            if (status === 'เปิดรับสมัคร') {
-                                statusBadge = '<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200 ml-2"><i class="fa-solid fa-circle-play mr-1"></i>เปิดรับสมัคร</span>';
+                            if (status === 'เปิดลงทะเบียน') {
+                                statusBadge = '<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200 "><i class="fa-solid fa-circle-play mr-1"></i>เปิดลงทะเบียน</span>';
                             } else if (status === 'รออนุมัติ') {
-                                statusBadge = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 ml-2"><i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติ</span>';
+                                statusBadge = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 "><i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติ</span>';
                             } else if (status === 'อนุมัติแล้ว') {
-                                statusBadge = '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200 ml-2"><i class="fa-solid fa-circle-check mr-1"></i>อนุมัติแล้ว</span>';
+                                statusBadge = '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200 "><i class="fa-solid fa-circle-check mr-1"></i>อนุมัติแล้ว</span>';
                             }
 
                             var html = '<td class="py-3 px-4">';
-                            html += '<div class="font-bold text-army-800 flex items-center flex-wrap gap-1">' + a['Name'] + statusBadge + '</div>';
+                            html += '<div class="font-bold text-army-800 flex flex-col items-start gap-1 mt-1">' + a['Name'] + statusBadge + '</div>';
                             if (a['ResponsiblePerson']) html += '<div class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-user-tie mr-1"></i>' + a['ResponsiblePerson'] + '</div>';
                             html += '</td>';
                             html += '<td class="py-3 px-4 text-center text-army-600 text-sm"><i class="fa-regular fa-calendar mr-2"></i>' + a['Date'] + '</td>';
-                            html += '<td class="py-3 px-4 text-center"><span class="bg-armylight-200 text-army-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm">' + a['Score'] + ' คะแนน</span></td>';
 
                             var editBtn = '';
                             var deleteBtn = '';
-                            if (status === 'เปิดรับสมัคร') {
+                            if (status === 'เปิดลงทะเบียน') {
                                 editBtn = '<button onclick="editActivity(\'' + a['ActivityID'] + '\')" class="bg-amber-500 hover:bg-amber-600 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>';
                                 deleteBtn = '<button onclick="deleteActivityAction(\'' + a['ActivityID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="ลบ"><i class="fa-solid fa-trash"></i></button>';
                             } else {
@@ -4979,26 +5160,26 @@ const google = {
             var tr = document.createElement('tr');
             tr.className = 'border-b border-army-400/20 hover:bg-white transition-colors';
 
-            var status = a['Status'] || 'เปิดรับสมัคร';
+            var status = a['Status'] || 'เปิดลงทะเบียน';
             var statusBadge = '';
-            if (status === 'เปิดรับสมัคร') {
-                statusBadge = '<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200 ml-2"><i class="fa-solid fa-circle-play mr-1"></i>เปิดรับสมัคร</span>';
+            if (status === 'เปิดลงทะเบียน') {
+                statusBadge = '<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200 "><i class="fa-solid fa-circle-play mr-1"></i>เปิดลงทะเบียน</span>';
             } else if (status === 'รออนุมัติ') {
-                statusBadge = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 ml-2"><i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติ</span>';
+                statusBadge = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 "><i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติ</span>';
             } else if (status === 'อนุมัติแล้ว') {
-                statusBadge = '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200 ml-2"><i class="fa-solid fa-circle-check mr-1"></i>อนุมัติแล้ว</span>';
+                statusBadge = '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200 "><i class="fa-solid fa-circle-check mr-1"></i>อนุมัติแล้ว</span>';
             }
 
             var html = '<td class="py-3 px-4">';
-            html += '<div class="font-bold text-army-800 flex items-center flex-wrap gap-1">' + a['Name'] + statusBadge + '</div>';
+            html += '<div class="font-bold text-army-800 flex flex-col items-start gap-1 mt-1">' + a['Name'] + statusBadge + '</div>';
             if (a['ResponsiblePerson']) html += '<div class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-user-tie mr-1"></i>' + a['ResponsiblePerson'] + '</div>';
             html += '</td>';
             html += '<td class="py-3 px-4 text-center text-army-600 text-sm"><i class="fa-regular fa-calendar mr-2"></i>' + a['Date'] + '</td>';
-            html += '<td class="py-3 px-4 text-center"><span class="bg-armylight-200 text-army-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm">' + a['Score'] + ' คะแนน</span></td>';
+            html += '<td class="py-3 px-4 text-center"><span class="bg-armylight-200 text-army-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm">' + a['Score'] + '</span></td>';
 
             var editBtn = '';
             var deleteBtn = '';
-            if (status === 'เปิดรับสมัคร') {
+            if (status === 'เปิดลงทะเบียน') {
                 editBtn = '<button onclick="editActivity(\'' + a['ActivityID'] + '\')" class="bg-amber-500 hover:bg-amber-600 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>';
                 deleteBtn = '<button onclick="deleteActivityAction(\'' + a['ActivityID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="ลบ"><i class="fa-solid fa-trash"></i></button>';
             } else {
@@ -5022,14 +5203,14 @@ const google = {
 
         // Find activity to get its status
         var act = allActivities.find(function (a) { return a['ActivityID'] === activityId; });
-        var status = act ? (act['Status'] || 'เปิดรับสมัคร') : 'เปิดรับสมัคร';
+        var status = act ? (act['Status'] || 'เปิดลงทะเบียน') : 'เปิดลงทะเบียน';
 
         var actionControls = document.getElementById('activityActionControls');
         var manualRecordContainer = document.getElementById('manualRecordCardContainer');
 
         if (actionControls) {
             actionControls.innerHTML = '';
-            if (status === 'เปิดรับสมัคร') {
+            if (status === 'เปิดลงทะเบียน') {
                 actionControls.innerHTML = '<button onclick="closeActivityForApprovalAction(\'' + activityId + '\')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-full shadow-md text-sm transition-all hover:-translate-y-0.5 flex items-center gap-1.5"><i class="fa-solid fa-lock"></i> ปิดลงทะเบียน</button>';
                 if (manualRecordContainer) manualRecordContainer.classList.remove('hidden');
             } else {
@@ -5085,7 +5266,7 @@ const google = {
 
                 // Check status of activity to determine if deleting is allowed
                 var act = allActivities.find(function (a) { return a['ActivityID'] === activityId; });
-                var status = act ? (act['Status'] || 'เปิดรับสมัคร') : 'เปิดรับสมัคร';
+                var status = act ? (act['Status'] || 'เปิดลงทะเบียน') : 'เปิดลงทะเบียน';
 
                 for (var i = 0; i < participants.length; i++) {
                     var p = participants[i];
@@ -5099,18 +5280,30 @@ const google = {
                         ? '<img src="' + photoSrc + '" class="w-10 h-10 rounded-full object-cover border-2 shadow-sm mx-auto ' + ringClassPart + '">'
                         : '<div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center border-2 shadow-sm mx-auto ' + ringClassPart + '"><i class="fa-solid fa-user text-gray-400"></i></div>';
 
-                    var deleteBtn = (status === 'เปิดรับสมัคร')
-                        ? '<button onclick="removeParticipant(\'' + p['รหัสสมาชิก'] + '\')" class="text-red-400 hover:text-red-600 w-6 h-6 rounded-full hover:bg-red-50 transition-colors"><i class="fa-solid fa-xmark"></i></button>'
-                        : '<span class="text-gray-300"><i class="fa-solid fa-ban" title="กิจกรรมปิดแล้ว"></i></span>';
+                    var attendanceStatus = p['AttendanceStatus'] || 'รออนุมัติ';
+                    var statusHtml = '';
+                    if (status === 'เปิดลงทะเบียน') {
+                        statusHtml = '<button onclick="removeParticipant(\'' + p['รหัสสมาชิก'] + '\')" class="text-red-400 hover:text-red-600 w-6 h-6 rounded-full hover:bg-red-50 transition-colors"><i class="fa-solid fa-xmark"></i></button>';
+                    } else {
+                        if (attendanceStatus === 'อนุมัติแล้ว') {
+                            statusHtml = '<span class="text-green-600 text-xs font-bold bg-green-100 px-2 py-1 rounded-full border border-green-200 whitespace-nowrap"><i class="fa-solid fa-check"></i> อนุมัติ</span>';
+                        } else if (attendanceStatus === 'ไม่อนุมัติ') {
+                            var reason = p['Reason'] || '';
+                            statusHtml = '<div class="flex flex-col items-center gap-1"><span class="text-red-500 text-xs font-bold bg-red-100 px-2 py-1 rounded-full border border-red-200 whitespace-nowrap"><i class="fa-solid fa-xmark"></i> ไม่อนุมัติ</span>' +
+                                         (reason ? '<button onclick="viewDisapproveReason(\'' + reason.replace(/'/g, "\\'") + '\')" class="text-[10px] text-gray-500 hover:text-gray-800 underline">ดูสาเหตุ</button>' : '') + '</div>';
+                        } else {
+                            statusHtml = '<span class="text-amber-500 text-xs font-bold bg-amber-100 px-2 py-1 rounded-full border border-amber-200 whitespace-nowrap"><i class="fa-solid fa-hourglass-half"></i> รออนุมัติ</span>';
+                        }
+                    }
 
                     var tr = document.createElement('tr');
                     tr.className = 'hover:bg-white transition-colors border-b border-army-400/10';
                     var participantFullName = (p['ขั้น'] || p['คำนำหน้า(ขั้น)'] || '') + (p['ชื่อ-สกุล (ไทย)'] || p['ชื่อ'] || p['ชื่อ (ไทย)'] || '') + (p['นามสกุล'] || p['นามสกุล (ไทย)'] || p['Surname'] ? ' ' + (p['นามสกุล'] || p['นามสกุล (ไทย)'] || p['Surname']) : '');
                     tr.innerHTML = '<td class="py-2 px-4">' + photoHtml + '</td>' +
-                        '<td class="py-2 px-4 font-medium text-gray-800">' + participantFullName + '</td>' +
+                        '<td class="py-2 px-4 font-medium text-army-600 hover:text-army-800 cursor-pointer hover:underline" onclick="viewMemberDetails(\'' + p['รหัสสมาชิก'] + '\')">' + participantFullName + '</td>' +
                         '<td class="py-2 px-4 text-center"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-mono">' + p['รหัสสมาชิก'] + '</span></td>' +
                         '<td class="py-2 px-4 text-center"><div class="text-xs text-gray-500">' + p['Timestamp'] + '</div><div class="text-[10px] text-gray-400 mt-0.5">โดย: ' + (p['ScannedBy'] || '-') + '</div></td>' +
-                        '<td class="py-2 px-4 text-center">' + deleteBtn + '</td>';
+                        '<td class="py-2 px-4 text-center">' + statusHtml + '</td>';
                     tbody.appendChild(tr);
                 }
             })
@@ -5551,21 +5744,19 @@ const google = {
     }
 
     function confirmAttendance(memberId, wasFromScanner) {
-        showLoader('กำลังตรวจสอบข้อมูล...');
+        showLoader('กำลังตรวจสอบข้อมูลสมาชิก...');
         google.script.run
             .withSuccessHandler(function (member) {
                 hideLoader();
                 if (!member) {
                     Swal.fire('ไม่พบข้อมูล', 'ไม่พบสมาชิกที่มีรหัส: ' + memberId, 'error').then(() => {
-                        if (wasFromScanner) {
-                            initAttendeeHtml5Scanner();
-                        }
+                        if (wasFromScanner) initAttendeeHtml5Scanner();
                     });
                     return;
                 }
-
+                
+                // Show Confirmation Popup BEFORE recording
                 var photoSrc = member['รูปถ่าย'] ? getDriveImageUrl(member['รูปถ่าย']) : '';
-
                 var ringClassCheckin = 'border-white';
                 if (member['ขั้น'] === 'ผกก.ท.') ringClassCheckin = 'border-army-600 shadow-[0_0_15px_rgba(75,83,32,0.6)]';
                 else if (member['ขั้น'] === 'ผกก.อ.') ringClassCheckin = 'border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.6)]';
@@ -5574,90 +5765,107 @@ const google = {
                     ? '<img src="' + photoSrc + '" class="w-32 h-32 rounded-full object-cover border-[4px] shadow-lg mx-auto bg-white transition-all ' + ringClassCheckin + '">'
                     : '<div class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center border-[4px] shadow-lg mx-auto transition-all ' + ringClassCheckin + '"><i class="fa-solid fa-user text-gray-400 text-4xl"></i></div>';
 
-                var html = '<div class="text-center py-4">';
+                var prefix = member['ขั้น'] || member['คำนำหน้า(ขั้น)'] || member['คำนำหน้า'] || '';
+                var displayName = (prefix ? prefix.toString().trim() + ' ' : '') + member['ชื่อ-สกุล (ไทย)'];
+                var memStatus = member['สถานภาพสมาชิก'] || member['สถานภาพ'] || 'ปกติ';
+
+                var statusColorClass = 'bg-green-100 text-green-700 border-green-200';
+                if (memStatus === 'หมดอายุ' || memStatus === 'Inactive' || memStatus === 'พ้นสภาพ') {
+                    statusColorClass = 'bg-red-100 text-red-700 border-red-200';
+                } else if (memStatus === 'เตือนต่ออายุ' || memStatus === 'เตือนต่อ') {
+                    statusColorClass = 'bg-amber-100 text-amber-700 border-amber-200';
+                }
+
+                var html = '<div class="text-center py-2">';
                 html += '<div class="dog-tag-bg p-6 rounded-3xl shadow-inner border border-army-400/30 mb-4 relative overflow-hidden">';
                 html += '<div class="absolute top-0 right-0 p-3 opacity-20"><i class="fa-solid fa-id-card text-6xl text-white"></i></div>';
                 html += '<div class="relative z-10">';
                 html += photoHtml;
-                var prefix = member['ขั้น'] || member['คำนำหน้า(ขั้น)'] || member['คำนำหน้า'] || '';
-                var displayName = (prefix ? prefix.toString().trim() + ' ' : '') + member['ชื่อ-สกุล (ไทย)'];
                 html += '<h3 class="text-xl font-bold text-army-900 mt-4">' + displayName + '</h3>';
-                html += '<p class="text-gray-500 font-medium text-sm mb-1">' + formatPhone(member['เบอร์โทร']) + '</p>';
-                html += '<p class="text-army-600 font-mono mt-1 font-medium bg-white/50 inline-block px-3 py-0.5 rounded-lg border border-white/60">' + member['รหัสสมาชิก'] + '</p>';
-                html += '</div></div>';
-                html += '<p class="text-gray-600 font-medium">คุณต้องการบันทึกการเข้าร่วมกิจกรรมของสมาชิกคนนี้ใช่หรือไม่?</p>';
+                html += '<div class="flex justify-center items-center gap-2 mt-2">';
+                html += '<span class="text-army-600 font-mono font-bold bg-white/50 px-3 py-1 rounded-lg border border-white/60">' + member['รหัสสมาชิก'] + '</span>';
+                html += '<span class="font-bold px-3 py-1 rounded-lg border ' + statusColorClass + '">' + memStatus + '</span>';
+                html += '</div></div></div>';
+                html += '<p class="text-gray-600 text-sm font-medium">คุณต้องการบันทึกการเข้าร่วมกิจกรรมของสมาชิกท่านนี้ใช่หรือไม่?</p>';
                 html += '</div>';
 
                 Swal.fire({
-                    title: '<span class="text-army-900 font-bold drop-shadow-sm"><i class="fa-solid fa-check-circle text-army-600 mr-2"></i>ยืนยันการเข้าร่วม</span>',
+                    title: 'ยืนยันการเช็คชื่อเข้าร่วมกิจกรรม',
                     html: html,
+                    icon: 'question',
                     showCancelButton: true,
-                    confirmButtonText: 'บันทึกการเข้าร่วม',
+                    confirmButtonText: '<i class="fa-solid fa-check mr-1"></i> บันทึกเข้าร่วม',
                     cancelButtonText: 'ยกเลิก',
+                    confirmButtonColor: '#059669', // emerald-600
+                    cancelButtonColor: '#6b7280', // gray-500
                     customClass: {
                         popup: 'rounded-3xl',
-                        confirmButton: 'bg-army-600 hover:bg-army-700 text-white rounded-full px-6 py-2.5 font-bold shadow-md',
-                        cancelButton: 'bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-full px-6 py-2.5 font-bold shadow-sm ml-2'
-                    },
-                    buttonsStyling: false
+                        confirmButton: 'rounded-full px-6 py-2.5 font-bold shadow-md text-white',
+                        cancelButton: 'rounded-full px-6 py-2.5 font-bold shadow-sm text-white'
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        saveAttendanceRecord(currentActivityId, member['รหัสสมาชิก'], wasFromScanner);
+                        showLoader('กำลังบันทึกเข้าร่วมกิจกรรม...');
+                        var adminName = currentUser ? currentUser.name : 'System';
+                        google.script.run
+                            .withSuccessHandler(function (res) {
+                                hideLoader();
+                                if (res.success) {
+                                    var statusText = res.status || 'อนุมัติแล้ว';
+                                    var successHtml = '<div class="text-center py-2">';
+                                    successHtml += '<p class="text-green-600 font-bold text-lg"><i class="fa-solid fa-check-circle mr-1"></i>บันทึกสำเร็จ (' + statusText + ')</p>';
+                                    if (res.alreadyRecorded) {
+                                        successHtml += '<p class="text-gray-500 text-xs mt-1">(คุณเคยบันทึกกิจกรรมนี้ไปแล้ว)</p>';
+                                    }
+                                    successHtml += '</div>';
+                                    
+                                    Swal.fire({
+                                        title: 'บันทึกสำเร็จ!',
+                                        html: successHtml,
+                                        icon: 'success',
+                                        customClass: { popup: 'rounded-3xl' }
+                                    }).then(() => {
+                                        if (wasFromScanner) initAttendeeHtml5Scanner();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'ไม่สามารถบันทึกได้',
+                                        text: res.message,
+                                        icon: 'error',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'ดูเหตุผล',
+                                        cancelButtonText: 'ปิด',
+                                        customClass: { popup: 'rounded-3xl' }
+                                    }).then((btnRes) => {
+                                        if (btnRes.isConfirmed) {
+                                            viewDisapproveReason(res.reason || 'ไม่มีการระบุเหตุผล');
+                                        } else if (wasFromScanner) {
+                                            initAttendeeHtml5Scanner();
+                                        }
+                                    });
+                                }
+                                loadActivityParticipants(currentActivityId);
+                            })
+                            .withFailureHandler(function (err) {
+                                hideLoader();
+                                Swal.fire('ข้อผิดพลาด', err.message, 'error').then(() => {
+                                    if (wasFromScanner) initAttendeeHtml5Scanner();
+                                });
+                            })
+                            .recordActivityAttendance(currentActivityId, member['รหัสสมาชิก'], adminName);
                     } else {
-                        if (wasFromScanner) {
-                            initAttendeeHtml5Scanner();
-                        }
+                        // User cancelled
+                        if (wasFromScanner) initAttendeeHtml5Scanner();
                     }
                 });
             })
             .withFailureHandler(function (err) {
                 hideLoader();
                 Swal.fire('ข้อผิดพลาด', err.message, 'error').then(() => {
-                    if (wasFromScanner) {
-                        initAttendeeHtml5Scanner();
-                    }
+                    if (wasFromScanner) initAttendeeHtml5Scanner();
                 });
             })
             .getMemberByQR(memberId);
-    }
-
-    function saveAttendanceRecord(actId, memId, wasFromScanner) {
-        showLoader('กำลังบันทึก...');
-        var adminName = currentUser ? currentUser.name : 'System';
-        google.script.run
-            .withSuccessHandler(function (res) {
-                hideLoader();
-                if (res.success) {
-                    Swal.fire({
-                        title: 'สำเร็จ!',
-                        text: res.message,
-                        icon: 'success',
-                        timer: 2000,
-                        showConfirmButton: false,
-                        customClass: { popup: 'rounded-3xl' }
-                    }).then(() => {
-                        if (wasFromScanner) {
-                            initAttendeeHtml5Scanner();
-                        }
-                    });
-                    loadActivityParticipants(actId);
-                } else {
-                    Swal.fire('ผิดพลาด', res.message, 'error').then(() => {
-                        if (wasFromScanner) {
-                            initAttendeeHtml5Scanner();
-                        }
-                    });
-                }
-            })
-            .withFailureHandler(function (err) {
-                hideLoader();
-                Swal.fire('ข้อผิดพลาด', err.message, 'error').then(() => {
-                    if (wasFromScanner) {
-                        initAttendeeHtml5Scanner();
-                    }
-                });
-            })
-            .recordActivityAttendance(actId, memId, adminName);
     }
 
     // === หน้ากระดานสมาชิก (Member Dashboard) ===
@@ -5683,7 +5891,7 @@ const google = {
                     tr.innerHTML = '<td class="py-3 px-4">' + (i + 1) + '</td>' +
                         '<td class="py-3 px-4 font-medium text-gray-800">' + a.name + '</td>' +
                         '<td class="py-3 px-4 text-center">' + a.date + '</td>' +
-                        '<td class="py-3 px-4 text-center text-green-600 font-bold">+' + a.score + '</td>';
+                        '<td class="py-3 px-4 text-center text-green-600 font-bold">' + a.score + '</td>';
                     tbody.appendChild(tr);
                 }
             })
@@ -6373,8 +6581,7 @@ const google = {
             'members': 'Members',
             'activities': 'Activities',
             'promotions': 'Promotions',
-            'specialpoints': 'SpecialPoints',
-            'notifications': 'Notifications'
+            'specialpoints': 'SpecialPoints'
         };
         Object.keys(tabSuffixMap).forEach(function (t) {
             var suffix = tabSuffixMap[t];
@@ -6437,21 +6644,6 @@ const google = {
                 console.error("GetPendingPromotions failure handler: ", err);
             })
             .getPendingPromotions();
-
-        // 3. Get Pending Notifications
-        google.script.run
-            .withSuccessHandler(function (res) {
-                if (res && res.success) {
-                    if (countNotificationsEl) countNotificationsEl.innerText = res.list.length;
-                    renderPendingNotifications(res.list);
-                } else {
-                    console.error("GetNotifications failed: ", res ? res.message : "No response");
-                }
-            })
-            .withFailureHandler(function (err) {
-                console.error("GetNotifications failure handler: ", err);
-            })
-            .getNotifications();
 
         // 4. Get Pending Activities
         google.script.run
@@ -6524,7 +6716,7 @@ const google = {
                 '<td class="py-2.5 px-3 text-center" data-label="วันที่จัด">' + a['Date'] + '</td>' +
                 '<td class="py-2.5 px-3 text-center" data-label="คะแนน"><span class="bg-armylight-200 text-army-800 font-bold px-2 py-0.5 rounded-full whitespace-nowrap inline-flex items-center justify-center">' + a['Score'] + ' คะแนน</span></td>' +
                 '<td class="py-2.5 px-3" data-label="ผู้รับผิดชอบ"><div class="font-medium">' + (a['ResponsiblePerson'] || '-') + '</div><div class="text-[10px] text-gray-500 mt-0.5">นำเรียนโดย: ' + (a['CreatedBy'] || '-') + '</div></td>' +
-                '<td class="py-2.5 px-3 text-center" data-label="จัดการ"><div class="flex justify-end md:justify-center gap-1 flex-wrap">' +
+                '<td class="py-2.5 px-3 text-center" data-label="จัดการ"><div class="flex justify-end md:justify-center gap-1 flex-nowrap whitespace-nowrap">' +
                 '<button onclick="viewPendingActivityParticipants(\'' + a['ActivityID'] + '\', \'' + (a['Name'] || '').replace(/'/g, "\\'") + '\')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-list mr-1"></i> รายชื่อ</button>' +
                 '<button onclick="approveActivityScoresAction(\'' + a['ActivityID'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-check mr-1"></i> อนุมัติ</button>' +
                 '<button onclick="disapproveActivityScoresAction(\'' + a['ActivityID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-xmark mr-1"></i> ไม่อนุมัติ</button>' +
@@ -6546,7 +6738,7 @@ const google = {
             tr.className = 'border-b hover:bg-gray-50 text-xs';
             tr.innerHTML = '<td class="py-2.5 px-3 text-center text-gray-500" data-label="#">' + (idx + 1) + '</td>' +
                 '<td class="py-2.5 px-3 font-mono font-bold text-army-700" data-label="รหัสสมาชิก">' + p['MemberID'] + '</td>' +
-                '<td class="py-2.5 px-3 font-medium text-gray-800" data-label="ชื่อสมาชิก">' + p['MemberName'] + '</td>' +
+                '<td class="py-2.5 px-3 font-medium text-army-600 hover:text-army-800 cursor-pointer hover:underline" data-label="ชื่อสมาชิก" onclick="viewMemberDetails(\'' + p['MemberID'] + '\')">' + p['MemberName'] + '</td>' +
                 '<td class="py-2.5 px-3" data-label="ยศ / ตำแหน่งใหม่"><div class="text-right md:text-left">ชั้น: <span class="font-bold text-army-800">' + p['Rank'] + '</span></div><div class="text-[10px] text-gray-500 text-right md:text-left">ตำแหน่ง: ' + p['Position'] + ' (' + p['Rate'] + ')</div></td>' +
                 '<td class="py-2.5 px-3 text-gray-600" data-label="ผู้ขอบันทึก"><div class="text-right md:text-left">โดย: ' + p['Recorder'] + '</div><div class="text-[9px] text-gray-400 text-right md:text-left">' + p['Timestamp'] + '</div></td>' +
                 '<td class="py-2.5 px-3 text-center" data-label="จัดการ"><div class="flex justify-center gap-1"><button onclick="approveRankPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2.5 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-check mr-1"></i>อนุมัติ</button><button onclick="disapproveRankPromotionAction(\'' + p['PromotionID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2.5 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-xmark mr-1"></i>ไม่อนุมัติ</button></div></td>';
@@ -6554,42 +6746,6 @@ const google = {
         });
     }
 
-    function renderPendingNotifications(list) {
-        var tbody = document.getElementById('pendingNotificationsTableBody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        if (!list || list.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-gray-400 italic">ไม่มีการแจ้งเตือนตกค้าง</td></tr>';
-            return;
-        }
-        list.forEach(function (n, idx) {
-            var tr = document.createElement('tr');
-            tr.className = 'border-b hover:bg-gray-50 text-xs';
-            var badge = 'bg-gray-100 text-gray-800 border-gray-200';
-            var label = 'การแจ้งเตือน';
-            var type = n['Type'] || '';
-
-            if (type === 'EditMember') {
-                badge = 'bg-blue-100 text-blue-800 border-blue-200';
-                label = 'แก้ไขข้อมูลสมาชิก';
-            } else if (type === 'RenewMember' || type === 'Renewal') {
-                badge = 'bg-amber-100 text-amber-800 border-amber-200';
-                label = 'ต่ออายุสมาชิก';
-            } else if (type === 'PromotionPending') {
-                badge = 'bg-purple-100 text-purple-800 border-purple-200';
-                label = 'เลื่อนชั้นสมาชิก';
-            } else if (type === 'ActivityPending') {
-                badge = 'bg-orange-100 text-orange-800 border-orange-200';
-                label = 'รออนุมัติคะแนน';
-            }
-            tr.innerHTML = '<td class="py-2.5 px-3 text-center text-gray-500" data-label="#">' + (idx + 1) + '</td>' +
-                '<td class="py-2.5 px-3 text-center" data-label="ประเภทกิจกรรม"><span class="border px-2.5 py-1 rounded-full font-bold text-[9px] whitespace-nowrap inline-flex items-center justify-center ' + badge + '">' + label + '</span></td>' +
-                '<td class="py-2.5 px-3 font-medium text-gray-800 leading-normal" data-label="รายละเอียดข้อความ">' + n['Message'] + '</td>' +
-                '<td class="py-2.5 px-3 text-center text-gray-500 text-[10px]" data-label="วันเวลาเกิดเรื่อง">' + n['Timestamp'] + '</td>' +
-                '<td class="py-2.5 px-3 text-center" data-label="จัดการ"><button onclick="acknowledgeNotificationAction(\'' + n['NotificationID'] + '\')" class="bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 font-bold py-1 px-2.5 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-eye mr-1"></i> รับทราบ</button></td>';
-            tbody.appendChild(tr);
-        });
-    }
 
     window.viewPendingActivityParticipants = function (activityId, activityName) {
         selectedPendingActivityId = activityId;
@@ -6598,6 +6754,7 @@ const google = {
         var tbody = document.getElementById('pendingActivityParticipantsBody');
         tbody.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-army-500 font-medium"><i class="fa-solid fa-spinner fa-spin mr-2"></i>กำลังโหลด...</td></tr>';
         document.getElementById('pendingActivityParticipantsSection').classList.remove('hidden');
+        document.getElementById('pendingActivityParticipantsSection').classList.add('flex');
 
         google.script.run
             .withSuccessHandler(function (list) {
@@ -6616,9 +6773,13 @@ const google = {
                     if (isApproved) {
                         actionBtn = '<span class="text-green-600 font-bold"><i class="fa-solid fa-circle-check"></i> อนุมัติแล้ว</span>';
                     } else if (isDisapproved) {
-                        actionBtn = '<span class="text-red-500 font-bold"><i class="fa-solid fa-circle-xmark"></i> ไม่อนุมัติ</span>';
+                        var reason = p['Reason'] || '';
+                        actionBtn = '<div class="flex justify-center gap-1 flex-nowrap whitespace-nowrap">' +
+                                    '<span class="text-red-500 font-bold"><i class="fa-solid fa-circle-xmark"></i> ไม่อนุมัติ</span>' +
+                                    (reason ? ' <button onclick="viewDisapproveReason(\'' + reason.replace(/'/g, "\\'") + '\')" class="text-gray-500 hover:text-gray-800 ml-1"><i class="fa-solid fa-circle-info"></i></button>' : '') +
+                                    '</div>';
                     } else {
-                        actionBtn = '<div class="flex justify-center gap-1">' +
+                        actionBtn = '<div class="flex justify-center gap-1 flex-nowrap whitespace-nowrap">' +
                             '<button onclick="approveIndividualActivityScoreAction(\'' + selectedPendingActivityId + '\', \'' + p['รหัสสมาชิก'] + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-0.5 px-2 rounded-full text-[9px] shadow-sm transition-all"><i class="fa-solid fa-check"></i> อนุมัติ</button>' +
                             '<button onclick="disapproveIndividualActivityScoreAction(\'' + selectedPendingActivityId + '\', \'' + p['รหัสสมาชิก'] + '\')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-0.5 px-2 rounded-full text-[9px] shadow-sm transition-all"><i class="fa-solid fa-xmark"></i> ไม่อนุมัติ</button>' +
                             '</div>';
@@ -6787,6 +6948,30 @@ const google = {
         });
     };
 
+    window.approveAllRankPromotionsAction = function () {
+        promptPresidentPIN(function () {
+            showLoader('กำลังดำเนินการอนุมัติการเลื่อนชั้นทั้งหมด...');
+            var adminName = currentUser ? currentUser.name : 'President';
+            google.script.run
+                .withSuccessHandler(function (res) {
+                    hideLoader();
+                    if (res.success) {
+                        Swal.fire('สำเร็จ', res.message, 'success');
+                        loadPresidentApprovals();
+                        loadMembers(); // reload stats
+                        loadPendingPromotionsList(); // reload promotion panel list if visible
+                    } else {
+                        Swal.fire('ข้อผิดพลาด', res.message, 'error');
+                    }
+                })
+                .withFailureHandler(function (err) {
+                    hideLoader();
+                    Swal.fire('ข้อผิดพลาด', err.message, 'error');
+                })
+                .approveAllRankPromotions(adminName);
+        });
+    };
+
     window.approveRankPromotionAction = function (promotionId) {
         promptPresidentPIN(function () {
             showLoader('กำลังอนุมัติปรับชั้นยศ...');
@@ -6808,6 +6993,30 @@ const google = {
                     Swal.fire('ข้อผิดพลาด', err.message, 'error');
                 })
                 .approveRankPromotion(promotionId, adminName);
+        });
+    };
+
+    window.approveAllRankPromotionsAction = function () {
+        promptPresidentPIN(function () {
+            showLoader('กำลังอนุมัติทั้งหมด...');
+            var adminName = currentUser ? currentUser.name : 'President';
+            google.script.run
+                .withSuccessHandler(function (res) {
+                    hideLoader();
+                    if (res.success) {
+                        Swal.fire('สำเร็จ', res.message, 'success');
+                        loadPresidentApprovals();
+                        loadMembers(); // reload stats
+                        loadPendingPromotionsList();
+                    } else {
+                        Swal.fire('ข้อผิดพลาด', res.message, 'error');
+                    }
+                })
+                .withFailureHandler(function (err) {
+                    hideLoader();
+                    Swal.fire('ข้อผิดพลาด', err.message, 'error');
+                })
+                .approveAllRankPromotions(adminName);
         });
     };
 
@@ -7059,6 +7268,17 @@ const google = {
     };
 
     // === นายกสมาคม: ปฏิเสธคะแนนกิจกรรมเฉพาะบุคคล ===
+    window.viewDisapproveReason = function (reason) {
+        Swal.fire({
+            title: '<div class="text-red-600"><i class="fa-solid fa-circle-info mr-2"></i>เหตุผลการไม่อนุมัติ</div>',
+            html: '<div class="text-sm text-gray-700 bg-red-50 p-4 rounded-xl border border-red-100 mt-2 text-left">' + reason.replace(/\n/g, '<br>') + '</div>',
+            icon: 'info',
+            confirmButtonColor: '#6b7280',
+            confirmButtonText: 'ปิด',
+            customClass: { popup: 'rounded-3xl' }
+        });
+    };
+
     window.disapproveIndividualActivityScoreAction = function (activityId, memberId) {
         Swal.fire({
             title: '<div class="text-red-600"><i class="fa-solid fa-user-xmark mr-2"></i>ปฏิเสธคะแนนเฉพาะบุคคล</div>',
@@ -7227,7 +7447,7 @@ const google = {
                 '<td class="py-2.5 px-3 font-mono font-bold text-army-700" data-label="รหัสสมาชิก">' + (sp['MemberID'] || '-') + '</td>' +
                 '<td class="py-2.5 px-3 font-medium text-gray-800" data-label="ชื่อสมาชิก">' + memberName + '</td>' +
                 '<td class="py-2.5 px-3" data-label="รายการคะแนน">' + pointName + '</td>' +
-                '<td class="py-2.5 px-3 text-center font-bold text-green-700" data-label="คะแนน">+' + score + '</td>' +
+                '<td class="py-2.5 px-3 text-center font-bold text-green-700" data-label="คะแนน">' + score + '</td>' +
                 '<td class="py-2.5 px-3 text-center text-gray-500" data-label="วันที่">' + date + '</td>' +
                 '<td class="py-2.5 px-3 text-center" data-label="จัดการ"><div class="flex justify-center gap-1.5">' +
                 '<button onclick="approveSpecialPointAction(\'' + pointId + '\')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2.5 rounded-full text-[10px] shadow-sm transition-all"><i class="fa-solid fa-check mr-1"></i>อนุมัติ</button>' +
@@ -7411,26 +7631,26 @@ const google = {
                     var tr = document.createElement('tr');
                     tr.className = 'border-b border-army-400/20 hover:bg-white transition-colors';
 
-                    var status = a['Status'] || 'เปิดรับสมัคร';
+                    var status = a['Status'] || 'เปิดลงทะเบียน';
                     var statusBadge = '';
-                    if (status === 'เปิดรับสมัคร') {
-                        statusBadge = '<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200 ml-2"><i class="fa-solid fa-circle-play mr-1"></i>เปิดรับสมัคร</span>';
+                    if (status === 'เปิดลงทะเบียน') {
+                        statusBadge = '<span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200 "><i class="fa-solid fa-circle-play mr-1"></i>เปิดลงทะเบียน</span>';
                     } else if (status === 'รออนุมัติ') {
-                        statusBadge = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 ml-2"><i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติ</span>';
+                        statusBadge = '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200 "><i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติ</span>';
                     } else if (status === 'อนุมัติแล้ว') {
-                        statusBadge = '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200 ml-2"><i class="fa-solid fa-circle-check mr-1"></i>อนุมัติแล้ว</span>';
+                        statusBadge = '<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200 "><i class="fa-solid fa-circle-check mr-1"></i>อนุมัติแล้ว</span>';
                     }
 
                     var html = '<td class="py-3 px-4">';
-                    html += '<div class="font-bold text-army-800 flex items-center flex-wrap gap-1">' + a['Name'] + statusBadge + '</div>';
+                    html += '<div class="font-bold text-army-800 flex flex-col items-start gap-1 mt-1">' + a['Name'] + statusBadge + '</div>';
                     if (a['ResponsiblePerson']) html += '<div class="text-xs text-gray-500 mt-1"><i class="fa-solid fa-user-tie mr-1"></i>' + a['ResponsiblePerson'] + '</div>';
                     html += '</td>';
                     html += '<td class="py-3 px-4 text-center text-army-600 text-sm"><i class="fa-regular fa-calendar mr-2"></i>' + a['Date'] + '</td>';
-                    html += '<td class="py-3 px-4 text-center"><span class="bg-armylight-200 text-army-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm">' + a['Score'] + ' คะแนน</span></td>';
+                    html += '<td class="py-3 px-4 text-center"><span class="bg-armylight-200 text-army-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm">' + a['Score'] + '</span></td>';
 
                     var editBtn = '';
                     var deleteBtn = '';
-                    if (status === 'เปิดรับสมัคร') {
+                    if (status === 'เปิดลงทะเบียน') {
                         editBtn = '<button onclick="editActivity(\'' + a['ActivityID'] + '\')" class="bg-amber-500 hover:bg-amber-600 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>';
                         deleteBtn = '<button onclick="deleteActivityAction(\'' + a['ActivityID'] + '\')" class="bg-red-500 hover:bg-red-600 text-white w-8 h-8 rounded-full text-xs shadow-sm transition-all hover:-translate-y-0.5" title="ลบ"><i class="fa-solid fa-trash"></i></button>';
                     } else {
@@ -7560,7 +7780,7 @@ const google = {
 
             var html = '<td class="py-3 px-4 text-center text-gray-500 font-bold">' + (idx + 1) + '</td>' +
                 '<td class="py-3 px-4 font-mono font-bold text-army-700">' + p['MemberID'] + '</td>' +
-                '<td class="py-3 px-4 font-semibold text-gray-800">' + p['MemberName'] + '</td>' +
+                '<td class="py-3 px-4 font-semibold text-army-600 hover:text-army-800 cursor-pointer hover:underline" onclick="viewMemberDetails(\'' + p['MemberID'] + '\')">' + p['MemberName'] + '</td>' +
                 '<td class="py-3 px-4 text-xs text-gray-600"><div>ชั้น: <span class="font-bold text-army-800">' + p['Rank'] + '</span></div><div>ตำแหน่ง: ' + p['Position'] + ' (' + p['Rate'] + ')</div></td>' +
                 '<td class="py-3 px-4 text-xs text-gray-500"><div>โดย: ' + p['Recorder'] + '</div><div>เวลา: ' + p['Timestamp'] + '</div></td>' +
                 '<td class="py-3 px-4 text-center">' + statusHtml + '</td>';
@@ -7656,6 +7876,7 @@ const google = {
                 'ชื่อผู้ติดต่อฉุกเฉิน': m['ชื่อผู้ติดต่อฉุกเฉิน'] || '',
                 'เบอร์ผู้ติดต่อฉุกเฉิน': m['เบอร์ผู้ติดต่อฉุกเฉิน'] || '',
                 'ความสัมพันธ์ผู้ติดต่อฉุกเฉิน': m['ความสัมพันธ์ผู้ติดต่อฉุกเฉิน'] || '',
+                'รุ่น ผกก.': m['รุ่น ผกก.'] || m['รุ่น'] || '',
                 'ยศ': m['ยศ'] || '',
                 'อัตรา': m['อัตรา'] || '',
                 'ตำแหน่ง': m['ตำแหน่ง'] || '',
@@ -7673,8 +7894,9 @@ const google = {
             worksheet['!cols'] = Object.keys(dataToExport[0]).map(() => ({ wch: maxLen }));
 
             // ดาวน์โหลดไฟล์
-            const dateStr = new Date().toLocaleDateString('th-TH').replace(/\//g, '-');
-            XLSX.writeFile(workbook, `ทะเบียนผู้กำกับกำลังสำรอง_สกร_${dateStr}.xlsx`);
+            const d = new Date();
+            const dateStr = d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
+            XLSX.writeFile(workbook, `Member_Registry_${dateStr}.xlsx`);
 
             hideLoader();
             Swal.fire('สำเร็จ', 'ส่งออกข้อมูลสมาชิกสำเร็จเรียบร้อย', 'success');
@@ -7743,6 +7965,7 @@ const google = {
                     'ชื่อผู้ติดต่อฉุกเฉิน': 'นางสมศรี รักชาติ',
                     'เบอร์ผู้ติดต่อฉุกเฉิน': '0898765432',
                     'ความสัมพันธ์ผู้ติดต่อฉุกเฉิน': 'ภรรยา',
+                    'รุ่น ผกก.': '1/2569',
                     'ยศ': 'พ.ต.ต.',
                     'อัตรา': 'ร.อ.',
                     'ตำแหน่ง': 'ผกก.กองร้อยโยธา',
@@ -7916,6 +8139,7 @@ const google = {
     };
 
 </script>
+
 </body>
 
 </html>
