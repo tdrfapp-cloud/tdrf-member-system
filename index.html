@@ -1936,7 +1936,7 @@
                 </div>
 
                 <!-- Camera Selector Dropdown -->
-                <div class="w-full space-y-1">
+                <div class="w-full space-y-1 hidden">
                     <label for="qrCameraSelect" class="block text-xs font-bold text-army-800"><i class="fa-solid fa-video mr-1 text-army-600"></i> เลือกกล้อง:</label>
                     <select id="qrCameraSelect" onchange="switchQRCamera()"
                         class="w-full border-gray-300 rounded-xl shadow-sm focus:border-army-500 focus:ring-army-500 p-2.5 border bg-white text-xs font-medium text-gray-700">
@@ -5378,6 +5378,7 @@ const google = {
 
         google.script.run
             .withSuccessHandler(function (participants) {
+                window.currentActivityParticipants = participants || [];
                 document.getElementById('participantCount').innerText = participants.length;
                 tbody.innerHTML = '';
 
@@ -5866,6 +5867,22 @@ const google = {
     }
 
     function confirmAttendance(memberId, wasFromScanner) {
+        // Check local duplicate first
+        var isAlreadyRegistered = (window.currentActivityParticipants || []).some(function (p) {
+            return p['รหัสสมาชิก'] === memberId;
+        });
+        if (isAlreadyRegistered) {
+            Swal.fire({
+                title: 'บันทึกซ้ำ!',
+                text: 'สมาชิกรายนี้ได้ลงทะเบียนเข้าร่วมกิจกรรมนี้เรียบร้อยแล้ว',
+                icon: 'warning',
+                customClass: { popup: 'rounded-3xl' }
+            }).then(() => {
+                if (wasFromScanner) initAttendeeHtml5Scanner();
+            });
+            return;
+        }
+
         showLoader('กำลังตรวจสอบข้อมูลสมาชิก...');
         google.script.run
             .withSuccessHandler(function (member) {
@@ -5933,22 +5950,30 @@ const google = {
                             .withSuccessHandler(function (res) {
                                 hideLoader();
                                 if (res.success) {
-                                    var statusText = res.status || 'อนุมัติแล้ว';
-                                    var successHtml = '<div class="text-center py-2">';
-                                    successHtml += '<p class="text-green-600 font-bold text-lg"><i class="fa-solid fa-check-circle mr-1"></i>บันทึกสำเร็จ (' + statusText + ')</p>';
                                     if (res.alreadyRecorded) {
-                                        successHtml += '<p class="text-gray-500 text-xs mt-1">(คุณเคยบันทึกกิจกรรมนี้ไปแล้ว)</p>';
+                                        Swal.fire({
+                                            title: 'บันทึกซ้ำ!',
+                                            text: 'สมาชิกรายนี้ได้ลงทะเบียนเข้าร่วมกิจกรรมนี้เรียบร้อยแล้ว',
+                                            icon: 'warning',
+                                            customClass: { popup: 'rounded-3xl' }
+                                        }).then(() => {
+                                            if (wasFromScanner) initAttendeeHtml5Scanner();
+                                        });
+                                    } else {
+                                        var statusText = res.status || 'อนุมัติแล้ว';
+                                        var successHtml = '<div class="text-center py-2">';
+                                        successHtml += '<p class="text-green-600 font-bold text-lg"><i class="fa-solid fa-check-circle mr-1"></i>บันทึกสำเร็จ (' + statusText + ')</p>';
+                                        successHtml += '</div>';
+                                        
+                                        Swal.fire({
+                                            title: 'บันทึกสำเร็จ!',
+                                            html: successHtml,
+                                            icon: 'success',
+                                            customClass: { popup: 'rounded-3xl' }
+                                        }).then(() => {
+                                            if (wasFromScanner) initAttendeeHtml5Scanner();
+                                        });
                                     }
-                                    successHtml += '</div>';
-                                    
-                                    Swal.fire({
-                                        title: 'บันทึกสำเร็จ!',
-                                        html: successHtml,
-                                        icon: 'success',
-                                        customClass: { popup: 'rounded-3xl' }
-                                    }).then(() => {
-                                        if (wasFromScanner) initAttendeeHtml5Scanner();
-                                    });
                                 } else {
                                     Swal.fire({
                                         title: 'ไม่สามารถบันทึกได้',
@@ -8403,66 +8428,30 @@ const google = {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         
-        const cameraSelect = document.getElementById('qrCameraSelect');
-        cameraSelect.innerHTML = '<option value="">กำลังค้นหากล้อง...</option>';
-        
-        // request cameras
-        Html5Qrcode.getCameras().then(devices => {
-            if (devices && devices.length > 0) {
-                cameraSelect.innerHTML = '';
-                let selectedCameraId = devices[0].id;
-                
-                devices.forEach(device => {
-                    const option = document.createElement('option');
-                    option.value = device.id;
-                    option.text = device.label || `กล้องที่ ${cameraSelect.options.length + 1}`;
-                    cameraSelect.appendChild(option);
-                    
-                    const label = (device.label || '').toLowerCase();
-                    if (label.indexOf('back') > -1 || label.indexOf('rear') > -1 || label.indexOf('environment') > -1 || label.indexOf('กลับ') > -1) {
-                        selectedCameraId = device.id;
-                    }
-                });
-                
-                cameraSelect.value = selectedCameraId;
-                window.startQRScanner(selectedCameraId);
-            } else {
-                cameraSelect.innerHTML = '<option value="">ไม่พบกล้องเชื่อมต่อ</option>';
-                Swal.fire('ไม่พบกล้อง', 'ไม่พบอุปกรณ์กล้องในเครื่องของคุณ หรือระบบกล้องถูกปิดอยู่', 'warning');
-            }
-        }).catch(err => {
-            console.error('Camera detection error:', err);
-            cameraSelect.innerHTML = '<option value="">ไม่ได้รับอนุญาตใช้งานกล้อง</option>';
-            Swal.fire({
-                title: 'การเข้าถึงกล้องถูกปฏิเสธ',
-                text: 'กรุณาอนุญาตให้เว็บเบราว์เซอร์เข้าถึงกล้องถ่ายรูปของคุณ เพื่อใช้งานระบบสแกน QR Code',
-                icon: 'warning',
-                confirmButtonText: 'ตกลง'
-            });
-        });
+        window.startQRScanner();
     };
 
-    window.startQRScanner = function (cameraId) {
+    window.startQRScanner = function () {
         if (html5QrCode) {
             // If already active, do not recreate, just stop and start
             if (html5QrCode.isScanning) {
                 html5QrCode.stop().then(() => {
                     html5QrCode = null;
-                    window.startQRScanner(cameraId);
+                    window.startQRScanner();
                 }).catch(err => {
                     console.error('Stop error:', err);
                     html5QrCode = null;
-                    window.startQRScanner(cameraId);
+                    window.startQRScanner();
                 });
                 return;
             }
         }
         
-        qrScannerActiveCameraId = cameraId;
         html5QrCode = new Html5Qrcode("qr-reader");
         
+        // Enforce back camera (facingMode: environment)
         html5QrCode.start(
-            cameraId,
+            { facingMode: "environment" },
             {
                 fps: 15,
                 qrbox: function(width, height) {
@@ -8473,17 +8462,29 @@ const google = {
             onQRScanSuccess,
             onQRScanError
         ).catch(err => {
-            console.error('Failed to start QR scanner:', err);
-            Swal.fire('เปิดกล้องล้มเหลว', 'เกิดข้อผิดพลาดในการเปิดกล้องถ่ายรูป: ' + err.message, 'error');
+            console.warn('Failed to start environment camera, falling back to default/front camera:', err);
+            // Fallback for PC/laptops where back camera is unavailable
+            html5QrCode.start(
+                { facingMode: "user" },
+                {
+                    fps: 15,
+                    qrbox: function(width, height) {
+                        const size = Math.min(width, height) * 0.7;
+                        return { width: size, height: size };
+                    }
+                },
+                onQRScanSuccess,
+                onQRScanError
+            ).catch(err2 => {
+                console.error('Fallback camera error:', err2);
+                Swal.fire({
+                    title: 'เปิดกล้องล้มเหลว',
+                    text: 'ไม่ได้รับอนุญาตให้ใช้กล้อง หรือไม่พบกล้องถ่ายรูปที่ใช้งานได้: ' + err2.message,
+                    icon: 'error',
+                    confirmButtonText: 'ตกลง'
+                });
+            });
         });
-    };
-
-    window.switchQRCamera = function () {
-        const select = document.getElementById('qrCameraSelect');
-        const newCameraId = select.value;
-        if (newCameraId && newCameraId !== qrScannerActiveCameraId) {
-            window.startQRScanner(newCameraId);
-        }
     };
 
     window.closeQRScannerModal = function () {
