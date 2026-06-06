@@ -2022,7 +2022,7 @@
             </div>
 
             <!-- ส่วนแสดงรายชื่อผู้เข้าร่วม -->
-            <div class="lg:col-span-2">
+            <div class="lg:col-span-2" id="participantListContainer">
                 <div class="glass rounded-3xl shadow-sm overflow-hidden flex flex-col h-full">
                     <div class="p-5 border-b border-army-400/20 bg-white/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <h3 class="font-bold text-army-800"><i class="fa-solid fa-users-viewfinder mr-2 text-armylight-400"></i>รายชื่อผู้เข้าร่วม</h3>
@@ -2331,7 +2331,7 @@
 // ==========================================================
 // ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxlsEL5VNDBJK2jhBYQ1q5bcuByLSrXnVY4CcIcD6rxNsqpaeBmk7wvxvZZsirEXQnv/exec'; 
 
 const google = {
   script: {
@@ -5211,17 +5211,27 @@ const google = {
 
         var actionControls = document.getElementById('activityActionControls');
         var manualRecordContainer = document.getElementById('manualRecordCardContainer');
+        var participantListContainer = document.getElementById('participantListContainer');
 
         if (actionControls) {
             actionControls.innerHTML = '';
             if (status === 'เปิดลงทะเบียน') {
                 actionControls.innerHTML = '<button onclick="closeActivityForApprovalAction(\'' + activityId + '\')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-full shadow-md text-sm transition-all hover:-translate-y-0.5 flex items-center gap-1.5"><i class="fa-solid fa-lock"></i> ปิดลงทะเบียน</button>';
                 if (manualRecordContainer) manualRecordContainer.classList.remove('hidden');
+                if (participantListContainer) {
+                    participantListContainer.classList.remove('lg:col-span-3');
+                    participantListContainer.classList.add('lg:col-span-2');
+                }
             } else {
                 var badgeColor = status === 'รออนุมัติ' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-blue-100 text-blue-800 border-blue-200';
                 var statusText = status === 'รออนุมัติ' ? '<i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติคะแนน' : '<i class="fa-solid fa-circle-check mr-1"></i>อนุมัติคะแนนเข้าระบบแล้ว';
-                actionControls.innerHTML = '<span class="px-4 py-2 rounded-full font-bold border text-sm shadow-sm ' + badgeColor + '">' + statusText + '</span>';
+                actionControls.innerHTML = '<span class="px-4 py-2 rounded-full font-bold border text-sm shadow-sm ' + badgeColor + '">' + statusText + '</span>' +
+                                           '<button onclick="reopenActivityRegistrationAction(\'' + activityId + '\')" class="ml-2 bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-4 rounded-full text-xs shadow-md transition-all hover:-translate-y-0.5 flex items-center gap-1"><i class="fa-solid fa-unlock"></i> เปิดลงทะเบียนใหม่</button>';
                 if (manualRecordContainer) manualRecordContainer.classList.add('hidden');
+                if (participantListContainer) {
+                    participantListContainer.classList.remove('lg:col-span-2');
+                    participantListContainer.classList.add('lg:col-span-3');
+                }
             }
         }
 
@@ -7441,7 +7451,21 @@ const google = {
         list.forEach(function (sp, idx) {
             var tr = document.createElement('tr');
             tr.className = 'border-b hover:bg-gray-50 text-xs';
-            var memberName = sp['MemberName'] || sp['MemberID'] || '-';
+            
+            var memberId = (sp['MemberID'] || '').toString().trim();
+            var memberName = sp['MemberName'] || memberId || '-';
+            // Client-side fallback: resolve from allMembers if available
+            if (allMembers && allMembers.length > 0) {
+                var foundMember = allMembers.find(function(m) {
+                    return (m['รหัสสมาชิก'] || '').toString().trim() === memberId;
+                });
+                if (foundMember) {
+                    memberName = (foundMember['ขั้น'] || foundMember['คำนำหน้า(ขั้น)'] || '') + 
+                                 (foundMember['ชื่อ-สกุล (ไทย)'] || foundMember['ชื่อ'] || foundMember['ชื่อ (ไทย)'] || '') + 
+                                 (foundMember['นามสกุล'] || foundMember['นามสกุล (ไทย)'] || foundMember['Surname'] ? ' ' + (foundMember['นามสกุล'] || foundMember['นามสกุล (ไทย)'] || foundMember['Surname']) : '');
+                }
+            }
+
             var pointName = sp['Name'] || '-';
             var score = sp['Score'] || 0;
             var date = sp['Date'] || '-';
@@ -7493,6 +7517,42 @@ const google = {
                         Swal.fire('ข้อผิดพลาด', err.message, 'error');
                     })
                     .submitActivityForApproval(activityId, adminName);
+            }
+        });
+    };
+
+    window.reopenActivityRegistrationAction = function (activityId) {
+        Swal.fire({
+            title: 'ยืนยันการเปิดลงทะเบียนใหม่',
+            text: 'คุณต้องการเปิดลงทะเบียนกิจกรรมนี้ใหม่อีกครั้งใช่หรือไม่? เพื่อเปิดสิทธิ์การบันทึกหรือสแกนรายชื่อผู้เข้าร่วมกิจกรรมเพิ่ม',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'เปิดลงทะเบียนใหม่',
+            cancelButtonText: 'ยกเลิก'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                showLoader('กำลังเปิดลงทะเบียนใหม่...');
+                var adminName = currentUser ? currentUser.name : 'System';
+                google.script.run
+                    .withSuccessHandler(function (res) {
+                        hideLoader();
+                        if (res.success) {
+                            Swal.fire('สำเร็จ!', 'เปิดลงทะเบียนกิจกรรมนี้ใหม่อีกครั้งเรียบร้อยแล้ว', 'success');
+                            loadActivities(); // This will refresh allActivities
+                            setTimeout(function() {
+                                openActivityRecord(activityId, document.getElementById('currentActivityName').innerText);
+                            }, 500);
+                        } else {
+                            Swal.fire('ข้อผิดพลาด', res.message, 'error');
+                        }
+                    })
+                    .withFailureHandler(function (err) {
+                        hideLoader();
+                        Swal.fire('ข้อผิดพลาด', err.message, 'error');
+                    })
+                    .reopenActivityRegistration(activityId, adminName);
             }
         });
     };
