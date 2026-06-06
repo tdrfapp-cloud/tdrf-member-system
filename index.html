@@ -6047,12 +6047,25 @@ const google = {
                         hideLoader();
                         Swal.fire('เกิดข้อผิดพลาด', err.message, 'error');
                     })
-                    .updateUserPIN(username, result.value);
+                    .updateUserPIN(username, result.value, currentUser ? currentUser.username : 'System');
             }
         });
     };
 
     function openUserModal() {
+        var selectEl = document.getElementById('adminPositionSelect');
+        if (selectEl) {
+            var presOption = selectEl.querySelector('option[value="นายกสมาคม"]');
+            if (presOption) {
+                if (currentUser && currentUser.position === 'นายกสมาคม') {
+                    presOption.disabled = false;
+                    presOption.classList.remove('hidden');
+                } else {
+                    presOption.disabled = true;
+                    presOption.classList.add('hidden');
+                }
+            }
+        }
         document.getElementById('userModal').classList.remove('hidden');
         document.getElementById('userModal').classList.add('flex');
     }
@@ -6100,9 +6113,17 @@ const google = {
                         html += '<td class="py-3 px-4 text-gray-700">' + (u['Position'] || '-') + '</td>';
                         html += '<td class="py-3 px-4 text-xs"><div class="text-gray-600"><i class="fa-solid fa-phone mr-1 w-3"></i>' + (u['Phone'] || '-') + '</div><div class="text-gray-600 mt-1"><i class="fa-solid fa-envelope mr-1 w-3"></i>' + (u['Email'] || '-') + '</div></td>';
 
-                        var btnHtml = '<button onclick="editUser(\'' + u['Username'] + '\')" class="bg-armylight-200 text-army-800 hover:bg-army-600 hover:text-white px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>';
-                        if (u['Position'] === 'นายกสมาคม') {
-                            btnHtml += '<button onclick="resetPresidentPIN(\'' + u['Username'] + '\')" class="bg-orange-100 text-orange-800 hover:bg-orange-600 hover:text-white ml-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="ตั้งค่า/รีเซ็ต PIN"><i class="fa-solid fa-key"></i></button>';
+                        var btnHtml = '';
+                        var isRowPresident = u['Position'] === 'นายกสมาคม';
+                        var isCallerPresident = currentUser && currentUser.position === 'นายกสมาคม';
+                        
+                        if (isRowPresident && !isCallerPresident) {
+                            btnHtml = '<span class="text-xs text-gray-400 font-medium"><i class="fa-solid fa-lock mr-1"></i>ถูกล็อก</span>';
+                        } else {
+                            btnHtml += '<button onclick="editUser(\'' + u['Username'] + '\')" class="bg-armylight-200 text-army-800 hover:bg-army-600 hover:text-white px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>';
+                            if (isRowPresident) {
+                                btnHtml += '<button onclick="resetPresidentPIN(\'' + u['Username'] + '\')" class="bg-orange-100 text-orange-800 hover:bg-orange-600 hover:text-white ml-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="ตั้งค่า/รีเซ็ต PIN"><i class="fa-solid fa-key"></i></button>';
+                            }
                         }
                         html += '<td class="py-3 px-4 text-center">' + btnHtml + '</td>';
 
@@ -6187,7 +6208,7 @@ const google = {
         }
 
         showLoader('กำลังบันทึกข้อมูล...');
-        var adminName = currentUser ? currentUser.name : 'System';
+        var adminName = currentUser ? currentUser.username : 'System';
 
         google.script.run
             .withSuccessHandler(function (res) {
