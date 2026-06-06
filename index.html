@@ -785,48 +785,6 @@
                     </table>
                 </div>
 
-                <!-- Detail View for Selected Activity participants (Modal) -->
-                <div id="pendingActivityParticipantsSection"
-                    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] hidden flex items-center justify-center p-4">
-                    <div class="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border border-gray-100">
-                        <!-- Header -->
-                        <div class="bg-gradient-to-r from-[#8A6D1C] to-[#B8901C] p-5 flex justify-between items-center text-white">
-                            <h4 class="font-bold text-lg flex items-center gap-2">
-                                <i class="fa-solid fa-users-viewfinder"></i>
-                                รายชื่อผู้เข้าร่วมสำหรับกิจกรรม: <span id="pendingActivityName" class="text-amber-200 ml-1">...</span>
-                            </h4>
-                            <button onclick="document.getElementById('pendingActivityParticipantsSection').classList.add('hidden'); document.getElementById('pendingActivityParticipantsSection').classList.remove('flex');" class="text-white/70 hover:text-white hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center transition-all">
-                                <i class="fa-solid fa-xmark text-xl"></i>
-                            </button>
-                        </div>
-                        
-                        <!-- Body -->
-                        <div class="p-6 overflow-y-auto bg-gray-50 flex-1">
-                            <div class="flex justify-end mb-4">
-                                <button type="button" id="btnConfirmApproveScores" onclick="approveActivityAttendanceWithPIN()"
-                                    class="bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-6 rounded-full shadow-md text-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
-                                    <i class="fa-solid fa-check-double"></i> อนุมัติทั้งหมด
-                                </button>
-                            </div>
-                            <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
-                                <table class="responsive-table w-full text-left border-collapse text-xs bg-white">
-                                    <thead>
-                                        <tr class="bg-gray-100 text-gray-700 font-bold border-b border-gray-200">
-                                            <th class="py-3 px-4 text-center w-12">#</th>
-                                            <th class="py-3 px-4">ชื่อ-นามสกุล</th>
-                                            <th class="py-3 px-4 text-center w-32">รหัสสมาชิก</th>
-                                            <th class="py-3 px-4 text-center w-48">เวลาสแกน</th>
-                                            <th class="py-3 px-4 text-center w-28">จัดการ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="pendingActivityParticipantsBody">
-                                        <!-- Populated via JS -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- 3. Promotions Pending Approval -->
@@ -883,6 +841,47 @@
                                 <td colspan="7" class="text-center py-12 text-gray-400 italic">
                                     ไม่มีคะแนนพิเศษที่รอการอนุมัติ</td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <!-- Detail View for Selected Activity participants (Modal) -->
+    <div id="pendingActivityParticipantsSection"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border border-gray-100">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-[#8A6D1C] to-[#B8901C] p-5 flex justify-between items-center text-white">
+                <h4 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    รายชื่อผู้เข้าร่วมสำหรับกิจกรรม: <span id="pendingActivityName" class="text-amber-200 ml-1">...</span>
+                </h4>
+                <button onclick="document.getElementById('pendingActivityParticipantsSection').classList.add('hidden'); document.getElementById('pendingActivityParticipantsSection').classList.remove('flex');" class="text-white/70 hover:text-white hover:bg-white/10 rounded-full w-8 h-8 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-6 overflow-y-auto bg-gray-50 flex-1">
+                <div class="flex justify-end mb-4">
+                    <button type="button" id="btnConfirmApproveScores" onclick="approveActivityAttendanceWithPIN()"
+                        class="bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-6 rounded-full shadow-md text-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-check-double"></i> อนุมัติทั้งหมด
+                    </button>
+                </div>
+                <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+                    <table class="responsive-table w-full text-left border-collapse text-xs bg-white">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-700 font-bold border-b border-gray-200">
+                                <th class="py-3 px-4 text-center w-12">#</th>
+                                <th class="py-3 px-4">ชื่อ-นามสกุล</th>
+                                <th class="py-3 px-4 text-center w-32">รหัสสมาชิก</th>
+                                <th class="py-3 px-4 text-center w-48">เวลาสแกน</th>
+                                <th class="py-3 px-4 text-center w-28">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingActivityParticipantsBody">
+                            <!-- Populated via JS -->
                         </tbody>
                     </table>
                 </div>
@@ -7445,7 +7444,7 @@ const google = {
             tr.innerHTML =
                 '<td class="py-2.5 px-3 text-center text-gray-500" data-label="#">' + (idx + 1) + '</td>' +
                 '<td class="py-2.5 px-3 font-mono font-bold text-army-700" data-label="รหัสสมาชิก">' + (sp['MemberID'] || '-') + '</td>' +
-                '<td class="py-2.5 px-3 font-medium text-gray-800" data-label="ชื่อสมาชิก">' + memberName + '</td>' +
+                '<td class="py-2.5 px-3" data-label="ชื่อสมาชิก"><span class="font-medium text-army-600 hover:text-army-800 cursor-pointer hover:underline" onclick="viewMemberDetails(\'' + (sp['MemberID'] || '') + '\')">' + memberName + '</span></td>' +
                 '<td class="py-2.5 px-3" data-label="รายการคะแนน">' + pointName + '</td>' +
                 '<td class="py-2.5 px-3 text-center font-bold text-green-700" data-label="คะแนน">' + score + '</td>' +
                 '<td class="py-2.5 px-3 text-center text-gray-500" data-label="วันที่">' + date + '</td>' +
