@@ -3668,19 +3668,22 @@ const google = {
 
         showLoader('กำลังสร้างรูปภาพ...');
 
+        var originalWidth = element.offsetWidth;
+        var originalHeight = element.offsetHeight;
+
         html2canvas(element, {
             scale: 2,
             backgroundColor: '#ffffff',
             useCORS: true,
             logging: false,
-            width: element.offsetWidth,
-            height: element.offsetHeight,
+            width: originalWidth,
+            height: originalHeight,
             onclone: function(clonedDoc) {
                 var clonedEl = clonedDoc.getElementById('memberCardCaptureArea');
                 if (clonedEl) {
-                    clonedEl.style.width = '380px';
-                    clonedEl.style.height = 'auto';
-                    clonedEl.style.minHeight = '550px';
+                    clonedEl.style.width = originalWidth + 'px';
+                    clonedEl.style.height = originalHeight + 'px';
+                    clonedEl.style.boxSizing = 'border-box';
                     
                     // Fix logo aspect ratio
                     var logoImg = clonedEl.querySelector('img[alt="Logo"]');
