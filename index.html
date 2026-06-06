@@ -2331,7 +2331,7 @@
 // ==========================================================
 // ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxlsEL5VNDBJK2jhBYQ1q5bcuByLSrXnVY4CcIcD6rxNsqpaeBmk7wvxvZZsirEXQnv/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
 
 const google = {
   script: {
@@ -5213,25 +5213,21 @@ const google = {
         var manualRecordContainer = document.getElementById('manualRecordCardContainer');
         var participantListContainer = document.getElementById('participantListContainer');
 
+        if (manualRecordContainer) manualRecordContainer.classList.remove('hidden');
+        if (participantListContainer) {
+            participantListContainer.classList.remove('lg:col-span-3');
+            participantListContainer.classList.add('lg:col-span-2');
+        }
+
         if (actionControls) {
             actionControls.innerHTML = '';
             if (status === 'เปิดลงทะเบียน') {
                 actionControls.innerHTML = '<button onclick="closeActivityForApprovalAction(\'' + activityId + '\')" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-full shadow-md text-sm transition-all hover:-translate-y-0.5 flex items-center gap-1.5"><i class="fa-solid fa-lock"></i> ปิดลงทะเบียน</button>';
-                if (manualRecordContainer) manualRecordContainer.classList.remove('hidden');
-                if (participantListContainer) {
-                    participantListContainer.classList.remove('lg:col-span-3');
-                    participantListContainer.classList.add('lg:col-span-2');
-                }
             } else {
                 var badgeColor = status === 'รออนุมัติ' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-blue-100 text-blue-800 border-blue-200';
                 var statusText = status === 'รออนุมัติ' ? '<i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติคะแนน' : '<i class="fa-solid fa-circle-check mr-1"></i>อนุมัติคะแนนเข้าระบบแล้ว';
                 actionControls.innerHTML = '<span class="px-4 py-2 rounded-full font-bold border text-sm shadow-sm ' + badgeColor + '">' + statusText + '</span>' +
                                            '<button onclick="reopenActivityRegistrationAction(\'' + activityId + '\')" class="ml-2 bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-4 rounded-full text-xs shadow-md transition-all hover:-translate-y-0.5 flex items-center gap-1"><i class="fa-solid fa-unlock"></i> เปิดลงทะเบียนใหม่</button>';
-                if (manualRecordContainer) manualRecordContainer.classList.add('hidden');
-                if (participantListContainer) {
-                    participantListContainer.classList.remove('lg:col-span-2');
-                    participantListContainer.classList.add('lg:col-span-3');
-                }
             }
         }
 
