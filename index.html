@@ -1618,7 +1618,7 @@
                 <i class="fa-solid fa-file-excel mr-2"></i> ส่งออก Excel
             </button>
             <button onclick="openExcelImportModal()"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-full shadow-md flex items-center transition-all flex-1 md:flex-none justify-center font-bold">
+                class="hidden bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-full shadow-md flex items-center transition-all flex-1 md:flex-none justify-center font-bold">
                 <i class="fa-solid fa-file-import mr-2"></i> นำเข้า Excel
             </button>
             <button onclick="openNewMemberModal()"
@@ -1651,11 +1651,18 @@
         <div id="panelActiveMembersList">
             <div class="p-4 border-b border-army-400/20 bg-white/50 flex flex-col gap-4">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <div class="relative w-full sm:w-64">
-                        <input type="text" id="memberSearchInput" onkeyup="filterMembers()"
-                            placeholder="ค้นหารหัส, ชื่อ, เลขบัตร..."
-                            class="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-armylight-400/50 bg-white/80 focus:bg-white transition-all shadow-inner">
-                        <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <div class="relative w-full sm:w-64 flex-1">
+                            <input type="text" id="memberSearchInput" onkeyup="filterMembers()"
+                                placeholder="ค้นหารหัส, ชื่อ, เลขบัตร..."
+                                class="w-full pl-10 pr-4 py-2.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-armylight-400/50 bg-white/80 focus:bg-white transition-all shadow-inner">
+                            <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                        </div>
+                        <button type="button" onclick="openQRScannerModal()"
+                            class="bg-army-600 hover:bg-army-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95 shrink-0 border border-army-700/20"
+                            title="สแกน QR Code ค้นหา">
+                            <i class="fa-solid fa-qrcode text-lg"></i>
+                        </button>
                     </div>
                     <div class="flex flex-wrap gap-2 w-full sm:w-auto">
                         <select id="filterClassLevel" onchange="filterMembers()"
@@ -1881,6 +1888,80 @@
             </table>
         </div>
     </div>
+
+    <!-- ================= QR Code Scanner Modal ================= -->
+    <div id="qrScannerModal"
+        class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4 backdrop-blur-sm transition-all duration-300">
+        <div
+            class="glass w-full max-w-md rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] scale-95 transition-transform duration-300 animate-[fadeIn_0.3s_ease-out]">
+            <!-- Modal Header -->
+            <div
+                class="bg-gradient-to-r from-army-600 to-army-800 text-white px-6 py-4 flex justify-between items-center shadow-md">
+                <h3 class="text-base font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-qrcode text-armylight-200"></i> ค้นหาสมาชิกด้วย QR Code
+                </h3>
+                <button onclick="closeQRScannerModal()"
+                    class="text-white/80 hover:text-white hover:bg-white/10 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-gray-50/50 flex flex-col items-center justify-center">
+                <!-- Instructions -->
+                <div class="text-center space-y-1 w-full">
+                    <h4 class="text-sm font-extrabold text-army-800 flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-camera text-army-600"></i> กล้องสแกน QR Code
+                    </h4>
+                    <p class="text-[11px] text-gray-500 font-medium">กรุณาทาบ QR Code ของสมาชิกหน้ากล้องเพื่อทำการค้นหาอัตโนมัติ</p>
+                </div>
+
+                <!-- Scanner Container -->
+                <div class="relative w-full max-w-xs aspect-square rounded-2xl overflow-hidden border-2 border-army-400 shadow-inner bg-black flex items-center justify-center group">
+                    <div id="qr-reader" class="w-full h-full object-cover"></div>
+                    
+                    <!-- Premium Scanning Animation Overlay -->
+                    <div class="absolute inset-0 pointer-events-none border-2 border-transparent flex flex-col justify-between p-4 z-10">
+                        <div class="flex justify-between">
+                            <div class="w-6 h-6 border-t-4 border-l-4 border-armylight-400 rounded-tl-md"></div>
+                            <div class="w-6 h-6 border-t-4 border-r-4 border-armylight-400 rounded-tr-md"></div>
+                        </div>
+                        <div class="flex justify-between">
+                            <div class="w-6 h-6 border-b-4 border-l-4 border-armylight-400 rounded-bl-md"></div>
+                            <div class="w-6 h-6 border-b-4 border-r-4 border-armylight-400 rounded-br-md"></div>
+                        </div>
+                        <!-- Laser line -->
+                        <div class="absolute left-0 right-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_8px_red] animate-[scanLaser_2.5s_infinite_linear]"></div>
+                    </div>
+                </div>
+
+                <!-- Camera Selector Dropdown -->
+                <div class="w-full space-y-1">
+                    <label for="qrCameraSelect" class="block text-xs font-bold text-army-800"><i class="fa-solid fa-video mr-1 text-army-600"></i> เลือกกล้อง:</label>
+                    <select id="qrCameraSelect" onchange="switchQRCamera()"
+                        class="w-full border-gray-300 rounded-xl shadow-sm focus:border-army-500 focus:ring-army-500 p-2.5 border bg-white text-xs font-medium text-gray-700">
+                        <option value="">กำลังค้นหากล้อง...</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-end gap-3 rounded-b-3xl">
+                <button type="button" onclick="closeQRScannerModal()"
+                    class="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-5 rounded-full border border-gray-300 text-xs shadow-sm transition-colors cursor-pointer">
+                    ยกเลิก/ปิดกล้อง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    @keyframes scanLaser {
+        0% { top: 0%; }
+        50% { top: 100%; }
+        100% { top: 0%; }
+    }
+    </style>
 </div>
 
       <!-- ================= Activity Management View ================= -->
@@ -2358,7 +2439,7 @@
 // ==========================================================
 // ðŸš€ BRIDGE COMPATIBILITY PROXY: Auto-proxy google.script.run to fetch API Gateway
 // ==========================================================
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxlsEL5VNDBJK2jhBYQ1q5bcuByLSrXnVY4CcIcD6rxNsqpaeBmk7wvxvZZsirEXQnv/exec'; 
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw6P_zpVJi-OM-d6cPyvjvfrjtKNPtsmzvaHigdeEhMQkQ2k8Ytn5Z1n44BveaGrJJB/exec'; 
 
 const google = {
   script: {
@@ -8308,6 +8389,222 @@ const google = {
             }
         });
     };
+
+    // ==========================================================
+    // 🔍 QR CODE SCANNER SYSTEM FOR MEMBER SEARCH
+    // ==========================================================
+    let html5QrCode = null;
+    let qrScannerActiveCameraId = null;
+
+    window.openQRScannerModal = function () {
+        const modal = document.getElementById('qrScannerModal');
+        if (!modal) return;
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        
+        const cameraSelect = document.getElementById('qrCameraSelect');
+        cameraSelect.innerHTML = '<option value="">กำลังค้นหากล้อง...</option>';
+        
+        // request cameras
+        Html5Qrcode.getCameras().then(devices => {
+            if (devices && devices.length > 0) {
+                cameraSelect.innerHTML = '';
+                let selectedCameraId = devices[0].id;
+                
+                devices.forEach(device => {
+                    const option = document.createElement('option');
+                    option.value = device.id;
+                    option.text = device.label || `กล้องที่ ${cameraSelect.options.length + 1}`;
+                    cameraSelect.appendChild(option);
+                    
+                    const label = (device.label || '').toLowerCase();
+                    if (label.indexOf('back') > -1 || label.indexOf('rear') > -1 || label.indexOf('environment') > -1 || label.indexOf('กลับ') > -1) {
+                        selectedCameraId = device.id;
+                    }
+                });
+                
+                cameraSelect.value = selectedCameraId;
+                window.startQRScanner(selectedCameraId);
+            } else {
+                cameraSelect.innerHTML = '<option value="">ไม่พบกล้องเชื่อมต่อ</option>';
+                Swal.fire('ไม่พบกล้อง', 'ไม่พบอุปกรณ์กล้องในเครื่องของคุณ หรือระบบกล้องถูกปิดอยู่', 'warning');
+            }
+        }).catch(err => {
+            console.error('Camera detection error:', err);
+            cameraSelect.innerHTML = '<option value="">ไม่ได้รับอนุญาตใช้งานกล้อง</option>';
+            Swal.fire({
+                title: 'การเข้าถึงกล้องถูกปฏิเสธ',
+                text: 'กรุณาอนุญาตให้เว็บเบราว์เซอร์เข้าถึงกล้องถ่ายรูปของคุณ เพื่อใช้งานระบบสแกน QR Code',
+                icon: 'warning',
+                confirmButtonText: 'ตกลง'
+            });
+        });
+    };
+
+    window.startQRScanner = function (cameraId) {
+        if (html5QrCode) {
+            // If already active, do not recreate, just stop and start
+            if (html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode = null;
+                    window.startQRScanner(cameraId);
+                }).catch(err => {
+                    console.error('Stop error:', err);
+                    html5QrCode = null;
+                    window.startQRScanner(cameraId);
+                });
+                return;
+            }
+        }
+        
+        qrScannerActiveCameraId = cameraId;
+        html5QrCode = new Html5Qrcode("qr-reader");
+        
+        html5QrCode.start(
+            cameraId,
+            {
+                fps: 15,
+                qrbox: function(width, height) {
+                    const size = Math.min(width, height) * 0.7;
+                    return { width: size, height: size };
+                }
+            },
+            onQRScanSuccess,
+            onQRScanError
+        ).catch(err => {
+            console.error('Failed to start QR scanner:', err);
+            Swal.fire('เปิดกล้องล้มเหลว', 'เกิดข้อผิดพลาดในการเปิดกล้องถ่ายรูป: ' + err.message, 'error');
+        });
+    };
+
+    window.switchQRCamera = function () {
+        const select = document.getElementById('qrCameraSelect');
+        const newCameraId = select.value;
+        if (newCameraId && newCameraId !== qrScannerActiveCameraId) {
+            window.startQRScanner(newCameraId);
+        }
+    };
+
+    window.closeQRScannerModal = function () {
+        const hideModal = function () {
+            const modal = document.getElementById('qrScannerModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        };
+        
+        if (html5QrCode && html5QrCode.isScanning) {
+            html5QrCode.stop().then(() => {
+                html5QrCode = null;
+                hideModal();
+            }).catch(err => {
+                console.error('Error stopping QR scanner:', err);
+                html5QrCode = null;
+                hideModal();
+            });
+        } else {
+            html5QrCode = null;
+            hideModal();
+        }
+    };
+
+    function onQRScanSuccess(decodedText) {
+        playQRBeep();
+        
+        const stopAndClose = function() {
+            const modal = document.getElementById('qrScannerModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            processScannedMemberId(decodedText);
+        };
+        
+        if (html5QrCode && html5QrCode.isScanning) {
+            html5QrCode.stop().then(() => {
+                html5QrCode = null;
+                stopAndClose();
+            }).catch(err => {
+                console.error(err);
+                html5QrCode = null;
+                stopAndClose();
+            });
+        } else {
+            html5QrCode = null;
+            stopAndClose();
+        }
+    }
+
+    function onQRScanError(errorMessage) {
+        // Just log in console, do not throw Swals since it scans continuously
+        console.log('QR scanning status:', errorMessage);
+    }
+
+    function playQRBeep() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(1400, audioCtx.currentTime); // 1400Hz sharp beep
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime); // moderate volume
+            
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.12); // duration 120ms
+        } catch (e) {
+            console.warn('Web Audio beep failed:', e);
+        }
+    }
+
+    function processScannedMemberId(scannedId) {
+        if (!scannedId) return;
+        const targetId = scannedId.trim();
+        
+        let found = false;
+        
+        if (typeof allMembers !== 'undefined' && allMembers && allMembers.length > 0) {
+            for (let i = 0; i < allMembers.length; i++) {
+                if (allMembers[i]['รหัสสมาชิก'] === targetId) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        
+        if (!found && typeof allPendingMembers !== 'undefined' && allPendingMembers && allPendingMembers.length > 0) {
+            for (let i = 0; i < allPendingMembers.length; i++) {
+                if (allPendingMembers[i]['รหัสสมาชิก'] === targetId) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        
+        if (found) {
+            Swal.fire({
+                title: 'สแกนสำเร็จ!',
+                text: `พบรหัสสมาชิก: ${targetId} กำลังแสดงข้อมูล...`,
+                icon: 'success',
+                timer: 1200,
+                showConfirmButton: false
+            }).then(() => {
+                viewMemberDetails(targetId);
+            });
+        } else {
+            Swal.fire({
+                title: 'ไม่พบรหัสสมาชิก',
+                text: `ไม่พบรหัสสมาชิก "${targetId}" ในฐานข้อมูลระบบ กรุณาตรวจสอบอีกครั้ง`,
+                icon: 'error',
+                confirmButtonText: 'ตกลง'
+            });
+        }
+    }
 
 </script>
 
