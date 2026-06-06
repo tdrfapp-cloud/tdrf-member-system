@@ -7055,6 +7055,7 @@ const google = {
                     if (res.success) {
                         Swal.fire('สำเร็จ', res.message, 'success');
                         viewPendingActivityParticipants(activityId, document.getElementById('pendingActivityName').innerText);
+                        loadPresidentApprovals();
                         loadMembers(); // reload statistics and scores
                     } else {
                         Swal.fire('ข้อผิดพลาด', res.message, 'error');
@@ -7308,6 +7309,7 @@ const google = {
                             if (res.success) {
                                 Swal.fire('สำเร็จ', res.message, 'success');
                                 viewPendingActivityParticipants(activityId, document.getElementById('pendingActivityName').innerText);
+                                loadPresidentApprovals();
                                 loadMembers();
                             } else {
                                 Swal.fire('ข้อผิดพลาด', res.message, 'error');
