@@ -2108,10 +2108,37 @@
         </div>
     </div>
 
+    <!-- President User Table -->
+    <div class="glass rounded-3xl shadow-sm overflow-hidden mb-8 border border-amber-500/30">
+        <div class="p-4 border-b border-amber-500/20 bg-amber-50/50 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-amber-900"><i class="fa-solid fa-shield-halved mr-2 text-amber-600"></i>ผู้ครองตำแหน่งนายกสมาคม (บัญชีสิทธิ์สูงสุด)</h2>
+            <div class="text-xs font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full shadow-sm">
+                ความปลอดภัยสูง
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-amber-100/50 text-amber-900 text-sm tracking-wider">
+                        <th class="py-3 px-4 font-semibold text-center w-16">#</th>
+                        <th class="py-3 px-4 font-semibold">Username</th>
+                        <th class="py-3 px-4 font-semibold">ข้อมูลผู้ใช้</th>
+                        <th class="py-3 px-4 font-semibold">ตำแหน่ง</th>
+                        <th class="py-3 px-4 font-semibold">การติดต่อ</th>
+                        <th class="py-3 px-4 font-semibold text-center w-24">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="presidentTableBody" class="text-sm text-gray-700 bg-white/80">
+                    <tr><td colspan="6" class="text-center py-6 text-army-500 font-medium"><i class="fa-solid fa-spinner fa-spin mr-2"></i>กำลังโหลดข้อมูล...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- Admin List Table -->
     <div class="glass rounded-3xl shadow-sm overflow-hidden mb-8">
         <div class="p-4 border-b border-army-400/20 bg-white/50 flex justify-between items-center">
-            <h2 class="text-lg font-bold text-army-800"><i class="fa-solid fa-list mr-2"></i>รายชื่อผู้ดูแลระบบทั้งหมด</h2>
+            <h2 class="text-lg font-bold text-army-800"><i class="fa-solid fa-list mr-2"></i>รายชื่อผู้ดูแลระบบทั่วไป</h2>
             <div class="text-sm font-medium bg-armylight-200 text-army-800 px-3 py-1 rounded-full shadow-sm">
                 รวม <span id="totalUsersCount">0</span> บัญชี
             </div>
@@ -6052,6 +6079,43 @@ const google = {
         });
     };
 
+    window.deleteAdminUser = function (username) {
+        if (currentUser && currentUser.username === username) {
+            Swal.fire('แจ้งเตือน', 'ท่านไม่สามารถลบสิทธิ์บัญชีของตัวเองที่กำลังใช้งานอยู่ได้', 'warning');
+            return;
+        }
+
+        Swal.fire({
+            title: 'ยืนยันการลบผู้ใช้',
+            text: 'ท่านต้องการลบผู้ใช้งาน "' + username + '" ออกจากระบบใช่หรือไม่?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'ใช่, ต้องการลบ',
+            cancelButtonText: 'ยกเลิก',
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#4b5563'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                showLoader('กำลังลบผู้ใช้งาน...');
+                google.script.run
+                    .withSuccessHandler(function (res) {
+                        hideLoader();
+                        if (res.success) {
+                            Swal.fire('สำเร็จ', res.message || 'ลบผู้ใช้งานเรียบร้อยแล้ว', 'success');
+                            loadUsers();
+                        } else {
+                            Swal.fire('เกิดข้อผิดพลาด', res.message, 'error');
+                        }
+                    })
+                    .withFailureHandler(function (err) {
+                        hideLoader();
+                        Swal.fire('เกิดข้อผิดพลาด', err.message, 'error');
+                    })
+                    .deleteUser(username, currentUser ? currentUser.username : 'System');
+            }
+        });
+    };
+
     function openUserModal() {
         var selectEl = document.getElementById('adminPositionSelect');
         if (selectEl) {
@@ -6088,6 +6152,35 @@ const google = {
         document.getElementById('userFormTitle').innerHTML = '<i class="fa-solid fa-user-plus mr-2"></i>เพิ่มผู้ใช้งานใหม่';
     }
 
+    function createUserRow(u, index, isPresident) {
+        var tr = document.createElement('tr');
+        tr.className = 'border-b border-army-400/10 hover:bg-white transition-colors';
+
+        var html = '<td class="py-3 px-4 text-center text-gray-500">' + (index + 1) + '</td>';
+        html += '<td class="py-3 px-4 font-bold text-army-700">' + u['Username'] + '</td>';
+        html += '<td class="py-3 px-4"><div class="font-bold text-gray-800">' + (u['Name'] || '-') + '</div><div class="text-xs text-gray-500">' + u['Role'] + '</div></td>';
+        html += '<td class="py-3 px-4 text-gray-700">' + (u['Position'] || '-') + '</td>';
+        html += '<td class="py-3 px-4 text-xs"><div class="text-gray-600"><i class="fa-solid fa-phone mr-1 w-3"></i>' + (u['Phone'] || '-') + '</div><div class="text-gray-600 mt-1"><i class="fa-solid fa-envelope mr-1 w-3"></i>' + (u['Email'] || '-') + '</div></td>';
+
+        var btnHtml = '';
+        var isCallerPresident = currentUser && currentUser.position === 'นายกสมาคม';
+        
+        if (isPresident && !isCallerPresident) {
+            btnHtml = '<span class="text-xs text-gray-400 font-medium"><i class="fa-solid fa-lock mr-1"></i>ถูกล็อก</span>';
+        } else {
+            btnHtml += '<button onclick="editUser(\'' + u['Username'] + '\')" class="bg-armylight-200 text-army-800 hover:bg-army-600 hover:text-white px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>';
+            if (isPresident) {
+                btnHtml += '<button onclick="resetPresidentPIN(\'' + u['Username'] + '\')" class="bg-orange-100 text-orange-800 hover:bg-orange-600 hover:text-white ml-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="ตั้งค่า/รีเซ็ต PIN"><i class="fa-solid fa-key"></i></button>';
+            } else {
+                btnHtml += '<button onclick="deleteAdminUser(\'' + u['Username'] + '\')" class="bg-red-100 text-red-800 hover:bg-red-600 hover:text-white ml-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="ลบผู้ใช้งาน"><i class="fa-solid fa-trash"></i></button>';
+            }
+        }
+        html += '<td class="py-3 px-4 text-center">' + btnHtml + '</td>';
+        
+        tr.innerHTML = html;
+        return tr;
+    }
+
     function loadUsers() {
         showLoader('กำลังโหลดรายชื่อผู้ดูแลระบบ...');
         google.script.run
@@ -6095,44 +6188,35 @@ const google = {
                 hideLoader();
                 allAdminUsers = users;
                 var tbody = document.getElementById('userTableBody');
-                if (tbody) {
+                var ptbody = document.getElementById('presidentTableBody');
+                if (tbody && ptbody) {
                     tbody.innerHTML = '';
-                    if (users.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-army-500 font-medium">ไม่พบข้อมูลผู้ดูแลระบบ</td></tr>';
-                        return;
-                    }
+                    ptbody.innerHTML = '';
+                    
+                    var presidents = users.filter(function (u) { return u['Position'] === 'นายกสมาคม'; });
+                    var admins = users.filter(function (u) { return u['Position'] !== 'นายกสมาคม'; });
 
-                    for (var i = 0; i < users.length; i++) {
-                        var u = users[i];
-                        var tr = document.createElement('tr');
-                        tr.className = 'border-b border-army-400/10 hover:bg-white transition-colors';
-
-                        var html = '<td class="py-3 px-4 text-center text-gray-500">' + (i + 1) + '</td>';
-                        html += '<td class="py-3 px-4 font-bold text-army-700">' + u['Username'] + '</td>';
-                        html += '<td class="py-3 px-4"><div class="font-bold text-gray-800">' + (u['Name'] || '-') + '</div><div class="text-xs text-gray-500">' + u['Role'] + '</div></td>';
-                        html += '<td class="py-3 px-4 text-gray-700">' + (u['Position'] || '-') + '</td>';
-                        html += '<td class="py-3 px-4 text-xs"><div class="text-gray-600"><i class="fa-solid fa-phone mr-1 w-3"></i>' + (u['Phone'] || '-') + '</div><div class="text-gray-600 mt-1"><i class="fa-solid fa-envelope mr-1 w-3"></i>' + (u['Email'] || '-') + '</div></td>';
-
-                        var btnHtml = '';
-                        var isRowPresident = u['Position'] === 'นายกสมาคม';
-                        var isCallerPresident = currentUser && currentUser.position === 'นายกสมาคม';
-                        
-                        if (isRowPresident && !isCallerPresident) {
-                            btnHtml = '<span class="text-xs text-gray-400 font-medium"><i class="fa-solid fa-lock mr-1"></i>ถูกล็อก</span>';
-                        } else {
-                            btnHtml += '<button onclick="editUser(\'' + u['Username'] + '\')" class="bg-armylight-200 text-army-800 hover:bg-army-600 hover:text-white px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>';
-                            if (isRowPresident) {
-                                btnHtml += '<button onclick="resetPresidentPIN(\'' + u['Username'] + '\')" class="bg-orange-100 text-orange-800 hover:bg-orange-600 hover:text-white ml-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all" title="ตั้งค่า/รีเซ็ต PIN"><i class="fa-solid fa-key"></i></button>';
-                            }
+                    // 1. Render President Account(s)
+                    if (presidents.length === 0) {
+                        ptbody.innerHTML = '<tr><td colspan="6" class="text-center py-6 text-army-500 font-medium"><i class="fa-solid fa-triangle-exclamation mr-1 text-amber-500"></i>ไม่พบข้อมูลบัญชีนายกสมาคม</td></tr>';
+                    } else {
+                        for (var i = 0; i < presidents.length; i++) {
+                            ptbody.appendChild(createUserRow(presidents[i], i, true));
                         }
-                        html += '<td class="py-3 px-4 text-center">' + btnHtml + '</td>';
-
-                        tr.innerHTML = html;
-                        tbody.appendChild(tr);
                     }
+
+                    // 2. Render General Admin Accounts
+                    if (admins.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-army-500 font-medium">ไม่พบข้อมูลผู้ดูแลระบบทั่วไป</td></tr>';
+                    } else {
+                        for (var i = 0; i < admins.length; i++) {
+                            tbody.appendChild(createUserRow(admins[i], i, false));
+                        }
+                    }
+                    
+                    var countEl = document.getElementById('totalUsersCount');
+                    if (countEl) countEl.innerText = admins.length;
                 }
-                var countEl = document.getElementById('totalUsersCount');
-                if (countEl) countEl.innerText = users.length;
             })
             .withFailureHandler(function (err) {
                 hideLoader();
