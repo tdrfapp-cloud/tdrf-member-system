@@ -5431,8 +5431,17 @@ const google = {
             } else {
                 var badgeColor = status === 'รออนุมัติ' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-blue-100 text-blue-800 border-blue-200';
                 var statusText = status === 'รออนุมัติ' ? '<i class="fa-solid fa-hourglass-half mr-1"></i>รออนุมัติคะแนน' : '<i class="fa-solid fa-circle-check mr-1"></i>อนุมัติคะแนนเข้าระบบแล้ว';
-                actionControls.innerHTML = '<span class="px-4 py-2 rounded-full font-bold border text-sm shadow-sm ' + badgeColor + '">' + statusText + '</span>' +
-                                           '<button onclick="reopenActivityRegistrationAction(\'' + activityId + '\')" class="ml-2 bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-4 rounded-full text-xs shadow-md transition-all hover:-translate-y-0.5 flex items-center gap-1"><i class="fa-solid fa-unlock"></i> เปิดลงทะเบียนใหม่</button>';
+                
+                var posClean = currentUser ? (currentUser.position || '').toString().trim() : '';
+                var roleClean = currentUser ? (currentUser.role || '').toString().trim() : '';
+                var isPresident = (posClean === 'นายกสมาคม' || roleClean === 'นายกสมาคม');
+                
+                var reopenBtn = '';
+                if (isPresident) {
+                    reopenBtn = '<button onclick="reopenActivityRegistrationAction(\'' + activityId + '\')" class="ml-2 bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-4 rounded-full text-xs shadow-md transition-all hover:-translate-y-0.5 flex items-center gap-1"><i class="fa-solid fa-unlock"></i> เปิดลงทะเบียนใหม่</button>';
+                }
+                
+                actionControls.innerHTML = '<span class="px-4 py-2 rounded-full font-bold border text-sm shadow-sm ' + badgeColor + '">' + statusText + '</span>' + reopenBtn;
             }
         }
 
@@ -7802,23 +7811,51 @@ const google = {
 
     window.closeActivityForApprovalAction = function (activityId) {
         Swal.fire({
-            title: 'ยืนยันการปิดลงทะเบียน',
-            text: 'เมื่อทำรายการแล้ว กิจกรรมนี้จะไม่สามารถสแกนหรือแก้ไขเพิ่มรายชื่อผู้เข้าร่วมได้อีก และจะส่งข้อมูลไปให้นายกสมาคมตรวจสอบเพื่ออนุมัติคะแนน',
+            title: 'ยืนยันการปิดรับลงทะเบียน',
+            html: '<div class="text-center py-2">' +
+                  '<p class="text-gray-600 text-sm font-medium leading-relaxed">' +
+                  'เมื่อทำรายการปิดรับลงทะเบียนแล้ว จะไม่สามารถบันทึกหรือสแกนรายชื่อเพิ่มเติมได้<br>' +
+                  'และระบบจะจัดส่งคำขออนุมัติคะแนนกิจกรรมไปยังนายกสมาคมโดยทันที' +
+                  '</p>' +
+                  '</div>',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'ปิดลงทะเบียน',
-            cancelButtonText: 'ยกเลิก'
+            cancelButtonColor: '#4b5320', // army green
+            confirmButtonText: 'ปิดรับลงทะเบียน',
+            cancelButtonText: 'ยกเลิก',
+            customClass: {
+                popup: 'rounded-3xl shadow-xl border border-gray-100',
+                confirmButton: 'rounded-full px-6 py-2.5 font-bold shadow-md text-white',
+                cancelButton: 'rounded-full px-6 py-2.5 font-bold shadow-sm text-white'
+            }
         }).then(function (result) {
             if (result.isConfirmed) {
-                showLoader('กำลังปิดรับและส่งต่อ...');
+                showLoader('กำลังดำเนินการปิดรับลงทะเบียน...');
                 var adminName = currentUser ? currentUser.name : 'System';
                 google.script.run
                     .withSuccessHandler(function (res) {
                         hideLoader();
                         if (res.success) {
-                            Swal.fire('สำเร็จ!', 'ระบบได้นำเรียนนายกสมาคมเพื่ออนุมัติคะแนนผลงานของสมาชิกแล้ว', 'success');
+                            Swal.fire({
+                                title: 'ส่งคำขออนุมัติเรียบร้อย',
+                                html: '<div class="text-center py-2">' +
+                                      '<div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-50 mb-4">' +
+                                      '<i class="fa-solid fa-paper-plane text-2xl text-green-600 animate-bounce"></i>' +
+                                      '</div>' +
+                                      '<p class="text-gray-600 text-sm font-medium leading-relaxed">' +
+                                      'ระบบได้จัดส่งรายชื่อผู้เข้าร่วมและคำขออนุมัติคะแนนกิจกรรม<br>' +
+                                      'ไปยัง<strong>นายกสมาคม</strong>เพื่อพิจารณาเรียบร้อยแล้ว' +
+                                      '</p>' +
+                                      '</div>',
+                                icon: 'success',
+                                confirmButtonText: 'ตกลง',
+                                confirmButtonColor: '#4b5320',
+                                customClass: {
+                                    popup: 'rounded-3xl shadow-xl border border-gray-100',
+                                    confirmButton: 'rounded-full px-8 py-2.5 font-bold shadow-md text-white'
+                                }
+                            });
                             try { stopActivityScanner(); } catch (e) { }
                             closeActivityRecord();
                         } else {
@@ -7835,15 +7872,39 @@ const google = {
     };
 
     window.reopenActivityRegistrationAction = function (activityId) {
+        var posClean = currentUser ? (currentUser.position || '').toString().trim() : '';
+        var roleClean = currentUser ? (currentUser.role || '').toString().trim() : '';
+        var isPresident = (posClean === 'นายกสมาคม' || roleClean === 'นายกสมาคม');
+        
+        if (!isPresident) {
+            Swal.fire({
+                title: 'ปฏิเสธการเข้าถึง',
+                text: 'เฉพาะนายกสมาคมเท่านั้นที่สามารถเปิดลงทะเบียนใหม่ได้',
+                icon: 'error',
+                customClass: { popup: 'rounded-3xl' }
+            });
+            return;
+        }
+
         Swal.fire({
             title: 'ยืนยันการเปิดลงทะเบียนใหม่',
-            text: 'คุณต้องการเปิดลงทะเบียนกิจกรรมนี้ใหม่อีกครั้งใช่หรือไม่? เพื่อเปิดสิทธิ์การบันทึกหรือสแกนรายชื่อผู้เข้าร่วมกิจกรรมเพิ่ม',
-            icon: 'info',
+            html: '<div class="text-center py-2">' +
+                  '<p class="text-gray-600 text-sm font-medium leading-relaxed">' +
+                  'คุณต้องการเปิดลงทะเบียนสำหรับกิจกรรมนี้ใหม่อีกครั้งใช่หรือไม่?<br>' +
+                  'เพื่อเปิดโอกาสให้มีการสแกนหรือบันทึกรายชื่อผู้เข้าร่วมเพิ่มเติม' +
+                  '</p>' +
+                  '</div>',
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#4b5320', // army green
             cancelButtonColor: '#d33',
             confirmButtonText: 'เปิดลงทะเบียนใหม่',
-            cancelButtonText: 'ยกเลิก'
+            cancelButtonText: 'ยกเลิก',
+            customClass: {
+                popup: 'rounded-3xl shadow-xl border border-gray-100',
+                confirmButton: 'rounded-full px-6 py-2.5 font-bold shadow-md text-white',
+                cancelButton: 'rounded-full px-6 py-2.5 font-bold shadow-sm text-white'
+            }
         }).then(function (result) {
             if (result.isConfirmed) {
                 showLoader('กำลังเปิดลงทะเบียนใหม่...');
@@ -7852,7 +7913,24 @@ const google = {
                     .withSuccessHandler(function (res) {
                         hideLoader();
                         if (res.success) {
-                            Swal.fire('สำเร็จ!', 'เปิดลงทะเบียนกิจกรรมนี้ใหม่อีกครั้งเรียบร้อยแล้ว', 'success');
+                            Swal.fire({
+                                title: 'เปิดลงทะเบียนใหม่สำเร็จ',
+                                html: '<div class="text-center py-2">' +
+                                      '<div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-50 mb-4">' +
+                                      '<i class="fa-solid fa-unlock-keyhole text-2xl text-green-600"></i>' +
+                                      '</div>' +
+                                      '<p class="text-gray-600 text-sm font-medium leading-relaxed">' +
+                                      'เปิดสิทธิ์การบันทึกรายชื่อผู้เข้าร่วมกิจกรรมเพิ่มเรียบร้อยแล้ว' +
+                                      '</p>' +
+                                      '</div>',
+                                icon: 'success',
+                                confirmButtonText: 'ตกลง',
+                                confirmButtonColor: '#4b5320',
+                                customClass: {
+                                    popup: 'rounded-3xl shadow-xl border border-gray-100',
+                                    confirmButton: 'rounded-full px-8 py-2.5 font-bold shadow-md text-white'
+                                }
+                            });
                             loadActivities(); // This will refresh allActivities
                             setTimeout(function() {
                                 openActivityRecord(activityId, document.getElementById('currentActivityName').innerText);
