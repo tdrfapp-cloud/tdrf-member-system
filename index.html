@@ -952,11 +952,11 @@
                         </div>
 
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">รหัสสมาชิก (รูปแบบ aaa-bb-cccc)
+                            <label class="block text-sm font-medium text-gray-700 mb-1">รหัสสมาชิก (รูปแบบ AAA-BB-CCC)
                                 *</label>
                             <input type="text" id="memberId" required oninput="formatMemberId(this); previewQRCode()"
                                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border text-lg font-bold text-blue-700"
-                                placeholder="เช่น AAA-01-0001" maxlength="11">
+                                placeholder="เช่น AAA-01-001" maxlength="10">
                         </div>
                         <div class="w-24 flex flex-col items-center">
                             <span class="text-xs text-gray-500 mb-1">QR Code</span>
@@ -2974,7 +2974,7 @@ const google = {
             if (val.length > 3) {
                 formatted += '-' + val.substring(3, 5);
                 if (val.length > 5) {
-                    formatted += '-' + val.substring(5, 9);
+                    formatted += '-' + val.substring(5, 8);
                 }
             }
         }
@@ -3014,9 +3014,9 @@ const google = {
 
         // Validate Member ID format only for NEW members
         if (!isEditMode) {
-            var memberIdPattern = /^[A-Z0-9]{3}-[A-Z0-9]{2}-[A-Z0-9]{4}$/;
+            var memberIdPattern = /^[A-Z0-9]{3}-[A-Z0-9]{2}-[A-Z0-9]{3}$/;
             if (!memberIdPattern.test(memberIdVal)) {
-                Swal.fire('แจ้งเตือน', 'รูปแบบรหัสสมาชิกไม่ถูกต้อง (ต้องเป็น aaa-bb-cccc)', 'warning');
+                Swal.fire('แจ้งเตือน', 'รูปแบบรหัสสมาชิกไม่ถูกต้อง (ต้องเป็น AAA-BB-CCC)', 'warning');
                 return;
             }
         }
