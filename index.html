@@ -1702,12 +1702,17 @@
                             <option value="วิสามัญ">วิสามัญ</option>
                             <option value="กิตติมศักดิ์">กิตติมศักดิ์</option>
                         </select>
+                        <select id="filterBatch" onchange="filterMembers()"
+                            class="border-gray-300 rounded-full shadow-sm focus:border-armylight-400 focus:ring-armylight-400 p-2 border text-sm text-gray-700 bg-white">
+                            <option value="">-- ทุกรุ่น --</option>
+                        </select>
                         <select id="filterStatus" onchange="filterMembers()"
                             class="border-gray-300 rounded-full shadow-sm focus:border-armylight-400 focus:ring-armylight-400 p-2 border text-sm text-gray-700 bg-white">
                             <option value="">-- ทุกสถานะ --</option>
                             <option value="ปกติ">ปกติ</option>
                             <option value="เตือนต่ออายุ">เตือนต่อ</option>
                             <option value="หมดอายุ">หมดอายุ</option>
+                            <option value="ไม่มีข้อมูล">ไม่มีข้อมูล</option>
                         </select>
                     </div>
                 </div>
@@ -3206,6 +3211,7 @@ const google = {
 
                     // Render table with full list initially
                     // แทนที่จะ render ทั้งหมด ให้เรียก filterMembers เพื่อเคารพค่าในช่องค้นหาปัจจุบัน
+                    populateBatchFilter();
                     filterMembers();
                 }
 
@@ -3441,7 +3447,7 @@ const google = {
     }
 
     function calculateMemberAge(startDateStr) {
-        if (!startDateStr || startDateStr === '-') return '-';
+        if (!startDateStr || startDateStr === '-' || startDateStr === 'ยังไม่ระบุ') return 'ไม่มีข้อมูล';
         var parts = startDateStr.split('/');
         if (parts.length !== 3) return '-';
 
@@ -3497,6 +3503,10 @@ const google = {
             }
             else if (m['สถานภาพสมาชิก'] === 'หมดอายุ') statusColor = 'text-red-700 bg-red-100';
             else if (m['สถานภาพสมาชิก'] === 'พ้นสภาพ') statusColor = 'text-gray-700 bg-gray-200 line-through';
+            else if (m['สถานภาพสมาชิก'] === 'ไม่มีข้อมูล') {
+                statusColor = 'text-gray-500 bg-gray-100';
+                statusText = 'ไม่มีข้อมูล';
+            }
             tableHtml += '<tr class="border-b hover:bg-gray-50">';
             tableHtml += '  <td class="py-3 px-4" data-label="#">' + (i + 1) + '</td>';
             tableHtml += '  <td class="py-3 px-4" data-label="รหัสสมาชิก">' + idHtml + '</td>';
@@ -3548,6 +3558,7 @@ const google = {
         var rankFilter = getValueSafe('filterRank');
         var typeMem = getValueSafe('filterMemberType');
         var statusFilter = getValueSafe('filterStatus');
+        var batchFilter = getValueSafe('filterBatch');
 
         var filtered = allMembers.filter(function (m) {
             var matchSearch = true;
@@ -3575,17 +3586,61 @@ const google = {
             var matchRank = rankFilter ? m['ชั้น'] === rankFilter : true;
             var matchType = typeMem ? m['ประเภทสมาชิก'] === typeMem : true;
             var matchStatus = statusFilter ? m['สถานภาพสมาชิก'] === statusFilter : true;
-            return matchSearch && matchCls && matchRank && matchType && matchStatus;
+            var matchBatch = batchFilter ? (String(m['รุ่น ผกก.'] || m['รุ่น'] || '') === String(batchFilter)) : true;
+            return matchSearch && matchCls && matchRank && matchType && matchStatus && matchBatch;
         });
         renderMemberTable(filtered);
     }
 
     function clearFiltersUI() {
-        const inputs = ['memberSearchInput', 'filterClassLevel', 'filterRank', 'filterMemberType', 'filterStatus'];
+        const inputs = ['memberSearchInput', 'filterClassLevel', 'filterRank', 'filterMemberType', 'filterStatus', 'filterBatch'];
         inputs.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.value = '';
         });
+    }
+
+    function populateBatchFilter() {
+        var filterBatch = document.getElementById('filterBatch');
+        if (!filterBatch) return;
+        
+        var currentSelected = filterBatch.value;
+        
+        filterBatch.innerHTML = '<option value="">-- ทุกรุ่น --</option>';
+        
+        var batches = [];
+        if (allMembers && allMembers.length > 0) {
+            allMembers.forEach(function (m) {
+                var b = (m['รุ่น ผกก.'] || m['รุ่น'] || '').toString().trim();
+                if (b && b !== '-') {
+                    if (batches.indexOf(b) === -1) {
+                        batches.push(b);
+                    }
+                }
+            });
+        }
+        
+        batches.sort(function (a, b) {
+            var numA = parseInt(a.replace(/[^0-9]/g, ''), 10);
+            var numB = parseInt(b.replace(/[^0-9]/g, ''), 10);
+            if (!isNaN(numA) && !isNaN(numB)) {
+                return numA - numB;
+            }
+            return a.localeCompare(b, 'th');
+        });
+        
+        batches.forEach(function (b) {
+            var opt = document.createElement('option');
+            opt.value = b;
+            opt.textContent = 'รุ่น ' + b;
+            filterBatch.appendChild(opt);
+        });
+        
+        if (currentSelected && batches.indexOf(currentSelected) !== -1) {
+            filterBatch.value = currentSelected;
+        } else {
+            filterBatch.value = '';
+        }
     }
     function viewQRCode(url, name) {
         if (!url) {
@@ -3684,6 +3739,7 @@ const google = {
         else if (m['สถานภาพสมาชิก'] === 'เตือนต่ออายุ' || m['สถานภาพ'] === 'เตือนต่ออายุ') statusColor = 'text-amber-700 bg-amber-100 border-amber-200';
         else if (m['สถานภาพสมาชิก'] === 'หมดอายุ' || m['สถานภาพสมาชิก'] === 'Inactive' || m['สถานภาพ'] === 'หมดอายุ' || m['สถานภาพ'] === 'Inactive') statusColor = 'text-red-700 bg-red-100 border-red-200';
         else if (m['สถานภาพสมาชิก'] === 'รออนุมัติ' || m['สถานภาพ'] === 'รออนุมัติ') statusColor = 'text-orange-700 bg-orange-100 border-orange-200';
+        else if (m['สถานภาพสมาชิก'] === 'ไม่มีข้อมูล' || m['สถานภาพ'] === 'ไม่มีข้อมูล') statusColor = 'text-gray-500 bg-gray-100 border-gray-200';
 
         var html = '';
         html += '<div id="memberCardCaptureArea" class="text-left relative dog-tag-bg rounded-t-[1.5rem] rounded-b-xl overflow-hidden shadow-sm flex flex-col" style="width: 100%; box-sizing: border-box;">';
@@ -3737,6 +3793,7 @@ const google = {
         if (m['สถานภาพสมาชิก'] === 'ปกติ' || m['สถานภาพสมาชิก'] === 'Active' || m['สถานภาพ'] === 'ปกติ' || m['สถานภาพ'] === 'Active') statusColorText = 'text-green-600';
         else if (m['สถานภาพสมาชิก'] === 'เตือนต่ออายุ' || m['สถานภาพ'] === 'เตือนต่ออายุ') statusColorText = 'text-amber-600';
         else if (m['สถานภาพสมาชิก'] === 'หมดอายุ' || m['สถานภาพสมาชิก'] === 'Inactive' || m['สถานภาพ'] === 'หมดอายุ' || m['สถานภาพ'] === 'Inactive') statusColorText = 'text-red-600';
+        else if (m['สถานภาพสมาชิก'] === 'ไม่มีข้อมูล' || m['สถานภาพ'] === 'ไม่มีข้อมูล') statusColorText = 'text-gray-500';
 
         html += '    <div class="bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm flex flex-col justify-between"><div class="text-xs text-army-600 font-bold mb-1"><i class="fa-solid fa-circle-check mr-1"></i> สถานะ</div><div><span class="font-bold px-2.5 py-0.5 rounded-full text-xs shadow-sm border whitespace-nowrap inline-flex items-center justify-center ' + statusColor + '">' + (m['สถานภาพสมาชิก'] || m['สถานภาพ']) + '</span></div></div>';
         html += '    <div class="bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm"><div class="text-xs text-army-600 font-bold mb-1"><i class="fa-solid fa-calendar-plus mr-1"></i> วันเริ่มสมาชิก</div><div class="font-medium text-gray-800">' + (m['วันเริ่ม'] || '-') + '</div></div>';
