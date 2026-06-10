@@ -1021,6 +1021,12 @@
                                     class="w-full bg-white/70 border-army-200 rounded-lg p-2 border text-sm font-bold text-gray-800"
                                     placeholder="-">
                             </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-army-600 mb-1">รุ่น ผกก.</label>
+                                <input type="number" id="memberBatch" min="0"
+                                    class="w-full bg-white border-army-200 rounded-lg p-2 border text-sm font-bold text-gray-800"
+                                    placeholder="ระบุรุ่น (ตัวเลขเท่านั้น)">
+                            </div>
                             <div id="tenureInRankContainer">
                                 <label class="block text-[10px] font-bold text-army-600 mb-1">ครองชั้นตั้งแต่วันที่
                                     (พ.ศ.)</label>
@@ -1183,7 +1189,16 @@
                         </div>
                     </div>
 
-                    <h3 class="text-lg font-semibold text-blue-700 border-b pb-2 mb-4 mt-6">ข้อมูลสมาชิกภาพ</h3>
+                    <h3 class="text-lg font-semibold text-blue-700 border-b pb-2 mb-4 mt-6 flex items-center justify-between">
+                        <span>ข้อมูลสมาชิกภาพ</span>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="unspecifiedMembership"
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                                onchange="toggleUnspecifiedMembership()">
+                            <label for="unspecifiedMembership"
+                                class="ml-2 text-sm text-gray-600 cursor-pointer font-medium">ยังไม่ระบุ</label>
+                        </div>
+                    </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">ประเภทสมาชิก</label>
@@ -1193,12 +1208,6 @@
                                 <option value="วิสามัญ">วิสามัญ</option>
                                 <option value="กิตติมศักดิ์">กิตติมศักดิ์</option>
                             </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">รุ่น ผกก.</label>
-                            <input type="number" id="memberBatch" min="0"
-                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
-                                placeholder="ระบุรุ่น (ตัวเลขเท่านั้น)">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">วันเริ่มต้นสมาชิกภาพ
@@ -1212,7 +1221,7 @@
                             <div class="flex gap-2">
                                 <input type="text" id="endDate" readonly
                                     class="w-full bg-gray-100 border-gray-300 rounded-md shadow-sm p-2 border font-bold text-gray-700">
-                                <button type="button" onclick="openTenureModal()"
+                                <button type="button" id="btnManageTenure" onclick="openTenureModal()"
                                     class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md shadow-sm whitespace-nowrap transition-colors text-sm font-medium">
                                     <i class="fa-solid fa-clock-rotate-left mr-1"></i> จัดการอายุสมาชิก
                                 </button>
@@ -2662,6 +2671,51 @@ const google = {
         }
     }
 
+    function toggleUnspecifiedMembership(forceState) {
+        var chk = document.getElementById('unspecifiedMembership');
+        if (!chk) return;
+        if (forceState !== undefined) {
+            chk.checked = forceState;
+        }
+        var isChecked = chk.checked;
+        var startDateInput = document.getElementById('startDate');
+        var endDateInput = document.getElementById('endDate');
+        var manageTenureBtn = document.getElementById('btnManageTenure');
+
+        if (isChecked) {
+            if (startDateInput) {
+                startDateInput.value = '';
+                startDateInput.required = false;
+                startDateInput.disabled = true;
+                startDateInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+            }
+            if (endDateInput) {
+                endDateInput.value = '';
+                endDateInput.disabled = true;
+                endDateInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+            }
+            if (manageTenureBtn) {
+                manageTenureBtn.disabled = true;
+                manageTenureBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        } else {
+            if (startDateInput) {
+                startDateInput.required = true;
+                startDateInput.disabled = false;
+                startDateInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+            }
+            if (endDateInput) {
+                endDateInput.disabled = false;
+                endDateInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+            }
+            if (manageTenureBtn) {
+                manageTenureBtn.disabled = false;
+                manageTenureBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+    }
+    window.toggleUnspecifiedMembership = toggleUnspecifiedMembership;
+
     // === ส่วนเปลี่ยนหน้าจอ (Navigation) ===
     function showView(viewId) {
         var sections = document.querySelectorAll('.view-section');
@@ -2966,8 +3020,9 @@ const google = {
             }
         }
 
+        var isUnspecified = document.getElementById('unspecifiedMembership').checked;
         var endDateVal = document.getElementById('endDate').value;
-        if (!isEditMode && !endDateVal) {
+        if (!isEditMode && !isUnspecified && !endDateVal) {
             Swal.fire('แจ้งเตือน', 'กรุณาจัดการอายุสมาชิก', 'warning');
             return;
         }
@@ -4119,8 +4174,14 @@ const google = {
         setValueSafe('emergencyRelation', m['ความสัมพันธ์ผู้ติดต่อฉุกเฉิน']);
         setValueSafe('memberType', m['ประเภทสมาชิก']);
         setValueSafe('memberBatch', m['รุ่น ผกก.'] || m['รุ่น'] || '');
-        setValueSafe('startDate', m['วันเริ่ม'] || m['วันเริ่มสมาชิก']);
-        setValueSafe('endDate', m['วันสิ้นสุด'] || m['วันสิ้นสุดสมาชิก']);
+        var startDateVal = m['วันเริ่ม'] || m['วันเริ่มสมาชิก'] || '';
+        var endDateVal = m['วันสิ้นสุด'] || m['วันสิ้นสุดสมาชิก'] || '';
+        var isUnspecified = (startDateVal === '' || startDateVal === '-' || startDateVal === 'ยังไม่ระบุ') && 
+                            (endDateVal === '' || endDateVal === '-' || endDateVal === 'ยังไม่ระบุ');
+        setValueSafe('startDate', startDateVal);
+        setValueSafe('endDate', endDateVal);
+        setValueSafe('unspecifiedMembership', isUnspecified);
+        toggleUnspecifiedMembership(isUnspecified);
         setValueSafe('phone', m['เบอร์โทร'] || m['โทรศัพท์']);
         setValueSafe('email', m['อีเมล']);
         setValueSafe('lineId', m['LineID'] || m['ID Line']);
@@ -4540,6 +4601,8 @@ const google = {
         if (photoIcon) photoIcon.classList.remove('hidden');
         document.getElementById('photo').value = ''; // Reset file input
         document.getElementById('newMemberTenureSelect').value = '';
+        setValueSafe('unspecifiedMembership', false);
+        toggleUnspecifiedMembership(false);
         previewQRCode();
     }
 
@@ -6660,7 +6723,16 @@ const google = {
                 html += '      <div><span class="font-bold text-gray-500">ชั้น:</span> <span class="font-semibold text-gray-800">' + (m['ชั้น'] || '-') + '</span></div>';
                 html += '      <div><span class="font-bold text-gray-500">อัตรา:</span> <span class="font-semibold text-gray-800">' + (m['อัตรา'] || '-') + '</span></div>';
                 html += '      <div class="col-span-2"><span class="font-bold text-gray-500">ตำแหน่ง:</span> <span class="font-semibold text-gray-800">' + (m['ตำแหน่ง'] || '-') + '</span></div>';
-                html += '      <div class="col-span-2"><span class="font-bold text-gray-500">อายุสมาชิภาพ:</span> <span class="font-semibold text-gray-800">' + (m['วันเริ่ม'] || '-') + ' ถึง ' + (m['วันสิ้นสุด'] || 'ตลอดชีพ') + '</span></div>';
+                var tenureText = '';
+                var startVal = m['วันเริ่ม'] || '';
+                var endVal = m['วันสิ้นสุด'] || '';
+                if ((startVal === '' || startVal === '-' || startVal === 'ยังไม่ระบุ') && 
+                    (endVal === '' || endVal === '-' || endVal === 'ยังไม่ระบุ')) {
+                    tenureText = 'ยังไม่ระบุ';
+                } else {
+                    tenureText = (startVal || '-') + ' ถึง ' + (endVal || 'ตลอดชีพ');
+                }
+                html += '      <div class="col-span-2"><span class="font-bold text-gray-500">อายุสมาชิกภาพ:</span> <span class="font-semibold text-gray-800">' + tenureText + '</span></div>';
                 html += '    </div>';
                 html += '  </div>';
 
