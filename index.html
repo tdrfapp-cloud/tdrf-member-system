@@ -1702,10 +1702,6 @@
                             <option value="วิสามัญ">วิสามัญ</option>
                             <option value="กิตติมศักดิ์">กิตติมศักดิ์</option>
                         </select>
-                        <select id="filterBatch" onchange="filterMembers()"
-                            class="border-gray-300 rounded-full shadow-sm focus:border-armylight-400 focus:ring-armylight-400 p-2 border text-sm text-gray-700 bg-white">
-                            <option value="">-- ทุกรุ่น --</option>
-                        </select>
                         <select id="filterStatus" onchange="filterMembers()"
                             class="border-gray-300 rounded-full shadow-sm focus:border-armylight-400 focus:ring-armylight-400 p-2 border text-sm text-gray-700 bg-white">
                             <option value="">-- ทุกสถานะ --</option>
@@ -3211,7 +3207,6 @@ const google = {
 
                     // Render table with full list initially
                     // แทนที่จะ render ทั้งหมด ให้เรียก filterMembers เพื่อเคารพค่าในช่องค้นหาปัจจุบัน
-                    populateBatchFilter();
                     filterMembers();
                 }
 
@@ -3558,7 +3553,6 @@ const google = {
         var rankFilter = getValueSafe('filterRank');
         var typeMem = getValueSafe('filterMemberType');
         var statusFilter = getValueSafe('filterStatus');
-        var batchFilter = getValueSafe('filterBatch');
 
         var filtered = allMembers.filter(function (m) {
             var matchSearch = true;
@@ -3586,61 +3580,17 @@ const google = {
             var matchRank = rankFilter ? m['ชั้น'] === rankFilter : true;
             var matchType = typeMem ? m['ประเภทสมาชิก'] === typeMem : true;
             var matchStatus = statusFilter ? m['สถานภาพสมาชิก'] === statusFilter : true;
-            var matchBatch = batchFilter ? (String(m['รุ่น ผกก.'] || m['รุ่น'] || '') === String(batchFilter)) : true;
-            return matchSearch && matchCls && matchRank && matchType && matchStatus && matchBatch;
+            return matchSearch && matchCls && matchRank && matchType && matchStatus;
         });
         renderMemberTable(filtered);
     }
 
     function clearFiltersUI() {
-        const inputs = ['memberSearchInput', 'filterClassLevel', 'filterRank', 'filterMemberType', 'filterStatus', 'filterBatch'];
+        const inputs = ['memberSearchInput', 'filterClassLevel', 'filterRank', 'filterMemberType', 'filterStatus'];
         inputs.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.value = '';
         });
-    }
-
-    function populateBatchFilter() {
-        var filterBatch = document.getElementById('filterBatch');
-        if (!filterBatch) return;
-        
-        var currentSelected = filterBatch.value;
-        
-        filterBatch.innerHTML = '<option value="">-- ทุกรุ่น --</option>';
-        
-        var batches = [];
-        if (allMembers && allMembers.length > 0) {
-            allMembers.forEach(function (m) {
-                var b = (m['รุ่น ผกก.'] || m['รุ่น'] || '').toString().trim();
-                if (b && b !== '-') {
-                    if (batches.indexOf(b) === -1) {
-                        batches.push(b);
-                    }
-                }
-            });
-        }
-        
-        batches.sort(function (a, b) {
-            var numA = parseInt(a.replace(/[^0-9]/g, ''), 10);
-            var numB = parseInt(b.replace(/[^0-9]/g, ''), 10);
-            if (!isNaN(numA) && !isNaN(numB)) {
-                return numA - numB;
-            }
-            return a.localeCompare(b, 'th');
-        });
-        
-        batches.forEach(function (b) {
-            var opt = document.createElement('option');
-            opt.value = b;
-            opt.textContent = 'รุ่น ' + b;
-            filterBatch.appendChild(opt);
-        });
-        
-        if (currentSelected && batches.indexOf(currentSelected) !== -1) {
-            filterBatch.value = currentSelected;
-        } else {
-            filterBatch.value = '';
-        }
     }
     function viewQRCode(url, name) {
         if (!url) {
@@ -3768,9 +3718,7 @@ const google = {
         if (m['ชั้น'] || m['อัตรา'] || m['ตำแหน่ง']) {
             html += '  <div class="mb-6 px-2">';
             html += '    <div class="bg-army-50 rounded-xl border border-army-200 p-3 shadow-sm relative">';
-            if (m['hasPendingPromotion']) {
-                html += '      <div class="absolute -top-3 -right-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm animate-pulse border-2 border-white">รออนุมัติเลื่อนชั้น</div>';
-            }
+
             html += '      <div class="flex items-center text-army-800 font-bold text-xs uppercase tracking-wider mb-2"><i class="fa-solid fa-award mr-2"></i> อัตราชั้นผู้กำกับกำลังสำรอง</div>';
             html += '      <div class="grid grid-cols-3 gap-2">';
             html += '        <div><div class="text-[9px] text-army-500 font-bold">ชั้น</div><div class="text-xs font-bold text-gray-800 leading-tight">' + (m['ชั้น'] || '-') + '</div></div>';
