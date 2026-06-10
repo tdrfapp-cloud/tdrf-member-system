@@ -864,10 +864,14 @@
             
             <!-- Body -->
             <div class="p-6 overflow-y-auto bg-gray-50 flex-1">
-                <div class="flex justify-end mb-4">
+                <div class="flex justify-end gap-2 mb-4">
                     <button type="button" id="btnConfirmApproveScores" onclick="approveActivityAttendanceWithPIN()"
-                        class="bg-army-600 hover:bg-army-700 text-white font-bold py-2 px-6 rounded-full shadow-md text-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
-                        <i class="fa-solid fa-check-double"></i> อนุมัติทั้งหมด
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-full shadow-md text-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-check-double"></i> อนุมัติทั้งหมด (อนุมัติกิจกรรม)
+                    </button>
+                    <button type="button" id="btnConfirmDisapproveScores" onclick="if (selectedPendingActivityId) disapproveActivityScoresAction(selectedPendingActivityId);"
+                        class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow-md text-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i> ไม่อนุมัติกิจกรรม
                     </button>
                 </div>
                 <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -2811,7 +2815,6 @@ const google = {
                 hideLoader();
                 if (response.success) {
                     currentUser = response;
-                    Swal.fire('สำเร็จ', 'เข้าสู่ระบบเรียบร้อย', 'success');
 
                     document.getElementById('navbar').classList.remove('hidden');
                     document.getElementById('userGreeting').innerText = 'สวัสดี, ' + response.name + ' (' + response.role + ')';
@@ -6939,16 +6942,21 @@ const google = {
         });
     };
 
-    window.loadPresidentApprovals = function () {
+    window.loadPresidentApprovals = function (keepModalOpen) {
         var countMembersEl = document.getElementById('countPendingMembers');
         var countPromotionsEl = document.getElementById('countPendingPromotions');
         var countNotificationsEl = document.getElementById('countPendingNotifications');
         var countActivitiesEl = document.getElementById('countPendingActivities');
 
-        // Hide detail section by default when reloading
-        var detailsSection = document.getElementById('pendingActivityParticipantsSection');
-        if (detailsSection) detailsSection.classList.add('hidden');
-        selectedPendingActivityId = null;
+        // Hide detail section by default when reloading unless keepModalOpen is true
+        if (!keepModalOpen) {
+            var detailsSection = document.getElementById('pendingActivityParticipantsSection');
+            if (detailsSection) {
+                detailsSection.classList.add('hidden');
+                detailsSection.classList.remove('flex');
+            }
+            selectedPendingActivityId = null;
+        }
 
         // 1. Get Pending Members
         google.script.run
@@ -7392,7 +7400,7 @@ const google = {
                     if (res.success) {
                         Swal.fire('สำเร็จ', res.message, 'success');
                         viewPendingActivityParticipants(activityId, document.getElementById('pendingActivityName').innerText);
-                        loadPresidentApprovals();
+                        loadPresidentApprovals(true);
                         loadMembers(); // reload statistics and scores
                     } else {
                         Swal.fire('ข้อผิดพลาด', res.message, 'error');
@@ -7646,7 +7654,7 @@ const google = {
                             if (res.success) {
                                 Swal.fire('สำเร็จ', res.message, 'success');
                                 viewPendingActivityParticipants(activityId, document.getElementById('pendingActivityName').innerText);
-                                loadPresidentApprovals();
+                                loadPresidentApprovals(true);
                                 loadMembers();
                             } else {
                                 Swal.fire('ข้อผิดพลาด', res.message, 'error');
