@@ -510,7 +510,7 @@
                 </div>
             </div>
 
-            <button type="button" onclick="try { handleLogin(event); } catch(err) { alert('พบข้อผิดพลาด: ' + err.message); }" class="w-full bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white font-bold py-3 px-4 rounded-full shadow-md hover:shadow-lg transition-all flex items-center justify-center transform hover:-translate-y-0.5">
+            <button type="submit" class="w-full bg-armylight-400 hover:bg-army-500 text-army-900 hover:text-white font-bold py-3 px-4 rounded-full shadow-md hover:shadow-lg transition-all flex items-center justify-center transform hover:-translate-y-0.5">
                 <i class="fa-solid fa-right-to-bracket mr-2"></i> เข้าสู่ระบบ
             </button>
         </form>
@@ -7318,6 +7318,8 @@ const google = {
                                 } else {
                                     e.target.value = '';
                                 }
+                            } else if (e.key === 'Enter') {
+                                Swal.clickConfirm();
                             }
                         });
 
