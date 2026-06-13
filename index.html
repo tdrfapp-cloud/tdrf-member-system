@@ -819,9 +819,13 @@
 
             <!-- 5. Special Points Pending Approval -->
             <div id="panelApproveSpecialPoints" class="approval-panel hidden">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
                     <span class="text-sm text-[#8A6D1C] font-black"><i
                             class="fa-solid fa-info-circle mr-1.5"></i>รายการคะแนนพิเศษที่อยู่ระหว่างรอการอนุมัติ</span>
+                    <button type="button" id="btnApproveAllSpecialPoints" onclick="approveAllSpecialPointsAction()"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-5 rounded-full shadow-md text-xs transition-all flex items-center gap-1.5 hover:scale-105 border border-green-700/20 active:scale-95 cursor-pointer hidden">
+                        <i class="fa-solid fa-check-double"></i> อนุมัติคะแนนพิเศษทั้งหมด
+                    </button>
                 </div>
                 <div class="overflow-x-auto rounded-2xl border border-gray-200 shadow-inner bg-white">
                     <table class="responsive-table w-full text-left border-collapse text-xs">
