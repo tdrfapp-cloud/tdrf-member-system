@@ -2725,8 +2725,82 @@ const google = {
     }
     window.toggleUnspecifiedMembership = toggleUnspecifiedMembership;
 
+    // === ระบบจัดการโหมดปิดปรับปรุงระบบชั่วคราว (Maintenance Mode) ===
+    function showMaintenanceScreen(message) {
+        if (document.getElementById('maintenanceOverlay')) {
+            document.getElementById('maintenanceMessageText').innerText = message;
+            return;
+        }
+
+        var overlay = document.createElement('div');
+        overlay.id = 'maintenanceOverlay';
+        overlay.className = 'fixed inset-0 z-[9999] bg-[#1a2315] flex flex-col items-center justify-center text-center px-6 text-white';
+        overlay.style.backgroundColor = '#1a2315';
+
+        overlay.innerHTML = `
+            <div class="max-w-md p-8 bg-[#2a3822]/80 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-md">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-amber-500/10 rounded-full mb-6">
+                    <i class="fa-solid fa-screwdriver-wrench text-amber-500 text-4xl animate-pulse"></i>
+                </div>
+                <h1 class="text-2xl font-bold mb-3 text-amber-400">ระบบปิดปรับปรุงชั่วคราว</h1>
+                <p class="text-sm text-gray-300 mb-6 leading-relaxed" id="maintenanceMessageText"></p>
+                <div class="text-[10px] text-gray-500 tracking-wider uppercase font-bold italic border-t border-white/5 pt-4">
+                    Developed by SUEA VE HA CORPORATION
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        document.getElementById('maintenanceMessageText').innerText = message;
+
+        // Hide layout components
+        var navbar = document.getElementById('navbar');
+        if (navbar) navbar.classList.add('hidden');
+        var sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.add('hidden');
+            sidebar.classList.remove('md:block');
+        }
+    }
+
+    function checkMaintenanceStatusPeriodically() {
+        if (window.location.search.includes('mock=true')) return;
+        
+        google.script.run
+            .withSuccessHandler(function (config) {
+                if (config && config.active) {
+                    var username = currentUser ? currentUser.username : '';
+                    var isBypassed = config.bypass.includes((username || '').toLowerCase().trim());
+                    if (!isBypassed) {
+                        showMaintenanceScreen(config.message);
+                    }
+                } else {
+                    var overlay = document.getElementById('maintenanceOverlay');
+                    if (overlay) {
+                        overlay.remove();
+                        if (currentUser) {
+                            var navbar = document.getElementById('navbar');
+                            if (navbar) navbar.classList.remove('hidden');
+                            
+                            var sidebar = document.getElementById('sidebar');
+                            if (sidebar) {
+                                sidebar.classList.remove('hidden');
+                                sidebar.classList.add('md:block');
+                            }
+                        }
+                    }
+                }
+            })
+            .checkMaintenanceStatus();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        checkMaintenanceStatusPeriodically();
+        setInterval(checkMaintenanceStatusPeriodically, 120000); // Check every 2 mins
+    });
+
     // === ส่วนเปลี่ยนหน้าจอ (Navigation) ===
     function showView(viewId) {
+        checkMaintenanceStatusPeriodically();
         var sections = document.querySelectorAll('.view-section');
         for (var i = 0; i < sections.length; i++) {
             sections[i].classList.remove('active');
@@ -2865,7 +2939,11 @@ const google = {
                         showView('memberDashboard');
                     }
                 } else {
-                    Swal.fire('ข้อผิดพลาด', response.message, 'error');
+                    if (response.isMaintenance) {
+                        showMaintenanceScreen(response.message);
+                    } else {
+                        Swal.fire('ข้อผิดพลาด', response.message, 'error');
+                    }
                 }
             })
             .withFailureHandler(function (error) {
